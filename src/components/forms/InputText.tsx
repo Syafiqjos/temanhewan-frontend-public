@@ -20,7 +20,7 @@ export default function InputText(
 }) {
 	return (
 		<div className="flex flex-col items-start w-full">
-			<label for={name}>{label}</label>
+			<label htmlFor={name}>{label}</label>
 			<input disabled={disabled} onChange={onChange} className={`border-0 rounded-l w-full p-4 ${disabled ? 'bg-white' : 'bg-gray-100'}`} type={type} name={name} id={name} placeholder={placeholder} defaultValue={value} />
 		</div>
 	);
