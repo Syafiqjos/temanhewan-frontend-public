@@ -28,23 +28,23 @@ export default function HomePage() {
 
       <main>
         <section className='bg-white'>
-          <div className='layout flex min-h-screen items-center justify-center text-center w-100'>
+          <div className='layout min-h-screen grid grid-cols-2 mt-8 w-100'>
             <form className='flex flex-col items-start justify-start p-4 text-left gap-3'>
-              <h1>Masuk Akun</h1>
-              <h2>Dapatkan sensasi hewan peliharaan.</h2>
-              <div className="flex flex-col items-start">
+              <h1 className="text-xl font-semibold">Masuk Akun</h1>
+              <h2 className="text-base font-normal">Dapatkan sensasi hewan peliharaan.</h2>
+              <div className="flex flex-col items-start w-full">
                 <label for="email">Email/Username</label>
-                <input className="bg-gray-100 border-0 rounded-l w-full" type="text" name="email" id="email" placeholder="Email anda" />
+                <input className="bg-gray-100 border-0 rounded-l w-full p-4" type="text" name="email" id="email" placeholder="Email anda" />
               </div>
-              <div className="flex flex-col items-start">
+              <div className="flex flex-col items-start w-full">
                 <label for="password">Password</label>
-                <input className="bg-gray-100 border-0 rounded-l w-full" type="text" name="password" id="password" placeholder="Password anda" />
+                <input className="bg-gray-100 border-0 rounded-l w-full p-4" type="text" name="password" id="password" placeholder="Password anda" />
               </div>
               <div>
-                <span>Lupa password? <UnstyledLink href="/reset-password">Klik disini</UnstyledLink></span>
+                <span>Lupa password? <UnstyledLink href="/reset-password" className="text-orange-600">Klik disini</UnstyledLink></span>
               </div>
               <div>
-                <span>Belum pernah mendaftar? <UnstyledLink href="/sign-up">Klik disini</UnstyledLink></span>
+                <span>Belum pernah mendaftar? <UnstyledLink href="/sign-up" className="text-orange-600">Klik disini</UnstyledLink></span>
               </div>
               <div>
                 <input className="bg-orange-600 text-white p-4 px-8 cursor-pointer rounded-xl" type="submit" value="Masuk" />
