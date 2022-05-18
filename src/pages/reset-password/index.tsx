@@ -22,11 +22,23 @@ import Vercel from '~/svg/Vercel.svg';
 // Before you begin editing, follow all comments with `STARTERCONF`,
 // to customize the default configuration.
 
-function InitialPage() {
-	return (<form className='flex flex-col items-start justify-start p-4 text-left gap-3'>
+function InitialPage({setEmail}) {
+	const [input, setInput] = React.useState('');
+
+	function handleInput(e) {
+      const val = e.target.value;
+      setInput(val);
+	}
+
+    function handleSubmit(e) {
+      // TODO: Should send email, if complete than do setEmail below
+      setEmail(input);
+    }
+
+	return (<form onSubmit={handleSubmit} className='flex flex-col items-start justify-start p-4 text-left gap-3'>
               <h1 className="text-xl font-semibold">Reset Password</h1>
               <h2 className="text-base font-normal">Sebuah email yang berisi cara mengatur ulang password akan dikirim ke email anda.</h2>
-              <InputText label="Email" name="email" type="text" placeholder="Email anda" />
+              <InputText label="Email" name="email" type="text" placeholder="Email anda" onChange={handleInput} />
               <div>
                 <span>Sudah ingat password? <UnstyledLink href="/login" className="text-orange-600">Klik disini</UnstyledLink></span>
               </div>
@@ -48,6 +60,8 @@ function SuccessPage({ email }: string) {
 }
 
 export default function HomePage() {
+  const [email, setEmail] = React.useState(null);
+
   return (
     <Layout>
       {/* <Seo templateTitle='Home' /> */}
@@ -56,7 +70,10 @@ export default function HomePage() {
       <main>
         <section className='bg-white'>
           <div className='layout min-h-screen grid grid-cols-2 mt-8 w-100'>
-            <InitialPage />
+            {email === null
+              ? <InitialPage setEmail={setEmail} />
+              : <SuccessPage email={email} />
+            }
             <div className="p-4">
               <img className="rounded-xl" src="/images/cover/register-cover.png" />
             </div>
