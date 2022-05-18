@@ -7,19 +7,21 @@ export default function InputText(
 	type,
 	placeholder,
 	onChange,
-	disabled = false
+	disabled = false,
+	value = ''
 }: {
 	label: string,
 	name: string,
 	type: 'text' | 'password',
 	placeholder?: string,
 	onChange?: any,
-	disabled?: boolean
+	disabled?: boolean,
+	value?: string
 }) {
 	return (
 		<div className="flex flex-col items-start w-full">
 			<label for={name}>{label}</label>
-			<input disabled={disabled} onChange={onChange} className={`border-0 rounded-l w-full p-4 ${disabled ? 'bg-white' : 'bg-gray-100'}`} type={type} name={name} id={name} placeholder={placeholder} />
+			<input disabled={disabled} onChange={onChange} className={`border-0 rounded-l w-full p-4 ${disabled ? 'bg-white' : 'bg-gray-100'}`} type={type} name={name} id={name} placeholder={placeholder} defaultValue={value} />
 		</div>
 	);
 }
