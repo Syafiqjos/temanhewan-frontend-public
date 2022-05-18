@@ -38,7 +38,7 @@ export default function HomePage() {
               </div>
               <div className="flex flex-col items-start w-full">
                 <label for="password">Password</label>
-                <input className="bg-gray-100 border-0 rounded-l w-full p-4" type="text" name="password" id="password" placeholder="Password anda" />
+                <input className="bg-gray-100 border-0 rounded-l w-full p-4" type="password" name="password" id="password" placeholder="Password anda" />
               </div>
               <div>
                 <span>Lupa password? <UnstyledLink href="/reset-password" className="text-orange-600">Klik disini</UnstyledLink></span>
