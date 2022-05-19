@@ -75,7 +75,7 @@ export default function HomePage() {
   const [passwordConf, setPasswordConf] = React.useState(null);
   const [status, setStatus] = React.useState('LOADING');
 
-  function handleResetPassword(e) {
+  function handleResetPassword(e: any) {
     e.preventDefault();
     
     // handle reset password if succes then change status

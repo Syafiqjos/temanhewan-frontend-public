@@ -25,12 +25,12 @@ import Vercel from '~/svg/Vercel.svg';
 function InitialPage({setEmail}) {
 	const [input, setInput] = React.useState('');
 
-	function handleInput(e) {
+	function handleInput(e: any) {
       const val = e.target.value;
       setInput(val);
 	}
 
-    function handleSubmit(e) {
+    function handleSubmit(e: any) {
       // TODO: Should send email, if complete than do setEmail below
       setEmail(input);
     }
