@@ -22,7 +22,7 @@ import Vercel from '~/svg/Vercel.svg';
 // Before you begin editing, follow all comments with `STARTERCONF`,
 // to customize the default configuration.
 
-function InitialPage({setEmail}) {
+function InitialPage(setEmail: any) {
 	const [input, setInput] = React.useState('');
 
 	function handleInput(e: any) {
