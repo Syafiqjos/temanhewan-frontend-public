@@ -23,6 +23,11 @@ import Vercel from '~/svg/Vercel.svg';
 // Before you begin editing, follow all comments with `STARTERCONF`,
 // to customize the default configuration.
 
+interface UserDetails {
+  code: string,
+  email: string
+};
+
 function LoadingPage() {
   return (
     <div>
@@ -70,7 +75,7 @@ export default function HomePage() {
   // check link query
   const router = useRouter();
 
-  const [userDetails, setUserDetails] = React.useState(null);
+  const [userDetails, setUserDetails] = React.useState<UserDetails>(null);
   const [password, setPassword] = React.useState(null);
   const [passwordConf, setPasswordConf] = React.useState(null);
   const [status, setStatus] = React.useState('LOADING');
@@ -88,14 +93,12 @@ export default function HomePage() {
     const { code } = router.query;
 
     // check code then retrieve data
-    const codes = [
+    const codes: UserDetails[] = [
        { code: 'aaaa', email: 'dummy@gmail.com' },
        { code: 'bbbb', email: 'example@gmail.com' }
     ];
 
     const details = codes.find((x) => x.code == code);
-
-	console.log(details);
 
     if (details) {
       setUserDetails(details);
