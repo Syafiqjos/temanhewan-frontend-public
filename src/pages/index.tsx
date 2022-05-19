@@ -28,44 +28,43 @@ export default function HomePage() {
 
       <main>
         <section className='bg-white'>
-          <div className='layout flex min-h-screen flex-col items-center justify-center text-center'>
-            <Vercel className='text-5xl' />
-            <h1 className='mt-4'>
-              Next.js + Tailwind CSS + TypeScript Starter
-            </h1>
-            <p className='mt-2 text-sm text-gray-800'>
-              A starter for Next.js, Tailwind CSS, and TypeScript with Absolute
-              Import, Seo, Link component, pre-configured with Husky{' '}
-            </p>
-            <p className='mt-2 text-sm text-gray-700'>
-              <ArrowLink href='https://github.com/theodorusclarence/ts-nextjs-tailwind-starter'>
-                See the repository
-              </ArrowLink>
-            </p>
-
-            <ButtonLink className='mt-6' href='/components' variant='light'>
-              See all components
-            </ButtonLink>
-
-            <UnstyledLink
-              href='https://vercel.com/new/git/external?repository-url=https%3A%2F%2Fgithub.com%2Ftheodorusclarence%2Fts-nextjs-tailwind-starter'
-              className='mt-4'
-            >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                width='92'
-                height='32'
-                src='https://vercel.com/button'
-                alt='Deploy with Vercel'
-              />
-            </UnstyledLink>
-
-            <footer className='absolute bottom-2 text-gray-700'>
-              © {new Date().getFullYear()} By{' '}
-              <UnderlineLink href='https://theodorusclarence.com?ref=tsnextstarter'>
-                Theodorus Clarence
-              </UnderlineLink>
-            </footer>
+          <div className='layout min-h-screen grid grid-cols-1 mt-8 w-100'>
+            <div className="p-4 grid grid-cols-2 gap-3">
+				<div className="p-4 flex flex-col gap-3">
+				  <h1 className="text-xl font-semibold">Hewan anda ingin sembuh? ada tapi?</h1>
+				  <h2 className="text-base font-normal">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</h2>
+				  <ButtonLink variant="primary" href="/">Baca Lengkap</ButtonLink>
+				</div>
+				<div className="p-4">
+				  <img className="rounded-xl" src="/images/cover/homepage-cover-1.png" />
+				</div>
+            </div>
+            <div className="p-4 grid grid-cols-2 gap-3">
+                <div className="p-4">
+				  <img className="rounded-xl" src="/images/cover/homepage-cover-2.png" />
+				</div>
+				<div className="p-4 flex flex-col gap-3">
+				  <h1 className="text-xl font-semibold">Kesehatan teman setia dirumah?</h1>
+				  <h2 className="text-base font-normal">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</h2>
+				  <ButtonLink variant="primary" href="/">Baca Lengkap</ButtonLink>
+				</div>
+            </div>
+            <div className="p-4 grid grid-cols-1 gap-3">
+				<div className="p-4 flex flex-col gap-3">
+				  <h1 className="text-xl font-semibold">Bukti kesehatan hewan selalu bersih</h1>
+                  <img className="rounded-xl" src="/images/cover/homepage-cover-1.png" />
+				  <h2 className="text-base font-normal">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</h2>
+				  <ButtonLink variant="primary" href="/">Baca Lengkap</ButtonLink>
+				</div>
+            </div>
+            <div className="p-4 grid grid-cols-1 gap-3">
+				<div className="p-4 flex flex-col gap-3">
+				  <h1 className="text-xl font-semibold">Dokter Hewan Berkualitas yang siap berkorban</h1>
+                  <img className="rounded-xl" src="/images/cover/homepage-cover-2.png" />
+				  <h2 className="text-base font-normal">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</h2>
+				  <ButtonLink variant="primary" href="/">Baca Lengkap</ButtonLink>
+				</div>
+            </div>
           </div>
         </section>
       </main>
