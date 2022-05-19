@@ -37,6 +37,13 @@ interface Pet {
 	sex: 'm' | 'f'
 };
 
+function PetLabelComponent({ handlePetFilter, filter, petType, children } : { handlePetFilter: any, filter: PetType | null, petType: PetType | null, children: any }) {
+	const petFilterClassNames = 'p-2 rounded-lg cursor-pointer';
+	const petFilterActiveClassNames = 'bg-orange-600 text-white';
+
+	return (<li onClick={() => handlePetFilter(petType)} className={`${petFilterClassNames} ${filter === petType ? petFilterActiveClassNames : ''}`}>{children}</li>);
+}
+
 export default function HomePage() {
   const [ myPets, setMyPets ] = React.useState<Pet[]>([]);
   const [ myFilteredPets, setMyFilteredPets ] = React.useState<Pet[]>([]);
@@ -75,9 +82,6 @@ export default function HomePage() {
 	}
   }
 
-  const petFilterClassNames = 'p-2 rounded-lg cursor-pointer';
-  const petFilterActiveClassNames = 'bg-orange-600 text-white';
-
   return (
     <Layout>
       {/* <Seo templateTitle='Home' /> */}
@@ -90,12 +94,12 @@ export default function HomePage() {
             <div className="px-4 grid grid-cols-4 gap-3">
 				<div className="flex flex-col gap-1">
 					<ul className="p-4">
-						<li onClick={() => handlePetFilter(null)} className={`${petFilterClassNames} ${filter === null ? petFilterActiveClassNames : ''}`}>Semua</li>
-						{petFlags.has(PetType.Cat) && <li onClick={() => handlePetFilter(PetType.Cat)} className={`${petFilterClassNames} ${filter === PetType.Cat ? petFilterActiveClassNames : ''}`}>Kucing</li> }
-						{petFlags.has(PetType.Dog) && <li onClick={() => handlePetFilter(PetType.Dog)} className={`${petFilterClassNames} ${filter === PetType.Dog ? petFilterActiveClassNames : ''}`}>Anjing</li> }
-						{petFlags.has(PetType.Hamster) && <li onClick={() => handlePetFilter(PetType.Hamster)} className={`${petFilterClassNames} ${filter === PetType.Hamster ? petFilterActiveClassNames : ''}`}>Hamster</li> }
-						{petFlags.has(PetType.Rabbit) && <li onClick={() => handlePetFilter(PetType.Rabbit)} className={`${petFilterClassNames} ${filter === PetType.Rabbit ? petFilterActiveClassNames : ''}`}>Kelinci</li> }
-						{petFlags.has(PetType.Special) && <li onClick={() => handlePetFilter(PetType.Special)} className={`${petFilterClassNames} ${filter === PetType.Special ? petFilterActiveClassNames : ''}`}>Spesial</li> }
+						<PetLabelComponent handlePetFilter={handlePetFilter} filter={filter} petType={null}>Semua</PetLabelComponent>
+						<PetLabelComponent handlePetFilter={handlePetFilter} filter={filter} petType={PetType.Cat}>Kucing</PetLabelComponent>
+						<PetLabelComponent handlePetFilter={handlePetFilter} filter={filter} petType={PetType.Dog}>Anjing</PetLabelComponent>
+						<PetLabelComponent handlePetFilter={handlePetFilter} filter={filter} petType={PetType.Hamster}>Hamster</PetLabelComponent>
+						<PetLabelComponent handlePetFilter={handlePetFilter} filter={filter} petType={PetType.Rabbit}>Kelinci</PetLabelComponent>
+						<PetLabelComponent handlePetFilter={handlePetFilter} filter={filter} petType={PetType.Special}>Spesial</PetLabelComponent>
 					</ul>
 				</div>
 				<div className="p-4 grid grid-cols-3 col-span-3">
