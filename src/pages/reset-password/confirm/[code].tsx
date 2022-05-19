@@ -24,8 +24,8 @@ import Vercel from '~/svg/Vercel.svg';
 // to customize the default configuration.
 
 interface UserDetails {
-  code: string | null,
-  email: string | null
+  code?: string
+  email?: string
 };
 
 function LoadingPage() {
