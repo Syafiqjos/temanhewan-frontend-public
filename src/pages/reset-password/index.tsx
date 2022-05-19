@@ -46,7 +46,7 @@ function InitialPage(setEmail: any) {
             </form>);
 }
 
-function SuccessPage({ email }: string) {
+function SuccessPage(email: string) {
 	return (<form className='flex flex-col items-start justify-start p-4 text-left gap-3'>
               <h1 className="text-xl font-semibold">Reset Password</h1>
               <p className="text-base font-normal">
