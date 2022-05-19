@@ -60,7 +60,7 @@ function SuccessPage(email: string) {
 }
 
 export default function HomePage() {
-  const [email, setEmail] = React.useState<string>(null);
+  const [email, setEmail] = React.useState<string>('');
 
   return (
     <Layout>
@@ -70,7 +70,7 @@ export default function HomePage() {
       <main>
         <section className='bg-white'>
           <div className='layout min-h-screen grid grid-cols-2 mt-8 w-100'>
-            {email === null
+            {email === ''
               ? <InitialPage setEmail={setEmail} />
               : <SuccessPage email={email} />
             }
