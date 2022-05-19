@@ -7,6 +7,8 @@ import UnderlineLink from '@/components/links/UnderlineLink';
 import UnstyledLink from '@/components/links/UnstyledLink';
 import Seo from '@/components/Seo';
 
+import Link from 'next/link';
+
 /**
  * SVGR Support
  * Caveat: No React Props Type.
@@ -34,10 +36,10 @@ export default function HomePage() {
   React.useEffect(() => {
     // get my pets from server
     const retrievePets: Pet[] = [
-       { id: 'oki', name: 'Oki', type: 'cat', sex: 'm' },
-       { id: 'neko', name: 'Neko', type: 'cat', sex: 'f' },
-       { id: 'hampter', name: 'Hampter', type: 'hamster', sex: 'm' },
-       { id: 'norid', name: 'Norid Jiraya', type: 'dog', sex: 'm' }
+       { id: 'oki', name: 'Oki', type: 'cat', sex: 'm', imageUrl: '/images/cover/homepage-cover-1.png' },
+       { id: 'neko', name: 'Neko', type: 'cat', sex: 'f', imageUrl: '/images/cover/homepage-cover-2.png' },
+       { id: 'hampter', name: 'Hampter', type: 'hamster', sex: 'm', imageUrl: '/images/cover/login-cover.png' },
+       { id: 'norid', name: 'Norid Jiraya', type: 'dog', sex: 'm', imageUrl: '/images/cover/register-cover.png' },
     ];
     const sortedPets = retrievePets.sort((a, b) => a.type < b.type);
     const flags = new Set();
@@ -73,9 +75,17 @@ export default function HomePage() {
 				<div className="p-4 grid grid-cols-3 col-span-3">
 				  {myPets.map((pet) => {
 						return (
-							<div key={pet.id} className="p-2">
-								<img className="rounded-xl" src="/images/cover/homepage-cover-1.png" />
-							</div>);
+							<Link key={pet.id} href={`/my-pet/i/${pet.id}`}>
+								<a>
+									<div className="p-2">
+										<img className="rounded-xl object-cover w-full h-48" src={pet.imageUrl} />
+										<div className="flex flex-row justify-between">
+											<span>{pet.name}</span>
+											<span>{pet.sex == 'm' ? 'M' : 'F'}</span>
+										</div>
+									</div>
+								</a>
+							</Link>);
                      })}
 				</div>
             </div>
