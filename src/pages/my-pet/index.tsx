@@ -22,24 +22,34 @@ import Vercel from '~/svg/Vercel.svg';
 // Before you begin editing, follow all comments with `STARTERCONF`,
 // to customize the default configuration.
 
+enum PetType {
+	Cat,
+	Dog,
+	Hamster,
+	Rabbit,
+	Special
+};
+
 interface Pet {
 	id: string,
 	name: string,
-	type: 'cat' | 'dog' | 'hamster' | 'rabbit' | 'special',
+	type: PetType,
 	sex: 'm' | 'f'
 };
 
 export default function HomePage() {
   const [ myPets, setMyPets ] = React.useState<Pet[]>([]);
+  const [ myFilteredPets, setMyFilteredPets ] = React.useState<Pet[]>([]);
+  const [ filter, setFilter ] = React.useState<PetType | null>(null);
   const [ petFlags, setPetFlags ] = React.useState<Set<string>>(new Set());
 
   React.useEffect(() => {
     // get my pets from server
     const retrievePets: Pet[] = [
-       { id: 'oki', name: 'Oki', type: 'cat', sex: 'm', imageUrl: '/images/cover/homepage-cover-1.png' },
-       { id: 'neko', name: 'Neko', type: 'cat', sex: 'f', imageUrl: '/images/cover/homepage-cover-2.png' },
-       { id: 'hampter', name: 'Hampter', type: 'hamster', sex: 'm', imageUrl: '/images/cover/login-cover.png' },
-       { id: 'norid', name: 'Norid Jiraya', type: 'dog', sex: 'm', imageUrl: '/images/cover/register-cover.png' },
+       { id: 'oki', name: 'Oki', type: PetType.Cat, sex: 'm', imageUrl: '/images/cover/homepage-cover-1.png' },
+       { id: 'neko', name: 'Neko', type: PetType.Cat, sex: 'f', imageUrl: '/images/cover/homepage-cover-2.png' },
+       { id: 'hampter', name: 'Hampter', type: PetType.Hamster, sex: 'm', imageUrl: '/images/cover/login-cover.png' },
+       { id: 'norid', name: 'Norid Jiraya', type: PetType.Dog, sex: 'm', imageUrl: '/images/cover/register-cover.png' },
     ];
     const sortedPets = retrievePets.sort((a, b) => a.type < b.type);
     const flags = new Set();
@@ -49,8 +59,24 @@ export default function HomePage() {
     }
 
     setMyPets(sortedPets);
+	setMyFilteredPets(sortedPets);
     setPetFlags(flags);
   }, []);
+
+  function handlePetFilter(filter: PetType | null) {
+	if (filter === null) {
+		setMyFilteredPets(myPets);
+		setFilter(null);
+	} else {
+        const filteredPets = myPets.filter((pet) => pet.type === filter);
+		const sortedPets = filteredPets.sort((a, b) => a.type < b.type);
+		setMyFilteredPets(sortedPets);
+		setFilter(filter);
+	}
+  }
+
+  const petFilterClassNames = 'p-2 rounded-lg cursor-pointer';
+  const petFilterActiveClassNames = 'bg-orange-600 text-white';
 
   return (
     <Layout>
@@ -64,16 +90,16 @@ export default function HomePage() {
             <div className="px-4 grid grid-cols-4 gap-3">
 				<div className="flex flex-col gap-1">
 					<ul className="p-4">
-						<li className="p-2 rounded-lg bg-orange-600 text-white">Semua</li>
-						{petFlags.has('cat') && <li className="p-2 rounded-lg">Kucing</li> }
-						{petFlags.has('dog') && <li className="p-2 rounded-lg">Anjing</li> }
-						{petFlags.has('hamster') && <li className="p-2 rounded-lg">Hamster</li> }
-						{petFlags.has('rabbit') && <li className="p-2 rounded-lg">Kelinci</li> }
-						{petFlags.has('special') && <li className="p-2 rounded-lg">Spesial</li> }
+						<li onClick={() => handlePetFilter(null)} className={`${petFilterClassNames} ${filter === null ? petFilterActiveClassNames : ''}`}>Semua</li>
+						{petFlags.has(PetType.Cat) && <li onClick={() => handlePetFilter(PetType.Cat)} className={`${petFilterClassNames} ${filter === PetType.Cat ? petFilterActiveClassNames : ''}`}>Kucing</li> }
+						{petFlags.has(PetType.Dog) && <li onClick={() => handlePetFilter(PetType.Dog)} className={`${petFilterClassNames} ${filter === PetType.Dog ? petFilterActiveClassNames : ''}`}>Anjing</li> }
+						{petFlags.has(PetType.Hamster) && <li onClick={() => handlePetFilter(PetType.Hamster)} className={`${petFilterClassNames} ${filter === PetType.Hamster ? petFilterActiveClassNames : ''}`}>Hamster</li> }
+						{petFlags.has(PetType.Rabbit) && <li onClick={() => handlePetFilter(PetType.Rabbit)} className={`${petFilterClassNames} ${filter === PetType.Rabbit ? petFilterActiveClassNames : ''}`}>Kelinci</li> }
+						{petFlags.has(PetType.Special) && <li onClick={() => handlePetFilter(PetType.Special)} className={`${petFilterClassNames} ${filter === PetType.Special ? petFilterActiveClassNames : ''}`}>Spesial</li> }
 					</ul>
 				</div>
 				<div className="p-4 grid grid-cols-3 col-span-3">
-				  {myPets.map((pet) => {
+				  {myFilteredPets.map((pet) => {
 						return (
 							<Link key={pet.id} href={`/my-pet/i/${pet.id}`}>
 								<a>
