@@ -75,7 +75,7 @@ export default function HomePage() {
   // check link query
   const router = useRouter();
 
-  const [userDetails, setUserDetails] = React.useState<UserDetails>({ code: null, email: null });
+  const [userDetails, setUserDetails] = React.useState<UserDetails>({});
   const [password, setPassword] = React.useState(null);
   const [passwordConf, setPasswordConf] = React.useState(null);
   const [status, setStatus] = React.useState('LOADING');
