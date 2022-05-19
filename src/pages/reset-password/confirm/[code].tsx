@@ -48,11 +48,11 @@ function NotFoundPage() {
             </form>);
 }
 
-function SuccessPage({ email }: { email: string }) {
+function SuccessPage({ userDetails }: { userDetails: UserDetails }) {
 	return (<form className='flex flex-col items-start justify-start p-4 text-left gap-3'>
               <h1 className="text-xl font-semibold">Reset Password</h1>
               <p className="text-base font-normal">
-                Reset password anda telah berhasil!
+                Reset password email {userDetails.email} telah berhasil!
               </p>
               <div>
                 <span><UnstyledLink href="/login" className="text-orange-600">Klik disini</UnstyledLink> untuk login dengan password baru anda.</span>
@@ -60,11 +60,11 @@ function SuccessPage({ email }: { email: string }) {
             </form>);
 }
 
-function InitialPage({ email, setPassword, setPasswordConf, handleResetPassword }: {email: string, setPassword: any, setPasswordConf: any, handleResetPassword:any}) {
+function InitialPage({ userDetails, setPassword, setPasswordConf, handleResetPassword }: {userDetails: UserDetails, setPassword: any, setPasswordConf: any, handleResetPassword:any}) {
  return (<form className='flex flex-col items-start justify-start p-4 text-left gap-3' onSubmit={handleResetPassword}>
 	  <h1 className="text-xl font-semibold">Buat Password Baru</h1>
 	  <h2 className="text-base font-normal">Dapatkan sensasi hewan peliharaan.</h2>
-	  <InputText label="Email" name="email" type="text" placeholder="Email anda" value={email} disabled />
+	  <InputText label="Email" name="email" type="text" placeholder="Email anda" value={userDetails.email} disabled />
 	  <InputText label="Password" name="password" type="password" placeholder="Password anda" onChange={setPassword} />
 	  <InputText label="Ketik ulang password" name="password-conf" type="password" placeholder="Password anda" onChange={setPasswordConf} />
 	  <InputButton text="Ubah password" />
@@ -117,9 +117,9 @@ export default function HomePage() {
         <section className='bg-white'>
           <div className='layout min-h-screen grid grid-cols-2 mt-8 w-100'>
             {status === 'LOADING' && <LoadingPage/>}
-            {status === 'INPUT' && <InitialPage email={userDetails.email} setPassword={setPassword} setPasswordConf={setPasswordConf} handleResetPassword={handleResetPassword}/>}
+            {status === 'INPUT' && <InitialPage userDetails={userDetails} setPassword={setPassword} setPasswordConf={setPasswordConf} handleResetPassword={handleResetPassword}/>}
             {status === 'NOTFOUND' && <NotFoundPage/>}
-            {status === 'SUCCESS' && <SuccessPage email={userDetails.email}/>}
+            {status === 'SUCCESS' && <SuccessPage userDetails={userDetails}/>}
             <div className="p-4">
               <img className="rounded-xl" src="/images/cover/login-cover.png" />
             </div>
