@@ -22,7 +22,7 @@ import Vercel from '~/svg/Vercel.svg';
 // Before you begin editing, follow all comments with `STARTERCONF`,
 // to customize the default configuration.
 
-function InitialPage(setEmail: any) {
+function InitialPage({ setEmail } : { setEmail: any }) {
 	const [input, setInput] = React.useState('');
 
 	function handleInput(e: any) {
@@ -46,7 +46,7 @@ function InitialPage(setEmail: any) {
             </form>);
 }
 
-function SuccessPage(email: string) {
+function SuccessPage({ email }: { email: string }) {
 	return (<form className='flex flex-col items-start justify-start p-4 text-left gap-3'>
               <h1 className="text-xl font-semibold">Reset Password</h1>
               <p className="text-base font-normal">
