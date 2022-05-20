@@ -119,6 +119,7 @@ export default function HomePage() {
                      })}
 				</div>
             </div>
+			<Link href="/my-pet/new"><a className="fixed right-4 bottom-4 bg-orange-600 text-white rounded-xl w-16 h-16 flex flex-col items-center justify-center font-semibold text-xl">+</a></Link>
 		  </div>
         </section>
       </main>
