@@ -118,8 +118,6 @@ export default function HomePage() {
 
 	const { id } = router.query;
 
-	console.log(id);
-
     // get my pets from server
     const retrievePets: Pet[] = [
        { id: 'oki', name: 'Oki', type: PetType.Cat, sex: 'm', imageUrl: '/images/cover/homepage-cover-1.png' },
@@ -129,8 +127,6 @@ export default function HomePage() {
     ];
 
     const pet: Pet = retrievePets.find((p: Pet) => p.id == id);
-
-	console.log(pet);
 
 	if (pet) {
 		setMyPet(pet);
