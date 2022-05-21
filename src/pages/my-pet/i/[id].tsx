@@ -37,7 +37,8 @@ interface Pet {
 	id: string,
 	name: string,
 	type: PetType,
-	sex: 'm' | 'f'
+	sex: 'm' | 'f',
+	imageUrl?: string
 };
 
 function NotFoundPage() {
