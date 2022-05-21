@@ -34,7 +34,8 @@ interface Pet {
 	id: string,
 	name: string,
 	type: PetType,
-	sex: 'm' | 'f'
+	sex: 'm' | 'f',
+	imageUrl?: string
 };
 
 function PetLabelComponent({ handlePetFilter, filter, petType, children } : { handlePetFilter: any, filter: PetType | null, petType: PetType | null, children: any }) {
@@ -108,7 +109,7 @@ export default function HomePage() {
 							<Link key={pet.id} href={`/my-pet/i/${pet.id}`}>
 								<a>
 									<div className="p-2">
-										<img className="rounded-xl object-cover w-full h-48" src={pet.imageUrl} />
+										<img className="rounded-xl object-cover w-full h-48" src={pet.imageUrl ? pet.imageUrl : ''} />
 										<div className="flex flex-row justify-between">
 											<span>{pet.name}</span>
 											<span>{pet.sex == 'm' ? 'M' : 'F'}</span>
