@@ -67,7 +67,7 @@ function getSex(sex: string) {
 	return 'Awokawok';
 }
 
-function InitialPage({ router, myPet, setMyPet, setErrorMessage, setStatus }: { router: any, myPet: Pet, setMyPet: any, setErrorMessage: any, setStatus: any }) {
+function InitialPage({ router, setMyPet, setErrorMessage, setStatus }: { router: any, setMyPet: any, setErrorMessage: any, setStatus: any }) {
 
 	const [name, setName] = React.useState('');
 	const [sex, setSex] = React.useState('m');
