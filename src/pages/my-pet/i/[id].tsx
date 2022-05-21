@@ -128,7 +128,7 @@ export default function HomePage() {
     ];
 
     let pet: Pet = myPet;
-	let searchPet = retrievePets.find((p: Pet) => p.id == id);
+	const searchPet = retrievePets.find((p: Pet) => p.id == id);
 	if (searchPet) pet = searchPet;
 
 	if (pet && pet.id != '') {
