@@ -59,7 +59,7 @@ export default function HomePage() {
        { id: 'hampter', name: 'Hampter', type: PetType.Hamster, sex: 'm', imageUrl: '/images/cover/login-cover.png' },
        { id: 'norid', name: 'Norid Jiraya', type: PetType.Dog, sex: 'm', imageUrl: '/images/cover/register-cover.png' },
     ];
-    const sortedPets = retrievePets.sort((a, b) => a.type < b.type);
+    const sortedPets = retrievePets.sort((a, b) => (a.type - b.type));
     const flags = new Set();
 
 	for (let i = 0; i < sortedPets.length; i++) {
