@@ -49,7 +49,7 @@ export default function HomePage() {
   const [ myPets, setMyPets ] = React.useState<Pet[]>([]);
   const [ myFilteredPets, setMyFilteredPets ] = React.useState<Pet[]>([]);
   const [ filter, setFilter ] = React.useState<PetType | null>(null);
-  const [ petFlags, setPetFlags ] = React.useState<Set<string>>(new Set());
+  const [ petFlags, setPetFlags ] = React.useState<Set<number>>(new Set<number>());
 
   React.useEffect(() => {
     // get my pets from server
