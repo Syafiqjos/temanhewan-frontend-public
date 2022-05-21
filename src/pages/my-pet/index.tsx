@@ -77,7 +77,7 @@ export default function HomePage() {
 		setFilter(null);
 	} else {
         const filteredPets = myPets.filter((pet) => pet.type === filter);
-		const sortedPets = filteredPets.sort((a, b) => a.type < b.type);
+		const sortedPets = retrievePets.sort((a, b) => (a.type - b.type));
 		setMyFilteredPets(sortedPets);
 		setFilter(filter);
 	}
