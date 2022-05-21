@@ -111,7 +111,7 @@ function SuccessPage({ myPet }: { myPet: Pet }) {
 export default function HomePage() {
   const router = useRouter();
   const [ status, setStatus ] = React.useState<'LOADING' | 'NOTFOUND' | 'SUCCESS'>('LOADING');
-  const [ myPet, setMyPet ] = React.useState<Pet | null>();
+  const [ myPet, setMyPet ] = React.useState<Pet>({ id: '', name: '', type: PetType.Special, sex: 'm' });
 
   React.useEffect(() => {
 	// check router ready
@@ -127,7 +127,7 @@ export default function HomePage() {
        { id: 'norid', name: 'Norid Jiraya', type: PetType.Dog, sex: 'm', imageUrl: '/images/cover/register-cover.png' },
     ];
 
-    let pet: Pet = { id: '', name: '', type: PetType.Special, sex: 'm' };
+    let pet: Pet = myPet;
 	let searchPet = retrievePets.find((p: Pet) => p.id == id);
 	if (searchPet) pet = searchPet;
 
