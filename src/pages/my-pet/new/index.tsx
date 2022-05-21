@@ -75,11 +75,11 @@ function InitialPage({ router, myPet, setMyPet, setErrorMessage, setStatus }: { 
 
 	function handleSubmit(e: any) {
 		e.preventDefault();
+		const petId = name.toLowerCase();
 		
 		// Submit pet and get pet id from server
 		const success = true;
 		if (success) {
-			const petId = name.toLowerCase();
 			setMyPet({
 				id: petId,
 				name: name,
