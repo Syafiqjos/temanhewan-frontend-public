@@ -102,8 +102,8 @@ function SuccessPage({ myPet }: { myPet: Pet }) {
 	</div>
 	<div className="p-4 grid grid-cols-1">
 	  <h1>{myPet.name}</h1>
-	  <InputText label="Jenis Peliharaan" type="text" disabled value={getPetType(myPet.type)} />
-	  <InputText label="Jenis Kelamin" type="text" disabled value={getSex(myPet.sex)} />
+	  <InputText label="Jenis Peliharaan" type="text" name="petType" disabled value={getPetType(myPet.type)} />
+	  <InputText label="Jenis Kelamin" type="text" name="sex" disabled value={getSex(myPet.sex)} />
 	</div>
 	</>);
 }

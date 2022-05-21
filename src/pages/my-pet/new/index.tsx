@@ -113,7 +113,7 @@ function InitialPage({ router, myPet, setMyPet, setErrorMessage, setStatus }: { 
 			</ul>
 		</form>
 		<form className="p-4 grid grid-cols-1 gap-2" onSubmit={handleSubmit}>
-		  { myPet.name === '' && (<InputText label="Nama" type="text" value={myPet.name} onChange={handleSetName} />)
+		  { myPet.name === '' && (<InputText label="Nama" name="name" type="text" value={myPet.name} onChange={handleSetName} />)
 		  || (<h1>{myPet.name}</h1>)}
 
 		  <div className="flex flex-col items-start w-full">
