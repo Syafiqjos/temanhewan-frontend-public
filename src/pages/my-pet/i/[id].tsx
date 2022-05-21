@@ -127,7 +127,7 @@ export default function HomePage() {
        { id: 'norid', name: 'Norid Jiraya', type: PetType.Dog, sex: 'm', imageUrl: '/images/cover/register-cover.png' },
     ];
 
-    let pet: Pet = { id: '', name: '', type: Pet.Special, sex: 'm' };
+    let pet: Pet = { id: '', name: '', type: PetType.Special, sex: 'm' };
 	let searchPet = retrievePets.find((p: Pet) => p.id == id);
 	if (searchPet) pet = searchPet;
 
