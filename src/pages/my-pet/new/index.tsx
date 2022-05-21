@@ -109,13 +109,11 @@ function InitialPage({ router, setMyPet, setErrorMessage, setStatus }: { router:
 	return (<>
 		<form className="flex flex-col gap-1">
 			<ul className="p-4">
-				<img className="rounded-xl object-cover w-full h-48" src={myPet.imageUrl ?? ''} />
+				<img className="rounded-xl object-cover w-full h-48" src="" />
 			</ul>
 		</form>
 		<form className="p-4 grid grid-cols-1 gap-2" onSubmit={handleSubmit}>
-		  { myPet.name === '' && (<InputText label="Nama" name="name" type="text" value={myPet.name} onChange={handleSetName} />)
-		  || (<h1>{myPet.name}</h1>)}
-
+		  <InputText label="Nama" name="name" type="text" value="" onChange={handleSetName} />
 		  <div className="flex flex-col items-start w-full">
 			  <label htmlFor="petType">Jenis Peliharaan</label>
 			  <select className="w-full" id="petType" onChange={handleSetPetType}>
@@ -168,7 +166,7 @@ function SuccessPage({ myPet }: { myPet: Pet }) {
 export default function HomePage() {
   const router = useRouter();
   const [ status, setStatus ] = React.useState<'INITIAL' | 'ERROR' | 'SUCCESS'>('INITIAL');
-  const [ myPet, setMyPet ] = React.useState<Pet | null>({ id: '', name: '', type: PetType.Cat, sex: 'm' });
+  const [ myPet, setMyPet ] = React.useState<Pet>({ id: '', name: '', type: PetType.Cat, sex: 'm' });
   const [ errorMessage, setErrorMessage ] = React.useState<string>('');
 
   return (
@@ -182,7 +180,7 @@ export default function HomePage() {
 			<h1 className="text-xl font-semibold mb-2">Tambah peliharaan saya</h1>
             <div className="px-4 grid grid-cols-2 gap-3">
 				{errorMessage !== '' && <ErrorPage errorMessage={errorMessage} />
-				|| status === 'INITIAL' && <InitialPage router={router} myPet={myPet} setMyPet={setMyPet} setErrorMessage={setErrorMessage} setStatus={setStatus} />
+				|| status === 'INITIAL' && <InitialPage router={router} setMyPet={setMyPet} setErrorMessage={setErrorMessage} setStatus={setStatus} />
 				|| status === 'SUCCESS' && <SuccessPage myPet={myPet} />
 				}
             </div>
