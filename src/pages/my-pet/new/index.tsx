@@ -78,8 +78,9 @@ function InitialPage({ router, myPet, setMyPet, setErrorMessage, setStatus }: { 
 		// Submit pet and get pet id from server
 		const success = true;
 		if (success) {
+			const petId = name.toLowerCase();
 			setMyPet({
-				id: name.toLowerCase(),
+				id: petId,
 				name: name,
 				petType: petType,
 				sex: sex
@@ -89,7 +90,7 @@ function InitialPage({ router, myPet, setMyPet, setErrorMessage, setStatus }: { 
 			setErrorMessage('Something went wrong!');
 			setStatus('ERROR');
 		}
-		setTimeout(() => {router.push('/my-pet/i/' + myPet.id)} , 1000);
+		setTimeout(() => {router.push('/my-pet/i/' + petId)} , 1000);
 	}
 
 	function handleSetName(e: any) {
