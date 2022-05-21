@@ -67,7 +67,7 @@ function LoadingPage() {
 	</>);
 }
 
-function SuccessPage({ myPet }: { myPet?: Pet }) {
+function SuccessPage({ myPet }: { myPet: Pet }) {
 	function getPetType(petType: PetType) {
 		switch (petType) {
 			case PetType.Cat:
@@ -127,9 +127,11 @@ export default function HomePage() {
        { id: 'norid', name: 'Norid Jiraya', type: PetType.Dog, sex: 'm', imageUrl: '/images/cover/register-cover.png' },
     ];
 
-    const pet: Pet | undefined | null = retrievePets.find((p: Pet) => p.id == id);
+    let pet: Pet = { id: '', name: '', type: Pet.Special, sex: 'm' };
+	let searchPet = retrievePets.find((p: Pet) => p.id == id);
+	if (searchPet) pet = searchPet;
 
-	if (pet) {
+	if (pet && pet.id != '') {
 		setMyPet(pet);
 		setStatus('SUCCESS');
 	} else {
