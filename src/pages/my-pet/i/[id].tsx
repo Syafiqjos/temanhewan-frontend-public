@@ -67,7 +67,7 @@ function LoadingPage() {
 	</>);
 }
 
-function SuccessPage({ myPet }: { myPet: Pet }) {
+function SuccessPage({ myPet }: { myPet?: Pet }) {
 	function getPetType(petType: PetType) {
 		switch (petType) {
 			case PetType.Cat:
