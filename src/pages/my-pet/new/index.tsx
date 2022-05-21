@@ -109,7 +109,7 @@ function InitialPage({ router, setMyPet, setErrorMessage, setStatus }: { router:
 	return (<>
 		<form className="flex flex-col gap-1">
 			<ul className="p-4">
-				<img className="rounded-xl object-cover w-full h-48" src={myPet.imageUrl} />
+				<img className="rounded-xl object-cover w-full h-48" src={myPet.imageUrl ?? ''} />
 			</ul>
 		</form>
 		<form className="p-4 grid grid-cols-1 gap-2" onSubmit={handleSubmit}>
