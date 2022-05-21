@@ -57,7 +57,7 @@ function getPetType(petType: PetType) {
 	return 'Awokawok';
 }
 
-function getSex(sex: 'm' | 'f') {
+function getSex(sex: string) {
 	switch (sex) {
 		case 'm':
 			return 'Jantan';
