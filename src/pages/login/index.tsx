@@ -9,6 +9,8 @@ import InputText from '@/components/forms/InputText';
 import InputButton from '@/components/forms/InputButton';
 import Seo from '@/components/Seo';
 
+import LoginAPI from '@/api/LoginAPI';
+
 /**
  * SVGR Support
  * Caveat: No React Props Type.
@@ -36,6 +38,8 @@ export default function HomePage() {
 
 	async function handleSubmit(e){
 		e.preventDefault();
+		const data = await LoginAPI({ email, password });
+		console.log(data)
 	}
 
   return (
