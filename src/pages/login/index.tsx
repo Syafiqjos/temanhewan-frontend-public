@@ -28,15 +28,15 @@ export default function HomePage() {
 	const [email, setEmail] = React.useState('');
 	const [password, setPassword] = React.useState('');
 
-	function handleEmail(e){
+	function handleEmail(e: any){
 		setEmail(e.target.value);
 	}
 
-	function handlePassword(e){
+	function handlePassword(e: any){
 		setPassword(e.target.value);
 	}
 
-	async function handleSubmit(e){
+	async function handleSubmit(e: any){
 		e.preventDefault();
 		const data = await LoginAPI({ email, password });
 		console.log(data)
