@@ -23,6 +23,21 @@ import Vercel from '~/svg/Vercel.svg';
 // to customize the default configuration.
 
 export default function HomePage() {
+	const [email, setEmail] = React.useState('');
+	const [password, setPassword] = React.useState('');
+
+	function handleEmail(e){
+		setEmail(e.target.value);
+	}
+
+	function handlePassword(e){
+		setPassword(e.target.value);
+	}
+
+	async function handleSubmit(e){
+		e.preventDefault();
+	}
+
   return (
     <Layout>
       {/* <Seo templateTitle='Home' /> */}
@@ -31,11 +46,11 @@ export default function HomePage() {
       <main>
         <section className='bg-white'>
           <div className='layout min-h-screen grid grid-cols-2 mt-8 w-100'>
-            <form className='flex flex-col items-start justify-start p-4 text-left gap-3'>
+            <form className='flex flex-col items-start justify-start p-4 text-left gap-3' onSubmit={handleSubmit}>
               <h1 className="text-xl font-semibold">Masuk Akun</h1>
               <h2 className="text-base font-normal">Dapatkan sensasi hewan peliharaan.</h2>
-              <InputText label="Email" name="email" type="text" placeholder="Email anda" />
-              <InputText label="Password" name="password" type="password" placeholder="Password anda" />
+              <InputText label="Email" name="email" type="text" placeholder="Email anda" onChange={handleEmail} />
+              <InputText label="Password" name="password" type="password" placeholder="Password anda" onChange={handlePassword} />
               <div>
                 <span>Lupa password? <UnstyledLink href="/reset-password" className="text-orange-600">Klik disini</UnstyledLink></span>
               </div>
