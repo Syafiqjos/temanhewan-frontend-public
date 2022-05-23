@@ -8,29 +8,25 @@ export async function GetCSRFToken() {
 }
 
 export async function PostAPI(url: string, body: any) {
-	const config = {
+	const res = await fetch(url, {
 		headers: {
 			'Accept': 'application/json',
 			'Content-Type': 'application/json'
 		},
 		credentials: 'same-origin',
-		method: 'POST'
-	};
-	if (body) {
-		config['body'] = JSON.stringify(body);
-	}
-	const res = await fetch(url, config);
+		method: 'POST',
+		body: JSON.stringify(body)
+	});
 	const data = await res.json();
 
 	return data;
 }
 
 export async function GetAPI(url: string) {
-	const config = {
+	const res = await fetch(url, {
 		method: 'GET',
 		credentials: 'same-origin'
-	};
-	const res = await fetch(url, config);
+	});
 
 	const data = await res.text();
 
