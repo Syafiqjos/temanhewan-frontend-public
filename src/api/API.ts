@@ -22,10 +22,11 @@ export async function PostAPI(url: string, body: any) {
 	return data;
 }
 
-export async function GetAPI(url: string) {
+export async function GetAPI(url: string, headers?: any) {
 	const res = await fetch(url, {
 		method: 'GET',
-		credentials: 'same-origin'
+		credentials: 'same-origin',
+		headers
 	});
 
 	const data = await res.text();
