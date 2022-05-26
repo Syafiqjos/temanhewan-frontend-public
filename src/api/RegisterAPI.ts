@@ -38,8 +38,6 @@ export default async function RegisterAPI(
 		address,
 		phone
 	};
-	console.log('AMPI');
-	console.log(body);
 	const res = await API.PostAPI(url, body);
 
 	return res
