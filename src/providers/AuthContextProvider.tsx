@@ -75,13 +75,15 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         }
         const res: any = await AuthAPI({token});
 
-        const user: User = {
-          email: res.data.email,
-          name: res.data.username
-        };
+		if (res && res.data && res.data.email) {
+			const user: User = {
+			  email: res.data.email,
+			  name: res.data.username
+			};
 
-        dispatch({ type: 'LOGIN', payload: user });
-		dispatch({ type: 'STOP_LOADING' });
+			dispatch({ type: 'LOGIN', payload: user });
+			dispatch({ type: 'STOP_LOADING' });
+		}
       } catch (err) {
         // eslint-disable-next-line no-console
         console.log(err);
