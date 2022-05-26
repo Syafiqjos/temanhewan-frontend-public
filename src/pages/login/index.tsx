@@ -10,6 +10,8 @@ import InputButton from '@/components/forms/InputButton';
 import Seo from '@/components/Seo';
 
 import LoginAPI from '@/api/LoginAPI';
+import { useAuthState, useAuthDispatch } from '@/providers/AuthContextProvider';
+import AuthService from '@/services/AuthService';
 
 /**
  * SVGR Support
@@ -24,7 +26,11 @@ import Vercel from '~/svg/Vercel.svg';
 // Before you begin editing, follow all comments with `STARTERCONF`,
 // to customize the default configuration.
 
-export default function HomePage() {
+function LoginForm() {
+
+	const authState = useAuthState();
+	const authDispatch = useAuthDispatch();
+
 	const [email, setEmail] = React.useState('');
 	const [password, setPassword] = React.useState('');
 
@@ -38,10 +44,32 @@ export default function HomePage() {
 
 	async function handleSubmit(e: any){
 		e.preventDefault();
-		const data = await LoginAPI({ email, password });
-		console.log(data)
+		const res = await LoginAPI({ email, password });
+		const accessToken = res.data.access_token;
+		if (accessToken !== null || accessToken !== undefined)  {
+			AuthService.storeToken(accessToken);
+			authDispatch({ type:'LOGIN', payload: { email: res.data.user.email, name: res.data.user.username } });
+		}
 	}
 
+	return (
+		<form className='flex flex-col items-start justify-start p-4 text-left gap-3' onSubmit={handleSubmit}>
+		  <h1 className="text-xl font-semibold">Masuk Akun</h1>
+		  <h2 className="text-base font-normal">Dapatkan sensasi hewan peliharaan.</h2>
+		  <InputText label="Email" name="email" type="text" placeholder="Email anda" onChange={handleEmail} />
+		  <InputText label="Password" name="password" type="password" placeholder="Password anda" onChange={handlePassword} />
+		  <div>
+			<span>Lupa password? <UnstyledLink href="/reset-password" className="text-orange-600">Klik disini</UnstyledLink></span>
+		  </div>
+		  <div>
+			<span>Belum pernah mendaftar? <UnstyledLink href="/sign-up" className="text-orange-600">Klik disini</UnstyledLink></span>
+		  </div>
+		  <InputButton text="Masuk" />
+		</form>
+	);
+}
+
+export default function HomePage() {
   return (
     <Layout>
       {/* <Seo templateTitle='Home' /> */}
@@ -50,19 +78,7 @@ export default function HomePage() {
       <main>
         <section className='bg-white'>
           <div className='layout min-h-screen grid grid-cols-2 mt-8 w-100'>
-            <form className='flex flex-col items-start justify-start p-4 text-left gap-3' onSubmit={handleSubmit}>
-              <h1 className="text-xl font-semibold">Masuk Akun</h1>
-              <h2 className="text-base font-normal">Dapatkan sensasi hewan peliharaan.</h2>
-              <InputText label="Email" name="email" type="text" placeholder="Email anda" onChange={handleEmail} />
-              <InputText label="Password" name="password" type="password" placeholder="Password anda" onChange={handlePassword} />
-              <div>
-                <span>Lupa password? <UnstyledLink href="/reset-password" className="text-orange-600">Klik disini</UnstyledLink></span>
-              </div>
-              <div>
-                <span>Belum pernah mendaftar? <UnstyledLink href="/sign-up" className="text-orange-600">Klik disini</UnstyledLink></span>
-              </div>
-              <InputButton text="Masuk" />
-            </form>
+            <LoginForm/>
             <div className="p-4">
               <img className="rounded-xl" src="/images/cover/login-cover.png" />
             </div>
