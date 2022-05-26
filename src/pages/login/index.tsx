@@ -50,7 +50,7 @@ function LoginForm() {
 		const accessToken = res.data.access_token;
 		if (accessToken !== null || accessToken !== undefined)  {
 			AuthService.storeToken(accessToken);
-			authDispatch({ type:'LOGIN', payload: { email: res.data.user.email, name: res.data.user.username } });
+			authDispatch({ type:'LOGIN', payload: { email: res.data.user.email, name: res.data.user.name } });
 		}
 	}
 
