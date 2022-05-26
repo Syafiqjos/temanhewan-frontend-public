@@ -1,6 +1,9 @@
 import * as React from 'react';
 import { useRouter } from 'next/router'
 
+import Pet from '@/interfaces/Pet';
+import PetType from '@/enums/PetType';
+
 import InputText from '@/components/forms/InputText';
 
 import Layout from '@/components/layout/Layout';
@@ -25,34 +28,12 @@ import Vercel from '~/svg/Vercel.svg';
 // Before you begin editing, follow all comments with `STARTERCONF`,
 // to customize the default configuration.
 
-enum PetType {
-	Cat,
-	Dog,
-	Hamster,
-	Rabbit,
-	Special
-};
-
-interface Pet {
-	id: string,
-	name: string,
-	type: PetType,
-	sex: 'm' | 'f',
-	imageUrl?: string
-};
-
 function getPetType(petType: PetType) {
 	switch (petType) {
 		case PetType.Cat:
 			return 'Kucing';
 		case PetType.Dog:
 			return 'Anjing';
-		case PetType.Hamster:
-			return 'Hamster';
-		case PetType.Rabbit:
-			return 'Kelinci';
-		case PetType.Special:
-			return 'Spesial';
 	}
 	return 'Awokawok';
 }
@@ -70,6 +51,7 @@ function getSex(sex: string) {
 function InitialPage({ router, setMyPet, setErrorMessage, setStatus }: { router: any, setMyPet: any, setErrorMessage: any, setStatus: any }) {
 
 	const [name, setName] = React.useState('');
+	const [description, setDescription] = React.useState('');
 	const [sex, setSex] = React.useState('m');
 	const [petType, setPetType] = React.useState(0);
 
@@ -96,6 +78,10 @@ function InitialPage({ router, setMyPet, setErrorMessage, setStatus }: { router:
 
 	function handleSetName(e: any) {
 		setName(e.target.value);
+	}
+
+	function handleSetDescription(e: any) {
+		setDescription(e.target.value);
 	}
 
 	function handleSetPetType(e: any) {
@@ -130,6 +116,11 @@ function InitialPage({ router, setMyPet, setErrorMessage, setStatus }: { router:
 					(<option key={`sex-${v}`} value={v}>{getSex(v)}</option>)
 				)}
 			  </select>
+		  </div>
+
+		  <div className="flex flex-col items-start w-full">
+			  <label htmlFor="description">Deskripsi</label>
+			  <textarea className="w-full" label="Deskripsi" name="description"onChange={handleSetDescription} value={description} />
 		  </div>
 
 		  <input className="bg-orange-600 text-white font-semibold rounded-xl p-3" type="submit" value="Tambah +" />
