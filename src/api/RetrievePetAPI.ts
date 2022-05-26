@@ -9,7 +9,6 @@ export default async function RetrievePetAPI(
 }) {
 	API.GetCSRFToken();
 	const authToken = AuthService.getToken();
-	console.log(authToken);
 	const url = API.GetAPIHost('/api/pet/get');
 	const body = { 
 		id
