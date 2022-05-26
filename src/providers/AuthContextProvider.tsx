@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useEffect, useReducer } from 'react';
-import * as API from '@/api/API';
+import AuthAPI from '@/api/AuthAPI';
+import AuthService from '@/services/AuthService';
 
 type User = {
   email: string;
@@ -33,7 +34,7 @@ const reducer = (state: AuthState, action: Action) => {
         user: action.payload,
       };
     case 'LOGOUT':
-      localStorage.removeItem('token');
+      AuthService.resetToken();
       return {
         ...state,
         authenticated: false,
@@ -68,14 +69,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     const loadUser = async () => {
       try {
-        const token = localStorage.getItem('token');
+        const token = AuthService.getToken();
         if (token === null || token === undefined) {
           return;
         }
-        const res: any = await API.GetAPI(API.GetAPIHost('/api/user/get'), {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`
-        });
+        const res: any = await AuthAPI({token});
 
         const user: User = {
           email: res.data.email,
@@ -86,7 +84,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       } catch (err) {
         // eslint-disable-next-line no-console
         console.log(err);
-        localStorage.removeItem('token');
+        AuthService.resetToken();
       } finally {
         dispatch({ type: 'STOP_LOADING' });
       }
