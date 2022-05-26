@@ -7,16 +7,19 @@ export async function GetCSRFToken() {
 	const csrf = await GetAPI(csrfUrl);
 }
 
-export async function PostAPI(url: string, body: any) {
-	const res = await fetch(url, {
+export async function PostAPI(url: string, body: any, headers?: any) {
+	const config = {
 		headers: {
 			'Accept': 'application/json',
-			'Content-Type': 'application/json'
+			'Content-Type': 'application/json',
+			...headers
 		},
 		credentials: 'same-origin',
 		method: 'POST',
 		body: JSON.stringify(body)
-	});
+	};
+	console.log(config);
+	const res = await fetch(url, config);
 	const data = await res.json();
 
 	return data;
