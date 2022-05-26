@@ -43,8 +43,10 @@ function getPetType(petType: PetType) {
 function getPetRace(petType: PetType) {
 	switch (petType) {
 		case PetType.Cat:
+		case 'Cat':
 			return 'cat';
 		case PetType.Dog:
+		case 'Dog':
 			return 'dog';
 	}
 	return 'Awokawok';
