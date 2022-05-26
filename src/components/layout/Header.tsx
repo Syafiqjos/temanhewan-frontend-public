@@ -23,14 +23,8 @@ const linksLogined = [
 export default function Header() {
 
 	const authState = useAuthState();
-	const authDispatch = useAuthDispatch();
 
 	const links = authState.authenticated ? linksLogined : linksNotLogined;
-
-	React.useEffect(() => {
-		const user = { email: 'dummy@gmail.com', name: 'Dummy Ann' };
-		authDispatch({ type: 'LOGIN', payload: user });
-	}, []);
 
   return (
     <header className='sticky top-0 z-50 bg-white'>
