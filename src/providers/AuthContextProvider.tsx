@@ -83,6 +83,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
 			dispatch({ type: 'LOGIN', payload: user });
 			dispatch({ type: 'STOP_LOADING' });
+		} else {
+			AuthService.resetToken();
+			dispatch({ type: 'STOP_LOADING' });
 		}
       } catch (err) {
         // eslint-disable-next-line no-console
