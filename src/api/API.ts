@@ -18,7 +18,6 @@ export async function PostAPI(url: string, body: any, headers?: any) {
 		method: 'POST',
 		body: JSON.stringify(body)
 	};
-	console.log(config);
 	const res = await fetch(url, config);
 	const data = await res.json();
 
