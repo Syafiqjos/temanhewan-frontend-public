@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { useRouter } from 'next/router'
 
+import CreatePetAPI from '@/api/CreatePetAPI';
+
 import Pet from '@/interfaces/Pet';
 import PetType from '@/enums/PetType';
 
@@ -38,8 +40,18 @@ function getPetType(petType: PetType) {
 	return 'Awokawok';
 }
 
-function getSex(sex: string) {
-	switch (sex) {
+function getPetRace(petType: PetType) {
+	switch (petType) {
+		case PetType.Cat:
+			return 'cat';
+		case PetType.Dog:
+			return 'dog';
+	}
+	return 'Awokawok';
+}
+
+function getGender(gender: string) {
+	switch (gender) {
 		case 'm':
 			return 'Jantan';
 		case 'f':
@@ -52,21 +64,30 @@ function InitialPage({ router, setMyPet, setErrorMessage, setStatus }: { router:
 
 	const [name, setName] = React.useState('');
 	const [description, setDescription] = React.useState('');
-	const [sex, setSex] = React.useState('m');
+	const [gender, setGender] = React.useState('m');
 	const [petType, setPetType] = React.useState(0);
 
-	function handleSubmit(e: any) {
+	async function handleSubmit(e: any) {
 		e.preventDefault();
-		const petId = name.toLowerCase();
+		let petId = name.toLowerCase().replace(' ', '-');
 		
+		const res = await CreatePetAPI({
+			name,
+			description,
+			gender,
+			race: getPetRace(petType)
+		});
+
 		// Submit pet and get pet id from server
-		const success = true;
+		const success = res.success;
 		if (success) {
+			petId = res.data.id;
 			setMyPet({
 				id: petId,
 				name: name,
-				petType: petType,
-				sex: sex
+				description: description,
+				race: petType,
+				gender: gender
 			});
 			setStatus('SUCCESS');
 		} else {
@@ -88,8 +109,8 @@ function InitialPage({ router, setMyPet, setErrorMessage, setStatus }: { router:
 		setPetType(e.target.value);
 	}
 
-	function handleSetSex(e: any) {
-		setSex(e.target.value);
+	function handleSetGender(e: any) {
+		setGender(e.target.value);
 	}
 
 	return (<>
@@ -110,10 +131,10 @@ function InitialPage({ router, setMyPet, setErrorMessage, setStatus }: { router:
 		  </div>
 
 		  <div className="flex flex-col items-start w-full">
-			  <label htmlFor="sex">Jenis Kelamin</label>
-			  <select className="w-full" id="sex" onChange={handleSetSex}>
+			  <label htmlFor="gender">Jenis Kelamin</label>
+			  <select className="w-full" id="gender" onChange={handleSetGender}>
 				{['m', 'f'].map((v, i) => 
-					(<option key={`sex-${v}`} value={v}>{getSex(v)}</option>)
+					(<option key={`gender-${v}`} value={v}>{getGender(v)}</option>)
 				)}
 			  </select>
 		  </div>
@@ -157,7 +178,7 @@ function SuccessPage({ myPet }: { myPet: Pet }) {
 export default function HomePage() {
   const router = useRouter();
   const [ status, setStatus ] = React.useState<'INITIAL' | 'ERROR' | 'SUCCESS'>('INITIAL');
-  const [ myPet, setMyPet ] = React.useState<Pet>({ id: '', name: '', type: PetType.Cat, sex: 'm' });
+  const [ myPet, setMyPet ] = React.useState<Pet>({ id: '', name: '', type: PetType.Cat, gender: 'm' });
   const [ errorMessage, setErrorMessage ] = React.useState<string>('');
 
   return (
