@@ -1,5 +1,10 @@
 import * as React from 'react';
 
+import ListPetAPI from '@/api/ListPetAPI';
+
+import Pet from '@/interfaces/Pet';
+import PetType from '@/enums/PetType';
+
 import Layout from '@/components/layout/Layout';
 import ArrowLink from '@/components/links/ArrowLink';
 import ButtonLink from '@/components/links/ButtonLink';
@@ -22,21 +27,15 @@ import Vercel from '~/svg/Vercel.svg';
 // Before you begin editing, follow all comments with `STARTERCONF`,
 // to customize the default configuration.
 
-enum PetType {
-	Cat,
-	Dog,
-	Hamster,
-	Rabbit,
-	Special
-};
-
-interface Pet {
-	id: string,
-	name: string,
-	type: PetType,
-	sex: 'm' | 'f',
-	imageUrl?: string
-};
+function getPetRace(petType: PetType) {
+	switch (petType) {
+		case PetType.Cat:
+			return 'cat';
+		case PetType.Dog:
+			return 'dog';
+	}
+	return 'Awokawok';
+}
 
 function PetLabelComponent({ handlePetFilter, filter, petType, children } : { handlePetFilter: any, filter: PetType | null, petType: PetType | null, children: any }) {
 	const petFilterClassNames = 'p-2 rounded-lg cursor-pointer';
@@ -51,19 +50,15 @@ export default function HomePage() {
   const [ filter, setFilter ] = React.useState<PetType | null>(null);
   const [ petFlags, setPetFlags ] = React.useState<Set<number>>(new Set<number>());
 
-  React.useEffect(() => {
+  React.useEffect(async () => {
     // get my pets from server
-    const retrievePets: Pet[] = [
-       { id: 'oki', name: 'Oki', type: PetType.Cat, sex: 'm', imageUrl: '/images/cover/homepage-cover-1.png' },
-       { id: 'neko', name: 'Neko', type: PetType.Cat, sex: 'f', imageUrl: '/images/cover/homepage-cover-2.png' },
-       { id: 'hampter', name: 'Hampter', type: PetType.Hamster, sex: 'm', imageUrl: '/images/cover/login-cover.png' },
-       { id: 'norid', name: 'Norid Jiraya', type: PetType.Dog, sex: 'm', imageUrl: '/images/cover/register-cover.png' },
-    ];
-    const sortedPets = retrievePets.sort((a, b) => (a.type - b.type));
+	const res = await ListPetAPI({ offset:0, limit: 10 });
+    const retrievePets = res.data;
+    const sortedPets = retrievePets.sort((a, b) => a.name.localeCompare(b.name));
     const flags = new Set<number>();
 
 	for (let i = 0; i < sortedPets.length; i++) {
-      flags.add(sortedPets[i].type);
+      flags.add(sortedPets[i].race);
     }
 
     setMyPets(sortedPets);
@@ -76,8 +71,8 @@ export default function HomePage() {
 		setMyFilteredPets(myPets);
 		setFilter(null);
 	} else {
-        const filteredPets = myPets.filter((pet) => pet.type === filter);
-		const sortedPets = filteredPets.sort((a, b) => (a.type - b.type));
+        const filteredPets = myPets.filter((pet) => pet.race === getPetRace(filter));
+		const sortedPets = filteredPets.sort((a, b) => a.name.localeCompare(b.name));
 		setMyFilteredPets(sortedPets);
 		setFilter(filter);
 	}
@@ -98,9 +93,6 @@ export default function HomePage() {
 						<PetLabelComponent handlePetFilter={handlePetFilter} filter={filter} petType={null}>Semua</PetLabelComponent>
 						<PetLabelComponent handlePetFilter={handlePetFilter} filter={filter} petType={PetType.Cat}>Kucing</PetLabelComponent>
 						<PetLabelComponent handlePetFilter={handlePetFilter} filter={filter} petType={PetType.Dog}>Anjing</PetLabelComponent>
-						<PetLabelComponent handlePetFilter={handlePetFilter} filter={filter} petType={PetType.Hamster}>Hamster</PetLabelComponent>
-						<PetLabelComponent handlePetFilter={handlePetFilter} filter={filter} petType={PetType.Rabbit}>Kelinci</PetLabelComponent>
-						<PetLabelComponent handlePetFilter={handlePetFilter} filter={filter} petType={PetType.Special}>Spesial</PetLabelComponent>
 					</ul>
 				</div>
 				<div className="p-4 grid grid-cols-3 col-span-3">
