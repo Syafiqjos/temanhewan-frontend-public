@@ -9,6 +9,8 @@ import InputText from '@/components/forms/InputText';
 import InputButton from '@/components/forms/InputButton';
 import Seo from '@/components/Seo';
 
+import UnauthorizedRedirect from '@/components/auths/UnauthorizedRedirect';
+
 import LoginAPI from '@/api/LoginAPI';
 import { useAuthState, useAuthDispatch } from '@/providers/AuthContextProvider';
 import AuthService from '@/services/AuthService';
@@ -74,16 +76,17 @@ export default function HomePage() {
     <Layout>
       {/* <Seo templateTitle='Home' /> */}
       <Seo />
-
       <main>
-        <section className='bg-white'>
-          <div className='layout min-h-screen grid grid-cols-2 mt-8 w-100'>
-            <LoginForm/>
-            <div className="p-4">
-              <img className="rounded-xl" src="/images/cover/login-cover.png" />
-            </div>
-          </div>
-        </section>
+        <UnauthorizedRedirect>
+			<section className='bg-white'>
+			  <div className='layout min-h-screen grid grid-cols-2 mt-8 w-100'>
+				<LoginForm/>
+				<div className="p-4">
+				  <img className="rounded-xl" src="/images/cover/login-cover.png" />
+				</div>
+			  </div>
+			</section>
+	    </UnauthorizedRedirect>
       </main>
     </Layout>
   );
