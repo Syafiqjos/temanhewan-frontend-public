@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useEffect, useReducer } from 'react';
+import * as API from '@/api/API';
 
 type User = {
   email: string;
@@ -21,7 +22,7 @@ const StateContext = createContext<AuthState>({
   user: null,
   loading: true,
 });
-const DispatchContext = createContext(null);
+const DispatchContext = createContext<any>(null);
 
 const reducer = (state: AuthState, action: Action) => {
   switch (action.type) {
@@ -58,7 +59,7 @@ const reducer = (state: AuthState, action: Action) => {
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   // @ts-ignore 
-  const [state, dispatch] = useReducer(reducer, {
+  const [state, dispatch]: any = useReducer(reducer, {
     user: null,
     authenticated: false,
     loading: true,
@@ -71,12 +72,16 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         if (token === null || token === undefined) {
           return;
         }
-        const res = await axios.get('/profile', {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          },
+        const res: any = await API.GetAPI(API.GetAPIHost('/api/user/get'), {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
         });
+
+        const user: User = {
+          email: res.data.email,
+          name: res.data.username
+        };
+
         dispatch({ type: 'LOGIN', payload: user });
       } catch (err) {
         // eslint-disable-next-line no-console
