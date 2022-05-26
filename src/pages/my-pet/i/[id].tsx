@@ -1,6 +1,11 @@
 import * as React from 'react';
 import { useRouter } from 'next/router'
 
+import RetrievePetAPI from '@/api/RetrievePetAPI';
+
+import Pet from '@/interfaces/Pet';
+import PetType from '@/enums/PetType';
+
 import InputText from '@/components/forms/InputText';
 
 import Layout from '@/components/layout/Layout';
@@ -24,22 +29,6 @@ import Vercel from '~/svg/Vercel.svg';
 // !STARTERCONF -> Select !STARTERCONF and CMD + SHIFT + F
 // Before you begin editing, follow all comments with `STARTERCONF`,
 // to customize the default configuration.
-
-enum PetType {
-	Cat,
-	Dog,
-	Hamster,
-	Rabbit,
-	Special
-};
-
-interface Pet {
-	id: string,
-	name: string,
-	type: PetType,
-	sex: 'm' | 'f',
-	imageUrl?: string
-};
 
 function NotFoundPage() {
 	return (<>
@@ -68,24 +57,28 @@ function LoadingPage() {
 }
 
 function SuccessPage({ myPet }: { myPet: Pet }) {
-	function getPetType(petType: PetType) {
-		switch (petType) {
-			case PetType.Cat:
+	function getPetType(petRace: PetRace) {
+		switch (petRace) {
+			case 'cat':
 				return 'Kucing';
-			case PetType.Dog:
+			case 'dog':
 				return 'Anjing';
-			case PetType.Hamster:
-				return 'Hamster';
-			case PetType.Rabbit:
-				return 'Kelinci';
-			case PetType.Special:
-				return 'Spesial';
 		}
 		return 'Awokawok';
 	}
 
-	function getSex(sex: 'm' | 'f') {
-		switch (sex) {
+	function getPetRace(petType: PetType) {
+		switch (petType) {
+			case PetType.Cat:
+				return 'cat';
+			case PetType.Dog:
+				return 'dog';
+		}
+		return 'Awokawok';
+	}
+
+	function getGender(gender: 'm' | 'f') {
+		switch (gender) {
 			case 'm':
 				return 'Jantan';
 			case 'f':
@@ -102,8 +95,9 @@ function SuccessPage({ myPet }: { myPet: Pet }) {
 	</div>
 	<div className="p-4 grid grid-cols-1">
 	  <h1>{myPet.name}</h1>
-	  <InputText label="Jenis Peliharaan" type="text" name="petType" disabled value={getPetType(myPet.type)} />
-	  <InputText label="Jenis Kelamin" type="text" name="sex" disabled value={getSex(myPet.sex)} />
+	  <p className="my-4">{myPet.description}</p>
+	  <InputText label="Jenis Peliharaan" type="text" name="petType" disabled value={getPetType(myPet.race)} />
+	  <InputText label="Jenis Kelamin" type="text" name="gender" disabled value={getGender(myPet.gender)} />
 	</div>
 	</>);
 }
@@ -111,25 +105,18 @@ function SuccessPage({ myPet }: { myPet: Pet }) {
 export default function HomePage() {
   const router = useRouter();
   const [ status, setStatus ] = React.useState<'LOADING' | 'NOTFOUND' | 'SUCCESS'>('LOADING');
-  const [ myPet, setMyPet ] = React.useState<Pet>({ id: '', name: '', type: PetType.Special, sex: 'm' });
+  const [ myPet, setMyPet ] = React.useState<Pet>({ id: '', name: '', type: PetType.Cat, gender: 'm' });
 
-  React.useEffect(() => {
+  React.useEffect(async () => {
 	// check router ready
 	if (!router.isReady) return;
 
 	const { id } = router.query;
 
     // get my pets from server
-    const retrievePets: Pet[] = [
-       { id: 'oki', name: 'Oki', type: PetType.Cat, sex: 'm', imageUrl: '/images/cover/homepage-cover-1.png' },
-       { id: 'neko', name: 'Neko', type: PetType.Cat, sex: 'f', imageUrl: '/images/cover/homepage-cover-2.png' },
-       { id: 'hampter', name: 'Hampter', type: PetType.Hamster, sex: 'm', imageUrl: '/images/cover/login-cover.png' },
-       { id: 'norid', name: 'Norid Jiraya', type: PetType.Dog, sex: 'm', imageUrl: '/images/cover/register-cover.png' },
-    ];
-
-    let pet: Pet = myPet;
-	const searchPet = retrievePets.find((p: Pet) => p.id == id);
-	if (searchPet) pet = searchPet;
+	const res = await RetrievePetAPI({ id });
+	const success = res.success;
+	const pet: Pet = res.data;
 
 	if (pet && pet.id != '') {
 		setMyPet(pet);
