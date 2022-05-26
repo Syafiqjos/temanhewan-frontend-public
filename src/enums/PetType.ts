@@ -1,9 +1,6 @@
 enum PetType {
 	Cat,
-	Dog,
-	Hamster,
-	Rabbit,
-	Special
+	Dog
 };
 
 export default PetType;
