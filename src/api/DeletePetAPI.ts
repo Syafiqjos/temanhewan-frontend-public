@@ -13,7 +13,6 @@ export default async function DeletePetAPI(
 	const body = { 
 		id
 	};
-	console.log(body);
 	const res = await API.PostAPI(url, body, {
 		'Authorization': `Bearer ${authToken}`
 	});
