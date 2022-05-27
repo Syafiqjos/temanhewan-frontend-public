@@ -2,6 +2,7 @@ import * as React from 'react';
 import { useRouter } from 'next/router'
 
 import RetrievePetAPI from '@/api/RetrievePetAPI';
+import DeletePetAPI from '@/api/DeletePetAPI';
 
 import Pet from '@/interfaces/Pet';
 import PetType from '@/enums/PetType';
@@ -57,6 +58,8 @@ function LoadingPage() {
 }
 
 function SuccessPage({ myPet }: { myPet: Pet }) {
+	const router = useRouter();
+
 	function getPetType(petRace: PetRace) {
 		switch (petRace) {
 			case 'cat':
@@ -87,6 +90,21 @@ function SuccessPage({ myPet }: { myPet: Pet }) {
 		return 'Awokawok';
 	}
 
+	async function handleDeletePet(){
+		console.log("delete");
+		console.log(myPet.id);
+		const res = await DeletePetAPI({ id: myPet.id });
+		console.log(res);
+		const success = res.success;
+
+		if (success) {
+			router.push('/my-pet');
+			console.log("success delete");
+		} else {
+			console.log("failed delete");
+		}
+	}
+
 	return (<>
 	<div className="flex flex-col gap-1">
 		<ul className="p-4">
@@ -98,6 +116,9 @@ function SuccessPage({ myPet }: { myPet: Pet }) {
 	  <p className="my-4">{myPet.description}</p>
 	  <InputText label="Jenis Peliharaan" type="text" name="petType" disabled value={getPetType(myPet.race)} />
 	  <InputText label="Jenis Kelamin" type="text" name="gender" disabled value={getGender(myPet.gender)} />
+	  <div className="grid grid-cols-2 gap-3">
+		<button className="bg-white text-orange-600 rounded-xl border-orange-600 p-2 inline border-2" onClick={handleDeletePet}>Hapus Peliharaan</button>
+	  </div>
 	</div>
 	</>);
 }
