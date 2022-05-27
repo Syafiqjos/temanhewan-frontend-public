@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { useAuthState, useAuthDispatch } from '@/providers/AuthContextProvider';
+import AuthService from '@/services/AuthService';
 
 import UnstyledLink from '@/components/links/UnstyledLink';
 import ButtonLink from '@/components/links/ButtonLink';
@@ -17,6 +18,8 @@ const linksLogined = [
   { href: '/contact-us', label: 'Contact', type: '' },
   { href: '/faq', label: 'FAQ', type: '' },
   { href: '/about', label: 'About', type: '' },
+  { href: '/my-pet', label: 'My Pets', type: '' },
+  { href: '/profile', label: 'Profile', type: '' },
   { href: '/dashboard', label: 'Dashboard', type: 'primary' },
 ];
 
@@ -24,7 +27,7 @@ export default function Header() {
 
 	const authState = useAuthState();
 
-	const links = authState.authenticated ? linksLogined : linksNotLogined;
+	const links = (authState.authenticated || AuthService.getToken() != '' && AuthService.getToken() != undefined) ? linksLogined : linksNotLogined;
 
   return (
     <header className='sticky top-0 z-50 bg-white'>
