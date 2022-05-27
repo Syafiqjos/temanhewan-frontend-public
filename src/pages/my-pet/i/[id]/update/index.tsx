@@ -45,9 +45,11 @@ function getPetType(petRace: string | PetType) {
 
 function getPetRace(petType: string | PetType) {
 	switch (petType) {
+		case 'cat':
 		case 'Cat':
 		case PetType.Cat:
 			return 'cat';
+		case 'dog':
 		case 'Dog':
 		case PetType.Dog:
 			return 'dog';
@@ -99,6 +101,10 @@ function SuccessPage({ myPet }: { myPet: Pet }) {
 	const [gender, setGender] = React.useState(myPet.gender);
 	const [petRace, setPetRace] = React.useState(myPet.race);
 
+	React.useEffect(()=> {
+		console.log(myPet);
+	});
+
 	function handleSetName(e: any) {
 		setName(e.target.value);
 	}
@@ -119,6 +125,9 @@ function SuccessPage({ myPet }: { myPet: Pet }) {
 		e.preventDefault();
 		console.log("update");
 		console.log(myPet.id);
+
+		console.log(petRace);
+		console.log(getPetRace(petRace));
 
 		const res = await UpdatePetAPI({ id: myPet.id!, name: name, description: description, gender: gender, race: getPetRace(petRace) });
 		console.log(res);
@@ -141,16 +150,16 @@ function SuccessPage({ myPet }: { myPet: Pet }) {
 	  <InputText label="Nama" name="name" type="text" value={name} onChange={handleSetName} />
 		  <div className="flex flex-col items-start w-full">
 			  <label htmlFor="petType">Jenis Peliharaan</label>
-			  <select className="w-full" id="petType" onChange={handleSetPetRace}>
+			  <select className="w-full" id="petType" value={petRace} onChange={handleSetPetRace}>
 				{Object.keys(PetType).filter((v) => isNaN(Number(v))).map((v, i) => 
-					(<option key={`petType-${v}`} value={v}>{getPetType(i)}</option>)
+					(<option key={`petType-${v}`} value={getPetRace(v)}>{getPetType(i)}</option>)
 				)}
 			  </select>
 		  </div>
 
 		  <div className="flex flex-col items-start w-full">
 			  <label htmlFor="gender">Jenis Kelamin</label>
-			  <select className="w-full" id="gender" onChange={handleSetGender}>
+			  <select className="w-full" id="gender" value={gender} onChange={handleSetGender}>
 				{['m', 'f'].map((v, i) => 
 					(<option key={`gender-${v}`} value={v}>{getGender(v)}</option>)
 				)}
