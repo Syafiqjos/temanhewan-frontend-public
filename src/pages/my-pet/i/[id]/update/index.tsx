@@ -177,8 +177,7 @@ export default function HomePage() {
 		// check router ready
 		if (!router.isReady) return;
 
-		// @ts-ignore
-		const id: string = router.query.id;
+		const id: string = router.query.id as string;
 
 		// get my pets from server
 		const res = await RetrievePetAPI({ id });
