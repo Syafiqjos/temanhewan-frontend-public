@@ -59,8 +59,7 @@ const reducer = (state: AuthState, action: Action) => {
 };
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  // @ts-ignore 
-  const [state, dispatch]: any = useReducer(reducer, {
+  const [state, dispatch]: any = useReducer<any>(reducer, {
     user: null,
     authenticated: false,
     loading: true,
