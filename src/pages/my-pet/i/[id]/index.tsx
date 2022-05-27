@@ -60,10 +60,12 @@ function LoadingPage() {
 function SuccessPage({ myPet }: { myPet: Pet }) {
 	const router = useRouter();
 
-	function getPetType(petRace: PetRace) {
+	function getPetType(petRace: string | PetType) {
 		switch (petRace) {
+			case PetType.Cat:
 			case 'cat':
 				return 'Kucing';
+			case PetType.Dog:
 			case 'dog':
 				return 'Anjing';
 		}
@@ -93,7 +95,7 @@ function SuccessPage({ myPet }: { myPet: Pet }) {
 	async function handleDeletePet(){
 		console.log("delete");
 		console.log(myPet.id);
-		const res = await DeletePetAPI({ id: myPet.id });
+		const res = await DeletePetAPI({ id: myPet.id! });
 		console.log(res);
 		const success = res.success;
 
@@ -133,25 +135,28 @@ function SuccessPage({ myPet }: { myPet: Pet }) {
 export default function HomePage() {
   const router = useRouter();
   const [ status, setStatus ] = React.useState<'LOADING' | 'NOTFOUND' | 'SUCCESS'>('LOADING');
-  const [ myPet, setMyPet ] = React.useState<Pet>({ id: '', name: '', type: PetType.Cat, gender: 'm' });
+  const [ myPet, setMyPet ] = React.useState<Pet>({ id: '', name: '', race: PetType.Cat, gender: 'm', description: '' });
 
-  React.useEffect(async () => {
-	// check router ready
-	if (!router.isReady) return;
+  React.useEffect(() => {
+	(async () => {
+		// check router ready
+		if (!router.isReady) return;
 
-	const { id } = router.query;
+		// @ts-ignore
+		const id: string = router.query.id;
 
-    // get my pets from server
-	const res = await RetrievePetAPI({ id });
-	const success = res.success;
-	const pet: Pet = res.data;
+		// get my pets from server
+		const res = await RetrievePetAPI({ id });
+		const success = res.success;
+		const pet: Pet = res.data;
 
-	if (pet && pet.id != '') {
-		setMyPet(pet);
-		setStatus('SUCCESS');
-	} else {
-		setStatus('NOTFOUND');
-	}
+		if (pet && pet.id != '') {
+			setMyPet(pet);
+			setStatus('SUCCESS');
+		} else {
+			setStatus('NOTFOUND');
+		}
+	})();
   }, [ router.isReady ]);
 
   return (

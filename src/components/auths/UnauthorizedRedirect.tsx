@@ -7,7 +7,7 @@ function BlockingAuth({ show, children }: { show: boolean, children: any }) {
 	return show && children;
 }
 
-export default function UnauthorizedRedirect({ children }: { children: React.Node }) {
+export default function UnauthorizedRedirect({ children }: { children: React.ReactNode }) {
 	const router = useRouter();
 	const authState = useAuthState();
 

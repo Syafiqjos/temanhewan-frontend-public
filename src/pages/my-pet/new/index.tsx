@@ -30,7 +30,7 @@ import Vercel from '~/svg/Vercel.svg';
 // Before you begin editing, follow all comments with `STARTERCONF`,
 // to customize the default configuration.
 
-function getPetType(petType: PetType) {
+function getPetType(petType: PetType | string) {
 	switch (petType) {
 		case PetType.Cat:
 			return 'Kucing';
@@ -40,7 +40,7 @@ function getPetType(petType: PetType) {
 	return 'Awokawok';
 }
 
-function getPetRace(petType: PetType) {
+function getPetRace(petType: PetType | string) {
 	switch (petType) {
 		case PetType.Cat:
 		case 'Cat':
@@ -143,7 +143,7 @@ function InitialPage({ router, setMyPet, setErrorMessage, setStatus }: { router:
 
 		  <div className="flex flex-col items-start w-full">
 			  <label htmlFor="description">Deskripsi</label>
-			  <textarea className="w-full" label="Deskripsi" name="description"onChange={handleSetDescription} value={description} />
+			  <textarea className="w-full" name="description"onChange={handleSetDescription} value={description} />
 		  </div>
 
 		  <input className="bg-orange-600 text-white font-semibold rounded-xl p-3" type="submit" value="Tambah +" />
@@ -180,7 +180,7 @@ function SuccessPage({ myPet }: { myPet: Pet }) {
 export default function HomePage() {
   const router = useRouter();
   const [ status, setStatus ] = React.useState<'INITIAL' | 'ERROR' | 'SUCCESS'>('INITIAL');
-  const [ myPet, setMyPet ] = React.useState<Pet>({ id: '', name: '', type: PetType.Cat, gender: 'm' });
+  const [ myPet, setMyPet ] = React.useState<Pet>({ id: '', name: '', race: PetType.Cat, gender: 'm', description: '' });
   const [ errorMessage, setErrorMessage ] = React.useState<string>('');
 
   return (

@@ -1,8 +1,8 @@
 const AuthService = {
-	storeToken: (token: string | null | undefined) => {
+	storeToken: (token: string) => {
 		localStorage.setItem('token', token);
 	},
-	getToken: (): string => {
+	getToken: (): string | null => {
 		return localStorage.getItem('token');
 	},
 	resetToken: () => {

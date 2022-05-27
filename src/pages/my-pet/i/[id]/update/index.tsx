@@ -31,7 +31,7 @@ import Vercel from '~/svg/Vercel.svg';
 // Before you begin editing, follow all comments with `STARTERCONF`,
 // to customize the default configuration.
 
-function getPetType(petRace: PetRace) {
+function getPetType(petRace: string | PetType) {
 	switch (petRace) {
 		case PetType.Cat:
 		case 'cat':
@@ -43,7 +43,7 @@ function getPetType(petRace: PetRace) {
 	return 'Awokawok';
 }
 
-function getPetRace(petType: PetType) {
+function getPetRace(petType: string | PetType) {
 	switch (petType) {
 		case 'Cat':
 		case PetType.Cat:
@@ -55,7 +55,7 @@ function getPetRace(petType: PetType) {
 	return 'Awokawok';
 }
 
-function getGender(gender: 'm' | 'f') {
+function getGender(gender: string) {
 	switch (gender) {
 		case 'm':
 			return 'Jantan';
@@ -97,7 +97,7 @@ function SuccessPage({ myPet }: { myPet: Pet }) {
 	const [name, setName] = React.useState(myPet.name);
 	const [description, setDescription] = React.useState(myPet.description);
 	const [gender, setGender] = React.useState(myPet.gender);
-	const [petRace, setPetRace] = React.useState(myPet.petRace);
+	const [petRace, setPetRace] = React.useState(myPet.race);
 
 	function handleSetName(e: any) {
 		setName(e.target.value);
@@ -120,7 +120,7 @@ function SuccessPage({ myPet }: { myPet: Pet }) {
 		console.log("update");
 		console.log(myPet.id);
 
-		const res = await UpdatePetAPI({ id: myPet.id, name: name, description: description, gender: gender, race: getPetRace(petRace) });
+		const res = await UpdatePetAPI({ id: myPet.id!, name: name, description: description, gender: gender, race: getPetRace(petRace) });
 		console.log(res);
 		const success = res.success;
 		if (success) {
@@ -159,7 +159,7 @@ function SuccessPage({ myPet }: { myPet: Pet }) {
 
 		  <div className="flex flex-col items-start w-full">
 			  <label htmlFor="description">Deskripsi</label>
-			  <textarea className="w-full" label="Deskripsi" name="description"onChange={handleSetDescription} value={description} />
+			  <textarea className="w-full" name="description"onChange={handleSetDescription} value={description} />
 		  </div>
 
 		  <input className="bg-orange-600 text-white font-semibold rounded-xl p-3" type="submit" value="Perbarui" />
@@ -170,25 +170,28 @@ function SuccessPage({ myPet }: { myPet: Pet }) {
 export default function HomePage() {
   const router = useRouter();
   const [ status, setStatus ] = React.useState<'LOADING' | 'NOTFOUND' | 'SUCCESS'>('LOADING');
-  const [ myPet, setMyPet ] = React.useState<Pet>({ id: '', name: '', type: PetType.Cat, gender: 'm' });
+  const [ myPet, setMyPet ] = React.useState<Pet>({ id: '', name: '', race: PetType.Cat, gender: 'm', description: ''});
 
-  React.useEffect(async () => {
-	// check router ready
-	if (!router.isReady) return;
+  React.useEffect(() => {
+	(async () => {
+		// check router ready
+		if (!router.isReady) return;
 
-	const { id } = router.query;
+		// @ts-ignore
+		const id: string = router.query.id;
 
-    // get my pets from server
-	const res = await RetrievePetAPI({ id });
-	const success = res.success;
-	const pet: Pet = res.data;
+		// get my pets from server
+		const res = await RetrievePetAPI({ id });
+		const success = res.success;
+		const pet: Pet = res.data;
 
-	if (pet && pet.id != '') {
-		setMyPet(pet);
-		setStatus('SUCCESS');
-	} else {
-		setStatus('NOTFOUND');
-	}
+		if (pet && pet.id != '') {
+			setMyPet(pet);
+			setStatus('SUCCESS');
+		} else {
+			setStatus('NOTFOUND');
+		}
+	})();
   }, [ router.isReady ]);
 
   return (

@@ -12,7 +12,7 @@ export default function InputText(
 }: {
 	label: string,
 	name: string,
-	type: 'text' | 'password',
+	type: 'text' | 'password' | 'date',
 	placeholder?: string,
 	onChange?: any,
 	disabled?: boolean,

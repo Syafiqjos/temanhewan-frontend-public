@@ -50,20 +50,22 @@ export default function HomePage() {
   const [ filter, setFilter ] = React.useState<PetType | null>(null);
   const [ petFlags, setPetFlags ] = React.useState<Set<number>>(new Set<number>());
 
-  React.useEffect(async () => {
-    // get my pets from server
-	const res = await ListPetAPI({ offset:0, limit: 10 });
-    const retrievePets = res.data;
-    const sortedPets = retrievePets.sort((a, b) => a.name.localeCompare(b.name));
-    const flags = new Set<number>();
+  React.useEffect(() => {
+	(async () => {
+		// get my pets from server
+		const res = await ListPetAPI({ offset:0, limit: 10 });
+		const retrievePets = res.data;
+		const sortedPets = retrievePets.sort((a: Pet, b: Pet) => a.name.localeCompare(b.name));
+		const flags = new Set<number>();
 
-	for (let i = 0; i < sortedPets.length; i++) {
-      flags.add(sortedPets[i].race);
-    }
+		for (let i = 0; i < sortedPets.length; i++) {
+		  flags.add(sortedPets[i].race);
+		}
 
-    setMyPets(sortedPets);
-	setMyFilteredPets(sortedPets);
-    setPetFlags(flags);
+		setMyPets(sortedPets);
+		setMyFilteredPets(sortedPets);
+		setPetFlags(flags);
+	})();
   }, []);
 
   function handlePetFilter(filter: PetType | null) {
@@ -71,8 +73,8 @@ export default function HomePage() {
 		setMyFilteredPets(myPets);
 		setFilter(null);
 	} else {
-        const filteredPets = myPets.filter((pet) => pet.race === getPetRace(filter));
-		const sortedPets = filteredPets.sort((a, b) => a.name.localeCompare(b.name));
+        const filteredPets = myPets.filter((pet: Pet) => pet.race === filter);
+		const sortedPets = filteredPets.sort((a: Pet, b: Pet) => a.name.localeCompare(b.name));
 		setMyFilteredPets(sortedPets);
 		setFilter(filter);
 	}
@@ -104,7 +106,7 @@ export default function HomePage() {
 										<img className="rounded-xl object-cover w-full h-48" src={pet.imageUrl ? pet.imageUrl : ''} />
 										<div className="flex flex-row justify-between">
 											<span>{pet.name}</span>
-											<span>{pet.sex == 'm' ? 'M' : 'F'}</span>
+											<span>{pet.gender == 'm' ? 'M' : 'F'}</span>
 										</div>
 									</div>
 								</a>
