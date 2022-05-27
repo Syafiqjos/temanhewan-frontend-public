@@ -105,6 +105,12 @@ function SuccessPage({ myPet }: { myPet: Pet }) {
 		}
 	}
 
+	async function handleUpdatePet(){
+		console.log("update");
+		console.log(myPet.id);
+		router.push(`/my-pet/i/${myPet.id}/update`);
+	}
+
 	return (<>
 	<div className="flex flex-col gap-1">
 		<ul className="p-4">
@@ -118,6 +124,7 @@ function SuccessPage({ myPet }: { myPet: Pet }) {
 	  <InputText label="Jenis Kelamin" type="text" name="gender" disabled value={getGender(myPet.gender)} />
 	  <div className="grid grid-cols-2 gap-3">
 		<button className="bg-white text-orange-600 rounded-xl border-orange-600 p-2 inline border-2" onClick={handleDeletePet}>Hapus Peliharaan</button>
+		<button className="bg-orange-600 text-white rounded-xl border-orange-600 p-2 inline border-2" onClick={handleUpdatePet}>Update Peliharaan</button>
 	  </div>
 	</div>
 	</>);
