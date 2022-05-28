@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 
 import AuthAPI from '@/api/AuthAPI';
 import LogoutAPI from '@/api/LogoutAPI';
+import UpdateUserProfileAPI from '@/api/UpdateUserProfileAPI';
 
 import Layout from '@/components/layout/Layout';
 import ArrowLink from '@/components/links/ArrowLink';
@@ -91,7 +92,7 @@ function SeeProfileForm() {
 					</form>;
 }
 
-function UpdateProfileForm() {
+function UpdateProfileForm({ onSubmit }: { onSubmit?: any }) {
 	const [email, setEmail] = React.useState('');
 	const [username, setUsername] = React.useState('');
 	const [name, setName] = React.useState('');
@@ -116,24 +117,13 @@ function UpdateProfileForm() {
 			setBirthdate(profile.birthdate);
 			setRole(profile.role);
 		}
+
+		return res;
 	};
 
 	React.useEffect(() => {
 		refreshUserProfile();
 	}, []);
-
-	function handleEmail(e: any){
-		setEmail(e.target.value);
-		setUsername(e.target.value);
-	}
-
-	function handlePassword(e: any){
-		setPassword(e.target.value);
-	}
-
-	function handlePasswordConf(e: any){
-		setPasswordConf(e.target.value);
-	}
 
 	function handleName(e: any) {
 		setName(e.target.value);
@@ -155,9 +145,29 @@ function UpdateProfileForm() {
 		setBirthdate(e.target.value);
 	}
 
-	function handleSubmit(e: any) {
+	async function handleSubmit(e: any) {
 		e.preventDefault();
 		console.log('submit update profile');
+
+		const res = await UpdateUserProfileAPI({
+			name,
+			birthdate,
+			address,
+			phone,
+			gender
+		});
+		console.log(res);
+		const success = res.success;
+		if (success) {
+			console.log('update user success');
+		} else {
+			console.log('update user failed');
+		}
+
+		// const updatedUserProfile = await refreshUserProfile();
+		if (onSubmit !== undefined) {
+			onSubmit();
+		}
 	}
 
 	return <form className='flex flex-col items-start justify-start p-4 text-left gap-3' onSubmit={handleSubmit}>
@@ -279,7 +289,7 @@ export default function HomePage() {
 					</div>
 					<div className="p-4 grid grid-cols-1 col-span-3">
 					  {pageState === 'SEE' && <SeeProfileForm />}
-					  {pageState === 'UPDATE' && <UpdateProfileForm />}
+					  {pageState === 'UPDATE' && <UpdateProfileForm onSubmit={handleSeeProfileButton} />}
 					  {pageState === 'CHANGEPASSWORD' && <ChangePasswordProfileForm />}
 					  {pageState === 'LOGOUT' && <LogoutProfileForm />}
 					</div>
