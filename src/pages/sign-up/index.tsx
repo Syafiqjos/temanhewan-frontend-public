@@ -141,7 +141,7 @@ function RegisterForm() {
 
 export default function HomePage() {
   return (
-    <Layout>
+    <>
       {/* <Seo templateTitle='Home' /> */}
       <Seo />
 
@@ -157,6 +157,6 @@ export default function HomePage() {
 			</section>
 		</UnauthorizedRedirect>
       </main>
-    </Layout>
+    </>
   );
 }

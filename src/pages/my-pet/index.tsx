@@ -81,7 +81,7 @@ export default function HomePage() {
   }
 
   return (
-    <Layout>
+    <>
       {/* <Seo templateTitle='Home' /> */}
       <Seo />
 
@@ -118,6 +118,6 @@ export default function HomePage() {
 		  </div>
         </section>
       </main>
-    </Layout>
+    </>
   );
 }

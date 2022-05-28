@@ -184,7 +184,7 @@ export default function HomePage() {
   const [ errorMessage, setErrorMessage ] = React.useState<string>('');
 
   return (
-    <Layout>
+    <>
       {/* <Seo templateTitle='Home' /> */}
       <Seo />
 
@@ -201,6 +201,6 @@ export default function HomePage() {
 		  </div>
         </section>
       </main>
-    </Layout>
+    </>
   );
 }

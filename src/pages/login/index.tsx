@@ -73,7 +73,7 @@ function LoginForm() {
 
 export default function HomePage() {
   return (
-    <Layout>
+    <>
       {/* <Seo templateTitle='Home' /> */}
       <Seo />
       <main>
@@ -88,6 +88,6 @@ export default function HomePage() {
 			</section>
 	    </UnauthorizedRedirect>
       </main>
-    </Layout>
+    </>
   );
 }

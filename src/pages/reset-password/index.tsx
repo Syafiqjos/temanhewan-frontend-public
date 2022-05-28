@@ -63,7 +63,7 @@ export default function HomePage() {
   const [email, setEmail] = React.useState<string>('');
 
   return (
-    <Layout>
+    <>
       {/* <Seo templateTitle='Home' /> */}
       <Seo />
 
@@ -80,6 +80,6 @@ export default function HomePage() {
           </div>
         </section>
       </main>
-    </Layout>
+    </>
   );
 }
