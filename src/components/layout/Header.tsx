@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useRouter } from 'next/router';
 import { useAuthState, useAuthDispatch } from '@/providers/AuthContextProvider';
 import AuthService from '@/services/AuthService';
 
@@ -24,6 +25,7 @@ const linksLogined = [
 ];
 
 export default function Header() {
+	const router = useRouter();
 
 	const authState = useAuthState();
 	const [ links, setLinks ] = React.useState<any>(null);
@@ -33,7 +35,7 @@ export default function Header() {
 		setIsAuthenticated(authState.authenticated || AuthService.getToken() != '' && AuthService.getToken() != undefined);
 		
 		setLinks(isAuthenticated ? linksLogined : linksNotLogined);
-	}, [ authState.authenticated ]);
+	}, [ authState.authenticated, isAuthenticated, router.isReady, router.route ]);
 
   return (
     <header className='sticky top-0 z-50 bg-white'>
