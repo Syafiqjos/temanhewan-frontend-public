@@ -26,8 +26,16 @@ const linksLogined = [
 export default function Header() {
 
 	const authState = useAuthState();
+	const [ links, setLinks ] = React.useState<any>(null);
+	const [ isAuthenticated, setIsAuthenticated ] = React.useState(false);
 
-	const links = (authState.authenticated || AuthService.getToken() != '' && AuthService.getToken() != undefined) ? linksLogined : linksNotLogined;
+	React.useEffect(() => {
+		setIsAuthenticated(authState.authenticated || AuthService.getToken() != '' && AuthService.getToken() != undefined);
+
+		console.log(authState.authenticated);
+		
+		setLinks(isAuthenticated ? linksLogined : linksNotLogined);
+	}, [ authState.authenticated ]);
 
   return (
     <header className='sticky top-0 z-50 bg-white'>
@@ -38,7 +46,7 @@ export default function Header() {
         </UnstyledLink>
         <nav>
           <ul className='flex items-center justify-between space-x-8 text-gray-500'>
-			{links.map(({ href, label, type }) => (
+			{links !== null && links.map(({ href, label, type }) => (
               <li key={`${href}${label}`}>
 				{
 					type === 'primary'
