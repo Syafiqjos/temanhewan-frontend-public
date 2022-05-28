@@ -127,20 +127,26 @@ function UpdateProfileForm() {
 }
 
 export default function HomePage() {
+  const [ pageState, setPageState ] = React.useState<'SEE', 'UPDATE', 'CHANGEPASSWORD', 'LOGOUT'>('SEE');
+
   function handleSeeProfileButton(e: any) {
 	console.log('see profile button');
+	setPageState('SEE');
   }
 
   function handleUpdateProfileButton(e: any) {
 	console.log('update profile button');
+	setPageState('UPDATE');
   }
 
   function handleUpdatePasswordButton(e: any) {
 	console.log('update password button');
+	setPageState('CHANGEPASSWORD');
   }
 
   function handleLogoutButton(e: any) {
 	console.log('logout');
+	setPageState('LOGOUT');
   }
 
   return (
@@ -156,14 +162,14 @@ export default function HomePage() {
 				<div className="px-4 grid grid-cols-4 gap-3">
 					<div className="flex flex-col gap-1">
 						<ul className="p-4">
-							<CustomButton onClick={handleSeeProfileButton}>Lihat Profile</CustomButton>
-							<CustomButton onClick={handleUpdateProfileButton} active>Perbarui Profile</CustomButton>
-							<CustomButton onClick={handleUpdatePasswordButton}>Ubah Password</CustomButton>
-							<CustomButton onClick={handleLogoutButton}>Logout</CustomButton>
+							<CustomButton onClick={handleSeeProfileButton} active={pageState === 'SEE'}>Lihat Profile</CustomButton>
+							<CustomButton onClick={handleUpdateProfileButton} active={pageState === 'UPDATE'}>Perbarui Profile</CustomButton>
+							<CustomButton onClick={handleUpdatePasswordButton} active={pageState === 'CHANGEPASSWORD'}>Ubah Password</CustomButton>
+							<CustomButton onClick={handleLogoutButton} active={pageState === 'LOGOUT'}>Logout</CustomButton>
 						</ul>
 					</div>
 					<div className="p-4 grid grid-cols-1 col-span-3">
-					  <UpdateProfileForm />
+					  {pageState === 'UPDATE' && <UpdateProfileForm />}
 					</div>
 				</div>
 			  </div>
