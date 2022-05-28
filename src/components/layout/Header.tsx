@@ -31,8 +31,6 @@ export default function Header() {
 
 	React.useEffect(() => {
 		setIsAuthenticated(authState.authenticated || AuthService.getToken() != '' && AuthService.getToken() != undefined);
-
-		console.log(authState.authenticated);
 		
 		setLinks(isAuthenticated ? linksLogined : linksNotLogined);
 	}, [ authState.authenticated ]);
