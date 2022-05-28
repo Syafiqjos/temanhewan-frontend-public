@@ -68,12 +68,12 @@ export default function HomePage() {
 	})();
   }, []);
 
-  function handlePetFilter(filter: PetType | null) {
+  function handlePetFilter(filter: PetType | string | null) {
 	if (filter === null) {
 		setMyFilteredPets(myPets);
 		setFilter(null);
 	} else {
-        const filteredPets = myPets.filter((pet: Pet) => pet.race === filter);
+        const filteredPets = myPets.filter((pet: Pet) => pet.race === getPetRace(filter));
 		const sortedPets = filteredPets.sort((a: Pet, b: Pet) => a.name.localeCompare(b.name));
 		setMyFilteredPets(sortedPets);
 		setFilter(filter);
