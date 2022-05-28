@@ -1,12 +1,19 @@
 const AuthService = {
 	storeToken: (token: string) => {
-		localStorage.setItem('token', token);
+		if (typeof window !== 'undefined') {
+			localStorage.setItem('token', token);
+		}
 	},
 	getToken: (): string | null => {
-		return localStorage.getItem('token');
+		if (typeof window !== 'undefined') {
+			return localStorage.getItem('token');
+		}
+		return null;
 	},
 	resetToken: () => {
-		localStorage.removeItem('token');
+		if (typeof window !== 'undefined') {
+			localStorage.removeItem('token');
+		}
 	}
 };
 
