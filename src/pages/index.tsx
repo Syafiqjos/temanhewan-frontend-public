@@ -65,7 +65,7 @@ const benefit = [
 export default function HomePage() {
   return (
     <>
-      <Seo />
+      <Seo title='Home' />
 
       <main>
         <section className='bg-white'>
