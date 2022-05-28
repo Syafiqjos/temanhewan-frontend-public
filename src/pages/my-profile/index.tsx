@@ -206,6 +206,19 @@ function ChangePasswordProfileForm() {
 					</form>;
 }
 
+function LogoutProfileForm() {
+	function handleSubmit(e: any) {
+		e.preventDefault();
+		console.log('submit logout');
+	}
+
+	return <form className='flex flex-col items-start justify-start p-4 text-left gap-3' onSubmit={handleSubmit}>
+					  <h1 className="text-xl font-semibold">Logout Akun</h1>
+					  <h2 className="text-base font-normal">Silahkan klik tombol dibawah untuk logout dari akun anda.</h2>
+					  <InputButton text="Logout" />
+					</form>;
+}
+
 export default function HomePage() {
   const [ pageState, setPageState ] = React.useState<'SEE', 'UPDATE', 'CHANGEPASSWORD', 'LOGOUT'>('SEE');
 
@@ -252,6 +265,7 @@ export default function HomePage() {
 					  {pageState === 'SEE' && <SeeProfileForm />}
 					  {pageState === 'UPDATE' && <UpdateProfileForm />}
 					  {pageState === 'CHANGEPASSWORD' && <ChangePasswordProfileForm />}
+					  {pageState === 'LOGOUT' && <LogoutProfileForm />}
 					</div>
 				</div>
 			  </div>
