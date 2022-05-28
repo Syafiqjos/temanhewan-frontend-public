@@ -51,23 +51,25 @@ function SeeProfileForm() {
 	const [gender, setGender] = React.useState('');
 	const [birthdate, setBirthdate] = React.useState('');
 
+	const refreshUserProfile = async () => {
+		const token = AuthService.getToken();
+		const res = await AuthAPI({token});
+		const success = res.success;
+		if (success) {
+			const profile = res.data;
+			setEmail(profile.email);
+			setUsername(profile.username);
+			setName(profile.name);
+			setPhone(profile.phone);
+			setAddress(profile.address);
+			setGender(profile.gender);
+			setBirthdate(profile.birthdate);
+			setRole(profile.role);
+		}
+	};
+
 	React.useEffect(() => {
-		(async () => {
-			const token = AuthService.getToken();
-			const res = await AuthAPI({token});
-			const success = res.success;
-			if (success) {
-				const profile = res.data;
-				setEmail(profile.email);
-				setUsername(profile.username);
-				setName(profile.name);
-				setPhone(profile.phone);
-				setAddress(profile.address);
-				setGender(profile.gender);
-				setBirthdate(profile.birthdate);
-				setRole(profile.role);
-			}
-		})();
+		refreshUserProfile();
 	}, []);
 
 	return <form className='flex flex-col items-start justify-start p-4 text-left gap-3'>
@@ -99,23 +101,25 @@ function UpdateProfileForm() {
 	const [gender, setGender] = React.useState('');
 	const [birthdate, setBirthdate] = React.useState('');
 
+	const refreshUserProfile = async () => {
+		const token = AuthService.getToken();
+		const res = await AuthAPI({token});
+		const success = res.success;
+		if (success) {
+			const profile = res.data;
+			setEmail(profile.email);
+			setUsername(profile.username);
+			setName(profile.name);
+			setPhone(profile.phone);
+			setAddress(profile.address);
+			setGender(profile.gender);
+			setBirthdate(profile.birthdate);
+			setRole(profile.role);
+		}
+	};
+
 	React.useEffect(() => {
-		(async () => {
-			const token = AuthService.getToken();
-			const res = await AuthAPI({token});
-			const success = res.success;
-			if (success) {
-				const profile = res.data;
-				setEmail(profile.email);
-				setUsername(profile.username);
-				setName(profile.name);
-				setPhone(profile.phone);
-				setAddress(profile.address);
-				setGender(profile.gender);
-				setBirthdate(profile.birthdate);
-				setRole(profile.role);
-			}
-		})();
+		refreshUserProfile();
 	}, []);
 
 	function handleEmail(e: any){
