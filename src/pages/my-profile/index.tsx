@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import AuthAPI from '@/api/AuthAPI';
 import LogoutAPI from '@/api/LogoutAPI';
 import UpdateUserProfileAPI from '@/api/UpdateUserProfileAPI';
+import ChangeUserPasswordAPI from '@/api/ChangeUserPasswordAPI';
 
 import Layout from '@/components/layout/Layout';
 import ArrowLink from '@/components/links/ArrowLink';
@@ -190,7 +191,7 @@ function UpdateProfileForm({ onSubmit }: { onSubmit?: any }) {
 					</form>;
 }
 
-function ChangePasswordProfileForm() {
+function ChangePasswordProfileForm({ onSubmit }: { onSubmit?: any }) {
 	const [oldPassword, setOldPassword] = React.useState('');
 	const [password, setPassword] = React.useState('');
 	const [passwordConf, setPasswordConf] = React.useState('');
@@ -207,9 +208,22 @@ function ChangePasswordProfileForm() {
 		setPasswordConf(e.target.value);
 	}
 
-	function handleSubmit(e: any) {
+	async function handleSubmit(e: any) {
 		e.preventDefault();
 		console.log('submit change password');
+
+		const res = await ChangeUserPasswordAPI({ old_password: oldPassword, password: password, password_confirmation: passwordConf });
+		console.log(res);
+		const success = res.success;
+		if (success) {
+			console.log('change password success');
+		} else {
+			console.log('change password failed');
+		}
+
+		if (onSubmit !== undefined) {
+			onSubmit();
+		}
 	}
 
 	return <form className='flex flex-col items-start justify-start p-4 text-left gap-3' onSubmit={handleSubmit}>
@@ -290,7 +304,7 @@ export default function HomePage() {
 					<div className="p-4 grid grid-cols-1 col-span-3">
 					  {pageState === 'SEE' && <SeeProfileForm />}
 					  {pageState === 'UPDATE' && <UpdateProfileForm onSubmit={handleSeeProfileButton} />}
-					  {pageState === 'CHANGEPASSWORD' && <ChangePasswordProfileForm />}
+					  {pageState === 'CHANGEPASSWORD' && <ChangePasswordProfileForm onSubmit={handleSeeProfileButton} />}
 					  {pageState === 'LOGOUT' && <LogoutProfileForm />}
 					</div>
 				</div>
