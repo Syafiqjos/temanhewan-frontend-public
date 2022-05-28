@@ -174,6 +174,38 @@ function UpdateProfileForm() {
 					</form>;
 }
 
+function ChangePasswordProfileForm() {
+	const [oldPassword, setOldPassword] = React.useState('');
+	const [password, setPassword] = React.useState('');
+	const [passwordConf, setPasswordConf] = React.useState('');
+
+	function handleOldPassword(e: any) {
+		setOldPassword(e.target.value);
+	}
+
+	function handlePassword(e: any) {
+		setPassword(e.target.value);
+	}
+
+	function handlePasswordConf(e: any) {
+		setPasswordConf(e.target.value);
+	}
+
+	function handleSubmit(e: any) {
+		e.preventDefault();
+		console.log('submit change password');
+	}
+
+	return <form className='flex flex-col items-start justify-start p-4 text-left gap-3' onSubmit={handleSubmit}>
+					  <h1 className="text-xl font-semibold">Perbarui profile</h1>
+					  <h2 className="text-base font-normal">Dapatkan sensasi hewan peliharaan.</h2>
+					  <InputText label="Password lama" name="old_password" type="password" placeholder="Password lama anda" value={oldPassword} onChange={handleOldPassword} />
+					  <InputText label="Password baru" name="password" type="password" placeholder="Password baru anda" value={password} onChange={handlePassword} />
+					  <InputText label="Ketik ulang password baru anda" name="password_confirmation" type="password" placeholder="Password baru anda" value={passwordConf} onChange={handlePasswordConf} />
+					  <InputButton text="Ubah password" />
+					</form>;
+}
+
 export default function HomePage() {
   const [ pageState, setPageState ] = React.useState<'SEE', 'UPDATE', 'CHANGEPASSWORD', 'LOGOUT'>('SEE');
 
@@ -219,6 +251,7 @@ export default function HomePage() {
 					<div className="p-4 grid grid-cols-1 col-span-3">
 					  {pageState === 'SEE' && <SeeProfileForm />}
 					  {pageState === 'UPDATE' && <UpdateProfileForm />}
+					  {pageState === 'CHANGEPASSWORD' && <ChangePasswordProfileForm />}
 					</div>
 				</div>
 			  </div>
