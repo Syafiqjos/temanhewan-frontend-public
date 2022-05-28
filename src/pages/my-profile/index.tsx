@@ -1,6 +1,8 @@
 import * as React from 'react';
+import { useRouter } from 'next/router';
 
 import AuthAPI from '@/api/AuthAPI';
+import LogoutAPI from '@/api/LogoutAPI';
 
 import Layout from '@/components/layout/Layout';
 import ArrowLink from '@/components/links/ArrowLink';
@@ -207,9 +209,19 @@ function ChangePasswordProfileForm() {
 }
 
 function LogoutProfileForm() {
-	function handleSubmit(e: any) {
+	const router = useRouter();
+	const authDispatch = useAuthDispatch();
+
+	async function handleSubmit(e: any) {
 		e.preventDefault();
 		console.log('submit logout');
+		const res = await LogoutAPI();
+		console.log(res);
+		const success = res.success;
+		if (success) {
+			authDispatch({ type:'LOGOUT', payload: {} });
+			router.push('/');
+		}
 	}
 
 	return <form className='flex flex-col items-start justify-start p-4 text-left gap-3' onSubmit={handleSubmit}>
