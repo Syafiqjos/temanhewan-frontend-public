@@ -19,7 +19,7 @@ const linksLogined = [
   { href: '/faq', label: 'FAQ', type: '' },
   { href: '/about', label: 'About', type: '' },
   { href: '/my-pet', label: 'My Pets', type: '' },
-  { href: '/profile', label: 'Profile', type: '' },
+  { href: '/my-profile', label: 'Profile', type: '' },
   { href: '/dashboard', label: 'Dashboard', type: 'primary' },
 ];
 
