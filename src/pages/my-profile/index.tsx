@@ -39,6 +39,54 @@ function CustomButton({ onClick, children, active } : { onClick: any, children: 
 	return (<li onClick={onClick} className={`${classNames} ${active ? activeClassNames : ''}`}>{children}</li>);
 }
 
+function SeeProfileForm() {
+	const [email, setEmail] = React.useState('');
+	const [username, setUsername] = React.useState('');
+	const [name, setName] = React.useState('');
+	const [role, setRole] = React.useState('customer');
+	const [address, setAddress] = React.useState('');
+	const [phone, setPhone] = React.useState('');
+	const [gender, setGender] = React.useState('');
+	const [birthdate, setBirthdate] = React.useState('');
+
+	React.useEffect(() => {
+		(async () => {
+			const token = AuthService.getToken();
+			const res = await AuthAPI({token});
+			const success = res.success;
+			if (success) {
+				const profile = res.data;
+				setEmail(profile.email);
+				setUsername(profile.username);
+				setName(profile.name);
+				setPhone(profile.phone);
+				setAddress(profile.address);
+				setGender(profile.gender);
+				setBirthdate(profile.birthdate);
+				setRole(profile.role);
+			}
+		})();
+	}, []);
+
+	return <form className='flex flex-col items-start justify-start p-4 text-left gap-3'>
+					  <h1 className="text-xl font-semibold">Lihat profile</h1>
+					  <h2 className="text-base font-normal">Dapatkan sensasi hewan peliharaan.</h2>
+					  <InputText label="Email" name="email" type="text" placeholder="Email anda" disabled value={email} />
+					  <InputText label="Nama" name="name" type="text" placeholder="Nama anda" disabled value={name} />
+					  <InputText label="Tanggal lahir" name="birthdate" type="date" placeholder="Tanggal lahir anda" disabled value={birthdate} />
+					  <div className="flex flex-col items-start w-full">
+						<label htmlFor="gender">Jenis kelamin</label>
+						<select name="gender" id="gender" className="border-0 rounded-l w-full p-4 bg-gray-100" disabled value={gender}>
+							<option value="" disabled>Pilih jenis kelamin anda..</option>
+							<option value="m">Laki - laki</option>
+							<option value="f">Perempuan</option>
+						</select>
+					  </div>
+					  <InputText label="No. HP" name="phone" type="text" placeholder="No. HP anda" disabled value={phone} />
+					  <InputText label="Alamat" name="address" type="text" placeholder="Alamat anda" disabled value={address} />
+					</form>;
+}
+
 function UpdateProfileForm() {
 	const [email, setEmail] = React.useState('');
 	const [username, setUsername] = React.useState('');
@@ -169,6 +217,7 @@ export default function HomePage() {
 						</ul>
 					</div>
 					<div className="p-4 grid grid-cols-1 col-span-3">
+					  {pageState === 'SEE' && <SeeProfileForm />}
 					  {pageState === 'UPDATE' && <UpdateProfileForm />}
 					</div>
 				</div>
