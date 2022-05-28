@@ -95,7 +95,7 @@ function UpdateProfileForm() {
 	const [address, setAddress] = React.useState('');
 	const [phone, setPhone] = React.useState('');
 	const [gender, setGender] = React.useState('');
-	const [birthdate, setBirthdate] = React.useState<Date>(new Date());
+	const [birthdate, setBirthdate] = React.useState('');
 
 	React.useEffect(() => {
 		(async () => {
