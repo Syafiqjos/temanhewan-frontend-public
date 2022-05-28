@@ -65,7 +65,6 @@ const benefit = [
 export default function HomePage() {
   return (
     <>
-      {/* <Seo templateTitle='Home' /> */}
       <Seo />
 
       <main>
