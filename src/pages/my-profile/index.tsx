@@ -55,7 +55,7 @@ function SeeProfileForm() {
 
 	const refreshUserProfile = async () => {
 		const token = AuthService.getToken();
-		const res = await AuthAPI({token});
+		const res = await AuthAPI({token: token as string});
 		const success = res.success;
 		if (success) {
 			const profile = res.data;
@@ -105,7 +105,7 @@ function UpdateProfileForm({ onSubmit }: { onSubmit?: any }) {
 
 	const refreshUserProfile = async () => {
 		const token = AuthService.getToken();
-		const res = await AuthAPI({token});
+		const res = await AuthAPI({token: token as string});
 		const success = res.success;
 		if (success) {
 			const profile = res.data;
@@ -247,7 +247,7 @@ function LogoutProfileForm() {
 		console.log(res);
 		const success = res.success;
 		if (success) {
-			authDispatch({ type:'LOGOUT', payload: {} });
+			authDispatch({ type:'LOGOUT' });
 			router.push('/');
 		}
 	}
@@ -260,7 +260,7 @@ function LogoutProfileForm() {
 }
 
 export default function HomePage() {
-  const [ pageState, setPageState ] = React.useState<'SEE', 'UPDATE', 'CHANGEPASSWORD', 'LOGOUT'>('SEE');
+  const [ pageState, setPageState ] = React.useState<'SEE' | 'UPDATE' | 'CHANGEPASSWORD' | 'LOGOUT'>('SEE');
 
   function handleSeeProfileButton(e: any) {
 	console.log('see profile button');

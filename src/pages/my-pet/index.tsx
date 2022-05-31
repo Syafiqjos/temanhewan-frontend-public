@@ -27,27 +27,33 @@ import Vercel from '~/svg/Vercel.svg';
 // Before you begin editing, follow all comments with `STARTERCONF`,
 // to customize the default configuration.
 
-function getPetRace(petType: PetType) {
+function getPetRace(petType: PetType | string | number | null) {
 	switch (petType) {
+		case 0:
+		case 'Cat':
+		case 'cat':
 		case PetType.Cat:
 			return 'cat';
+		case 1:
+		case 'Dog':
+		case 'dog':
 		case PetType.Dog:
 			return 'dog';
 	}
 	return 'Awokawok';
 }
 
-function PetLabelComponent({ handlePetFilter, filter, petType, children } : { handlePetFilter: any, filter: PetType | null, petType: PetType | null, children: any }) {
+function PetLabelComponent({ handlePetFilter, filter, petType, children } : { handlePetFilter: any, filter: PetType | string | number | null, petType: PetType | null, children: any }) {
 	const petFilterClassNames = 'p-2 rounded-lg cursor-pointer';
 	const petFilterActiveClassNames = 'bg-orange-600 text-white';
 
-	return (<li onClick={() => handlePetFilter(petType)} className={`${petFilterClassNames} ${filter === petType ? petFilterActiveClassNames : ''}`}>{children}</li>);
+	return (<li onClick={() => handlePetFilter(petType)} className={`${petFilterClassNames} ${getPetRace(filter) == getPetRace(petType) ? petFilterActiveClassNames : ''}`}>{children}</li>);
 }
 
 export default function HomePage() {
   const [ myPets, setMyPets ] = React.useState<Pet[]>([]);
   const [ myFilteredPets, setMyFilteredPets ] = React.useState<Pet[]>([]);
-  const [ filter, setFilter ] = React.useState<PetType | null>(null);
+  const [ filter, setFilter ] = React.useState<PetType | string | number | null>(null);
   const [ petFlags, setPetFlags ] = React.useState<Set<number>>(new Set<number>());
 
   React.useEffect(() => {
@@ -73,7 +79,7 @@ export default function HomePage() {
 		setMyFilteredPets(myPets);
 		setFilter(null);
 	} else {
-        const filteredPets = myPets.filter((pet: Pet) => pet.race === getPetRace(filter));
+        const filteredPets = myPets.filter((pet: Pet) => getPetRace(pet.race) === getPetRace(filter));
 		const sortedPets = filteredPets.sort((a: Pet, b: Pet) => a.name.localeCompare(b.name));
 		setMyFilteredPets(sortedPets);
 		setFilter(filter);
@@ -92,9 +98,9 @@ export default function HomePage() {
             <div className="px-4 grid grid-cols-4 gap-3">
 				<div className="flex flex-col gap-1">
 					<ul className="p-4">
-						<PetLabelComponent handlePetFilter={handlePetFilter} filter={filter} petType={null}>Semua</PetLabelComponent>
-						<PetLabelComponent handlePetFilter={handlePetFilter} filter={filter} petType={PetType.Cat}>Kucing</PetLabelComponent>
-						<PetLabelComponent handlePetFilter={handlePetFilter} filter={filter} petType={PetType.Dog}>Anjing</PetLabelComponent>
+						<PetLabelComponent handlePetFilter={handlePetFilter} filter={getPetRace(filter)} petType={null}>Semua</PetLabelComponent>
+						<PetLabelComponent handlePetFilter={handlePetFilter} filter={getPetRace(filter)} petType={PetType.Cat}>Kucing</PetLabelComponent>
+						<PetLabelComponent handlePetFilter={handlePetFilter} filter={getPetRace(filter)} petType={PetType.Dog}>Anjing</PetLabelComponent>
 					</ul>
 				</div>
 				<div className="p-4 grid grid-cols-3 col-span-3">
