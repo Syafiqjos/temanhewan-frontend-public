@@ -39,11 +39,11 @@ import Vercel from '~/svg/Vercel.svg';
 // Before you begin editing, follow all comments with `STARTERCONF`,
 // to customize the default configuration.
 
-function PetLabelComponent({ handlePetFilter, filter, petType, children } : { handlePetFilter: any, filter: PetType | string | number | null, petType: PetType | null, children: any }) {
-	const petFilterClassNames = 'p-2 rounded-lg cursor-pointer';
-	const petFilterActiveClassNames = 'bg-orange-600 text-white';
+function LabelComponent({ handleFilter, filter, role, children } : { handleFilter: any, filter: string | number | null, role: string | null, children: any }) {
+	const filterClassNames = 'p-2 rounded-lg cursor-pointer';
+	const filterActiveClassNames = 'bg-orange-600 text-white';
 
-	return (<li onClick={() => handlePetFilter(petType)} className={`${petFilterClassNames} ${getPetRace(filter) == getPetRace(petType) ? petFilterActiveClassNames : ''}`}>{children}</li>);
+	return (<li onClick={() => handleFilter(role)} className={`${filterClassNames} ${filter == role ? filterActiveClassNames : ''}`}>{children}</li>);
 }
 
 export default function HomePage() {
@@ -147,9 +147,9 @@ export default function HomePage() {
 				<div className="flex flex-col gap-1">
 					<ul className="p-4">
 						{/*
-						<PetLabelComponent handlePetFilter={handlePetFilter} filter={getPetRace(filter)} petType={null}>Semua</PetLabelComponent>
-						<PetLabelComponent handlePetFilter={handlePetFilter} filter={getPetRace(filter)} petType={PetType.Cat}>Kucing</PetLabelComponent>
-						<PetLabelComponent handlePetFilter={handlePetFilter} filter={getPetRace(filter)} petType={PetType.Dog}>Anjing</PetLabelComponent>
+						<LabelComponent handleFilter={handleFilter} filter={filter} role={null}>Semua</LabelComponent>
+						<LabelComponent handleFilter={handleFilter} filter={filter} role={'vet'}>Dokter Hewan</LabelComponent>
+						<LabelComponent handleFilter={handleFilter} filter={filter} role={'groomer'}>Jasa Grooming</LabelComponent>
 						*/}
 						<InputText label={'Cari'} name={'search-query'} value={searchInput} onChange={handleSearchInput} />
 					</ul>
