@@ -110,7 +110,7 @@ function UpdateProfileForm({ onSubmit }: { onSubmit?: any }) {
 	const [birthdate, setBirthdate] = React.useState('');
 
 	function getProfileImage(){
-		const input = profileImageInput.current;
+		const input: any = profileImageInput.current!;
 		if (input.files && input.files.length > 0) {
 			return input.files[0];
 		}

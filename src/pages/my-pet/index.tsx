@@ -60,7 +60,7 @@ export default function HomePage() {
 	(async () => {
 		// get my pets from server
 		const res = await ListPetAPI({ offset:0, limit: 10 });
-		const retrievePets = res.data.map((d) => { const b = d; b.imageUrl = d.profile_image; return b; });
+		const retrievePets = res.data.map((d: any) => { const b: any = d; b.imageUrl = d.profile_image; return b; });
 		const sortedPets = retrievePets.sort((a: Pet, b: Pet) => a.name.localeCompare(b.name));
 		const flags = new Set<number>();
 

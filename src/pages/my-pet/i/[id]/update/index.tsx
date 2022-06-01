@@ -107,7 +107,7 @@ function SuccessPage({ myPet }: { myPet: Pet }) {
 	});
 
 	function getProfileImage(){
-		const input = profileImageInput.current;
+		const input: any = profileImageInput.current!;
 		if (input.files && input.files.length > 0) {
 			return input.files[0];
 		}

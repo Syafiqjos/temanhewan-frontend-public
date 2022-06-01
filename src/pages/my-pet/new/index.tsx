@@ -71,7 +71,7 @@ function InitialPage({ router, setMyPet, setErrorMessage, setStatus }: { router:
 	const [petType, setPetType] = React.useState(0);
 
 	function getProfileImage(){
-		const input = profileImageInput.current;
+		const input: any = profileImageInput.current!;
 		if (input.files && input.files.length > 0) {
 			return input.files[0];
 		}
