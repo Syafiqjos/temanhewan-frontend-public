@@ -17,7 +17,7 @@ export default async function UpdateForumAPI(
 }) {
 	API.GetCSRFToken();
 	const authToken = AuthService.getToken();
-	const url = API.GetAPIHost('/api/forum/create');
+	const url = API.GetAPIHost('/api/forum/update');
 	const body = { 
 		id,
 		title,
