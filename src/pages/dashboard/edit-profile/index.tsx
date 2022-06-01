@@ -106,15 +106,14 @@ export default function EditProfile({ onSubmit }: { onSubmit?: any }) {
 	return <>
     <Seo title="Edit Profile" />
 
-    <div className="flex">
-      <div className="flex-col">
+    <div className="flex flex-row">
+      <div>
         <Sidebar />
       </div>
-      <div className="flex-col pl-5 pt-5">
+      <div className="pl-5 pt-5">
       <form className='flex flex-col items-start justify-start p-4 text-left gap-3' onSubmit={handleSubmit}>
-					  <h1 className="text-xl font-semibold">Perbarui profile</h1>
-					  <h2 className="text-base font-normal">Dapatkan sensasi hewan peliharaan.</h2>
-						<img src={profileImage} alt = "profile image"/>
+					  <h1 className="text-xl font-semibold">Edit Profil</h1>
+						<img src={profileImage} alt = "profile image" className="h-40 w-40"/>
 						<div className="flex flex-col items-start w-full">
 							<label htmlFor="petType">Ubah foto profil</label>
 							<input ref={profileImageInput} name="profile_image" type="file" accept="image/*" />

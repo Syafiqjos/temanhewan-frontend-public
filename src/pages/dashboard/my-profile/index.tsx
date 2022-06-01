@@ -46,15 +46,14 @@ export default function MyProfile() {
 	return <>
 		<Seo title="My Profile" />
 
-		<div className="flex">
-			<div className="flex-col">
+		<div className="flex flex-row">
+			<div>
 				<Sidebar />
 			</div>
-			<div className="flex-col ml-5 mt-5">
+			<div className="ml-5 mt-5">
 		<form className='flex flex-col items-start justify-start p-4 text-left gap-3'>
-					  <h1 className="text-xl font-semibold">Lihat profile</h1>
-					  <h2 className="text-base font-normal">Dapatkan sensasi hewan peliharaan.</h2>
-						<img src={profileImage} alt="profile image" />
+					  <h1 className="text-xl font-semibold">Profil Saya</h1>
+						<img src={profileImage} alt="profile image" className="w-40 h-40" />
 					  <InputText label="Email" name="email" type="text" placeholder="Email anda" disabled value={email} />
 					  <InputText label="Nama" name="name" type="text" placeholder="Nama anda" disabled value={name} />
 					  <InputText label="Tanggal lahir" name="birthdate" type="date" placeholder="Tanggal lahir anda" disabled value={birthdate} />

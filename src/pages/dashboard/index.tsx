@@ -7,12 +7,12 @@ export default function Dashboard() {
   return (
     <>
       <Seo title='Dashboard' />
-      <div className='flex'>
-        <div className='flex-col'>
+      <div className='flex flex-row'>
+        <div>
           <Sidebar />
         </div>
-        <div className='flex-col pl-5 pt-5'>
-          <h1>Dashboard</h1>
+        <div className='pl-5 pt-5'>
+          <h1 className="text-xl font-semibold">Dashboard</h1>
         </div>
       </div>
     </>
