@@ -9,10 +9,12 @@ import UnderlineLink from '@/components/links/UnderlineLink';
 import UnstyledLink from '@/components/links/UnstyledLink';
 import Seo from '@/components/Seo';
 
+import InputText from '@/components/forms/InputText';
+
 import Link from 'next/link';
 
 interface User {
-	id?: string,
+	id: string,
 	email: string,
 	name: string,
 	role: string,
@@ -48,6 +50,8 @@ export default function HomePage() {
   const [ vets, setVets ] = React.useState<User[]>([]);
   const [ filteredVets, setFilteredVets ] = React.useState<User[]>([]);
   const [ filter, setFilter ] = React.useState<string | null>(null);
+
+  const [ searchInput, setSearchInput ] = React.useState<string>('');
 
   React.useEffect(() => {
 	(async () => {
@@ -106,6 +110,30 @@ export default function HomePage() {
 	})();
   }, []);
 
+  function handleSearchInput(e: any){
+	const searchBy = e.target.value;
+	setSearchInput(searchBy);
+
+	const searchedVets = vets.filter((vet: User) => {
+		if (searchBy == ''
+			|| searchBy == undefined
+			|| searchBy == null
+			|| vet.name && vet.name.includes(searchBy)
+			|| vet.email && vet.email.includes(searchBy)
+			|| vet.username && vet.username.includes(searchBy)
+			|| vet.id && vet.id.includes(searchBy)
+			|| vet.phone && vet.phone.includes(searchBy)
+			|| vet.address && vet.address.includes(searchBy)
+		) {
+			return true;
+		}
+		return false;
+	});
+	const sortedVets = searchedVets.sort((a: User, b: User) => a.name.localeCompare(b.name));
+
+	setFilteredVets(sortedVets);
+  }
+
   return (
     <>
       {/* <Seo templateTitle='Home' /> */}
@@ -123,6 +151,7 @@ export default function HomePage() {
 						<PetLabelComponent handlePetFilter={handlePetFilter} filter={getPetRace(filter)} petType={PetType.Cat}>Kucing</PetLabelComponent>
 						<PetLabelComponent handlePetFilter={handlePetFilter} filter={getPetRace(filter)} petType={PetType.Dog}>Anjing</PetLabelComponent>
 						*/}
+						<InputText label={'Cari'} name={'search-query'} value={searchInput} onChange={handleSearchInput} />
 					</ul>
 				</div>
 				<div className="p-4 grid grid-cols-3 col-span-3">
