@@ -7,14 +7,9 @@ export default function Dashboard() {
   return (
     <>
       <Seo title='Dashboard' />
-      <div className='flex flex-row'>
-        <div>
-          <Sidebar />
-        </div>
-        <div className='pl-5 pt-5'>
+      <Sidebar>
           <h1 className="text-xl font-semibold">Dashboard</h1>
-        </div>
-      </div>
+      </Sidebar>
     </>
   );
 }

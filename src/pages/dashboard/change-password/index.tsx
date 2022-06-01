@@ -45,11 +45,7 @@ export default function ChangePassword({ onSubmit }: { onSubmit?: any }) {
 	return <>
     <Seo title="Change Password"/>
 
-    <div className="flex flex-row">
-      <div>
-        <Sidebar />
-      </div>
-      <div className="pl-5 pt-5">
+    <Sidebar>
         <form className='flex flex-col items-start justify-start p-4 text-left gap-3' onSubmit={handleSubmit}>
           <h1 className="text-xl font-semibold">Ubah password</h1>
           <InputText label="Password lama" name="old_password" type="password" placeholder="Password lama anda" value={oldPassword} onChange={handleOldPassword} />
@@ -57,7 +53,6 @@ export default function ChangePassword({ onSubmit }: { onSubmit?: any }) {
           <InputText label="Ketik ulang password baru anda" name="password_confirmation" type="password" placeholder="Password baru anda" value={passwordConf} onChange={handlePasswordConf} />
           <InputButton text="Ubah password" />
         </form>
-      </div>
-    </div>
+		</Sidebar>
   </>
 }

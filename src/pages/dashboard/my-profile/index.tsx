@@ -46,11 +46,7 @@ export default function MyProfile() {
 	return <>
 		<Seo title="My Profile" />
 
-		<div className="flex flex-row">
-			<div>
-				<Sidebar />
-			</div>
-			<div className="ml-5 mt-5">
+		<Sidebar>
 		<form className='flex flex-col items-start justify-start p-4 text-left gap-3'>
 					  <h1 className="text-xl font-semibold">Profil Saya</h1>
 						<img src={profileImage} alt="profile image" className="w-40 h-40" />
@@ -68,7 +64,6 @@ export default function MyProfile() {
 					  <InputText label="No. HP" name="phone" type="text" placeholder="No. HP anda" disabled value={phone} />
 					  <InputText label="Alamat" name="address" type="text" placeholder="Alamat anda" disabled value={address} />
 			</form>
-		</div>
-		</div>
+		</Sidebar>
 	</>
 }

@@ -106,35 +106,30 @@ export default function EditProfile({ onSubmit }: { onSubmit?: any }) {
 	return <>
     <Seo title="Edit Profile" />
 
-    <div className="flex flex-row">
-      <div>
-        <Sidebar />
-      </div>
-      <div className="pl-5 pt-5">
+    <Sidebar>
       <form className='flex flex-col items-start justify-start p-4 text-left gap-3' onSubmit={handleSubmit}>
-					  <h1 className="text-xl font-semibold">Edit Profil</h1>
-						<img src={profileImage} alt = "profile image" className="h-40 w-40"/>
-						<div className="flex flex-col items-start w-full">
-							<label htmlFor="petType">Ubah foto profil</label>
-							<input ref={profileImageInput} name="profile_image" type="file" accept="image/*" />
-						</div>
-					  <InputText label="Email" name="email" type="text" placeholder="Email anda" disabled value={email} />
-					  <InputText label="Nama" name="name" type="text" placeholder="Nama anda" value={name} onChange={handleName} />
-					  <InputText label="Tanggal lahir" name="birthdate" type="date" placeholder="Tanggal lahir anda" value={birthdate} onChange={handleBirthdate} />
-					  <div className="flex flex-col items-start w-full">
-						<label htmlFor="gender">Jenis kelamin</label>
-						<select name="gender" id="gender" onChange={handleGender} className="border-0 rounded-l w-full p-4 bg-gray-100" value={gender}>
-							<option value="" disabled>Pilih jenis kelamin anda..</option>
-							<option value="m">Laki - laki</option>
-							<option value="f">Perempuan</option>
-						</select>
-					  </div>
-					  <InputText label="No. HP" name="phone" type="text" placeholder="No. HP anda" onChange={handlePhone} value={phone} />
-					  <InputText label="Alamat" name="address" type="text" placeholder="Alamat anda" onChange={handleAddress} value={address} />
-					  <InputButton text="Perbarui" />
-					</form>
-      </div>
-    </div>
+				<h1 className="text-xl font-semibold">Edit Profil</h1>
+				<img src={profileImage} alt = "profile image" className="h-40 w-40"/>
+				<div className="flex flex-col items-start w-full">
+					<label htmlFor="petType">Ubah foto profil</label>
+					<input ref={profileImageInput} name="profile_image" type="file" accept="image/*" />
+				</div>
+				<InputText label="Email" name="email" type="text" placeholder="Email anda" disabled value={email} />
+				<InputText label="Nama" name="name" type="text" placeholder="Nama anda" value={name} onChange={handleName} />
+				<InputText label="Tanggal lahir" name="birthdate" type="date" placeholder="Tanggal lahir anda" value={birthdate} onChange={handleBirthdate} />
+				<div className="flex flex-col items-start w-full">
+				<label htmlFor="gender">Jenis kelamin</label>
+				<select name="gender" id="gender" onChange={handleGender} className="border-0 rounded-l w-full p-4 bg-gray-100" value={gender}>
+					<option value="" disabled>Pilih jenis kelamin anda..</option>
+					<option value="m">Laki - laki</option>
+					<option value="f">Perempuan</option>
+				</select>
+				</div>
+				<InputText label="No. HP" name="phone" type="text" placeholder="No. HP anda" onChange={handlePhone} value={phone} />
+				<InputText label="Alamat" name="address" type="text" placeholder="Alamat anda" onChange={handleAddress} value={address} />
+				<InputButton text="Perbarui" />
+			</form>
+    </Sidebar>
   </>
 
 }
