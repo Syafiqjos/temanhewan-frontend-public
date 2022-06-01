@@ -9,7 +9,7 @@ export default async function DeleteForumImageAPI(
 }) {
 	API.GetCSRFToken();
 	const authToken = AuthService.getToken();
-	const url = API.GetAPIHost('/api/forum/delete');
+	const url = API.GetAPIHost('/api/forum/delete-image');
 	const body = { 
 		image_name
 	};
