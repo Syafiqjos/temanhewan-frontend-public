@@ -6,12 +6,14 @@ export default async function CreatePetAPI(
 	name,
 	description,
 	race,
-	gender
+	gender,
+	profile_image
 }: {
 	name: string,
 	description: string,
 	race: string,
-	gender: string
+	gender: string,
+	profile_image?: any
 }) {
 	API.GetCSRFToken();
 	const authToken = AuthService.getToken();
@@ -20,7 +22,8 @@ export default async function CreatePetAPI(
 		name,
 		description,
 		race,
-		gender
+		gender,
+		profile_image
 	};
 	const res = await API.PostAPI(url, body, {
 		'Authorization': `Bearer ${authToken}`

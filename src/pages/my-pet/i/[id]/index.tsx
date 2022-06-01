@@ -149,6 +149,8 @@ export default function HomePage() {
 		const success = res.success;
 		const pet: Pet = res.data;
 
+		pet.imageUrl = res.data.profile_image;
+
 		if (pet && pet.id != '') {
 			setMyPet(pet);
 			setStatus('SUCCESS');
