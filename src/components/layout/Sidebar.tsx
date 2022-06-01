@@ -14,6 +14,8 @@ const linksPet = [
   { href: '/dashboard/add-pet', label: 'Tambah Hewan' },
 ];
 
+const linksOther = [{ href: '/dashboard/logout', label: 'Logout' }];
+
 export default function Sidebar() {
   return (
     <>
@@ -52,6 +54,18 @@ export default function Sidebar() {
           </ul>
           <ul className='mt-4 space-y-2 border-t border-gray-200 pt-4 dark:border-gray-700'>
             {linksPet.map((feature) => (
+              <li key={feature.href}>
+                <UnstyledLink
+                  href={feature.href}
+                  className='flex items-center rounded-lg p-2 text-base font-normal text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700'
+                >
+                  {feature.label}
+                </UnstyledLink>
+              </li>
+            ))}
+          </ul>
+          <ul className='mt-4 space-y-2 border-t border-gray-200 pt-4 dark:border-gray-700'>
+            {linksOther.map((feature) => (
               <li key={feature.href}>
                 <UnstyledLink
                   href={feature.href}
