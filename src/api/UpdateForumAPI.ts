@@ -1,32 +1,29 @@
 import * as API from '@/api/API';
 import AuthService from '@/services/AuthService';
 
-export default async function UpdatePetAPI(
+export default async function UpdateForumAPI(
 {
 	id,
-	name,
-	description,
-	race,
-	gender,
-	profile_image
+	title,
+	subtitle,
+	content,
+	forum_images
 }: {
 	id: string,
-	name: string,
-	description: string,
-	race: string,
-	gender: string,
-	profile_image?: any
+	title: string,
+	subtitle: string,
+	content: string,
+	forum_images?: any
 }) {
 	API.GetCSRFToken();
 	const authToken = AuthService.getToken();
-	const url = API.GetAPIHost('/api/pet/update');
+	const url = API.GetAPIHost('/api/forum/update');
 	const body = { 
 		id,
-		name,
-		description,
-		race,
-		gender,
-		profile_image
+		title,
+		subtitle,
+		content,
+		forum_images
 	};
 	const res = await API.PostAPI(url, body, {
 		'Authorization': `Bearer ${authToken}`

@@ -44,6 +44,7 @@ function CustomButton({ onClick, children, active } : { onClick: any, children: 
 }
 
 function SeeProfileForm() {
+	const [profileImage, setProfileImage] = React.useState('');
 	const [email, setEmail] = React.useState('');
 	const [username, setUsername] = React.useState('');
 	const [name, setName] = React.useState('');
@@ -59,6 +60,7 @@ function SeeProfileForm() {
 		const success = res.success;
 		if (success) {
 			const profile = res.data;
+			setProfileImage(profile.profile_image);
 			setEmail(profile.email);
 			setUsername(profile.username);
 			setName(profile.name);
@@ -77,6 +79,7 @@ function SeeProfileForm() {
 	return <form className='flex flex-col items-start justify-start p-4 text-left gap-3'>
 					  <h1 className="text-xl font-semibold">Lihat profile</h1>
 					  <h2 className="text-base font-normal">Dapatkan sensasi hewan peliharaan.</h2>
+						<img src={profileImage} />
 					  <InputText label="Email" name="email" type="text" placeholder="Email anda" disabled value={email} />
 					  <InputText label="Nama" name="name" type="text" placeholder="Nama anda" disabled value={name} />
 					  <InputText label="Tanggal lahir" name="birthdate" type="date" placeholder="Tanggal lahir anda" disabled value={birthdate} />
@@ -94,6 +97,9 @@ function SeeProfileForm() {
 }
 
 function UpdateProfileForm({ onSubmit }: { onSubmit?: any }) {
+	const profileImageInput = React.useRef(null);
+
+	const [profileImage, setProfileImage] = React.useState('');
 	const [email, setEmail] = React.useState('');
 	const [username, setUsername] = React.useState('');
 	const [name, setName] = React.useState('');
@@ -103,12 +109,22 @@ function UpdateProfileForm({ onSubmit }: { onSubmit?: any }) {
 	const [gender, setGender] = React.useState('');
 	const [birthdate, setBirthdate] = React.useState('');
 
+	function getProfileImage(){
+		const input: any = profileImageInput.current!;
+		if (input.files && input.files.length > 0) {
+			return input.files[0];
+		}
+
+		return undefined;
+	}
+
 	const refreshUserProfile = async () => {
 		const token = AuthService.getToken();
 		const res = await AuthAPI({token: token as string});
 		const success = res.success;
 		if (success) {
 			const profile = res.data;
+			setProfileImage(profile.profile_image);
 			setEmail(profile.email);
 			setUsername(profile.username);
 			setName(profile.name);
@@ -155,7 +171,8 @@ function UpdateProfileForm({ onSubmit }: { onSubmit?: any }) {
 			birthdate,
 			address,
 			phone,
-			gender
+			gender,
+			profile_image: getProfileImage()
 		});
 		console.log(res);
 		const success = res.success;
@@ -174,6 +191,11 @@ function UpdateProfileForm({ onSubmit }: { onSubmit?: any }) {
 	return <form className='flex flex-col items-start justify-start p-4 text-left gap-3' onSubmit={handleSubmit}>
 					  <h1 className="text-xl font-semibold">Perbarui profile</h1>
 					  <h2 className="text-base font-normal">Dapatkan sensasi hewan peliharaan.</h2>
+						<img src={profileImage} />
+						<div className="flex flex-col items-start w-full">
+							<label htmlFor="petType">Ubah foto profil</label>
+							<input ref={profileImageInput} name="profile_image" type="file" accept="image/*" />
+						</div>
 					  <InputText label="Email" name="email" type="text" placeholder="Email anda" disabled value={email} />
 					  <InputText label="Nama" name="name" type="text" placeholder="Nama anda" value={name} onChange={handleName} />
 					  <InputText label="Tanggal lahir" name="birthdate" type="date" placeholder="Tanggal lahir anda" value={birthdate} onChange={handleBirthdate} />

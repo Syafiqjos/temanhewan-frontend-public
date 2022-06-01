@@ -64,10 +64,20 @@ function getGender(gender: string) {
 
 function InitialPage({ router, setMyPet, setErrorMessage, setStatus }: { router: any, setMyPet: any, setErrorMessage: any, setStatus: any }) {
 
+	const profileImageInput = React.useRef(null);
 	const [name, setName] = React.useState('');
 	const [description, setDescription] = React.useState('');
 	const [gender, setGender] = React.useState('m');
 	const [petType, setPetType] = React.useState(0);
+
+	function getProfileImage(){
+		const input: any = profileImageInput.current!;
+		if (input.files && input.files.length > 0) {
+			return input.files[0];
+		}
+
+		return undefined;
+	}
 
 	async function handleSubmit(e: any) {
 		e.preventDefault();
@@ -77,7 +87,8 @@ function InitialPage({ router, setMyPet, setErrorMessage, setStatus }: { router:
 			name,
 			description,
 			gender,
-			race: getPetRace(petType)
+			race: getPetRace(petType),
+			profile_image: getProfileImage()
 		});
 
 		// Submit pet and get pet id from server
@@ -89,7 +100,8 @@ function InitialPage({ router, setMyPet, setErrorMessage, setStatus }: { router:
 				name: name,
 				description: description,
 				race: petType,
-				gender: gender
+				gender: gender,
+				imageUrl: res.data.profile_image
 			});
 			setStatus('SUCCESS');
 		} else {
@@ -118,10 +130,14 @@ function InitialPage({ router, setMyPet, setErrorMessage, setStatus }: { router:
 	return (<>
 		<form className="flex flex-col gap-1">
 			<ul className="p-4">
-				<img className="rounded-xl object-cover w-full h-48" src="" />
+				<img className="rounded-xl object-cover w-full h-48" src="https://api-temanhewan.mirzaq.com/image/pet_default.png" />
 			</ul>
 		</form>
 		<form className="p-4 grid grid-cols-1 gap-2" onSubmit={handleSubmit}>
+			<div className="flex flex-col items-start w-full">
+				<label htmlFor="petType">Foto Peliharaan</label>
+				<input ref={profileImageInput} name="profile_image" type="file" accept="image/*" />
+			</div>
 		  <InputText label="Nama" name="name" type="text" value="" onChange={handleSetName} />
 		  <div className="flex flex-col items-start w-full">
 			  <label htmlFor="petType">Jenis Peliharaan</label>

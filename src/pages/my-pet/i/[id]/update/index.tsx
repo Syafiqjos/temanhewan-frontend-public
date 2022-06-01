@@ -96,6 +96,7 @@ function LoadingPage() {
 function SuccessPage({ myPet }: { myPet: Pet }) {
 	const router = useRouter();
 
+	const profileImageInput = React.useRef(null);
 	const [name, setName] = React.useState(myPet.name);
 	const [description, setDescription] = React.useState(myPet.description);
 	const [gender, setGender] = React.useState(myPet.gender);
@@ -104,6 +105,15 @@ function SuccessPage({ myPet }: { myPet: Pet }) {
 	React.useEffect(()=> {
 		console.log(myPet);
 	});
+
+	function getProfileImage(){
+		const input: any = profileImageInput.current!;
+		if (input.files && input.files.length > 0) {
+			return input.files[0];
+		}
+
+		return undefined;
+	}
 
 	function handleSetName(e: any) {
 		setName(e.target.value);
@@ -129,7 +139,14 @@ function SuccessPage({ myPet }: { myPet: Pet }) {
 		console.log(petRace);
 		console.log(getPetRace(petRace));
 
-		const res = await UpdatePetAPI({ id: myPet.id!, name: name, description: description, gender: gender, race: getPetRace(petRace) });
+		const res = await UpdatePetAPI({
+			id: myPet.id!,
+			name: name,
+			description: description,
+			gender: gender,
+			race: getPetRace(petRace),
+			profile_image: getProfileImage()
+		});
 		console.log(res);
 		const success = res.success;
 		if (success) {
@@ -147,6 +164,10 @@ function SuccessPage({ myPet }: { myPet: Pet }) {
 		</ul>
 	</div>
 	<form className="p-4 grid grid-cols-1 gap-2" onSubmit={handleSubmit}>
+		<div className="flex flex-col items-start w-full">
+				<label htmlFor="petType">Foto Peliharaan</label>
+				<input ref={profileImageInput} name="profile_image" type="file" accept="image/*" />
+			</div>
 	  <InputText label="Nama" name="name" type="text" value={name} onChange={handleSetName} />
 		  <div className="flex flex-col items-start w-full">
 			  <label htmlFor="petType">Jenis Peliharaan</label>
@@ -192,6 +213,8 @@ export default function HomePage() {
 		const res = await RetrievePetAPI({ id });
 		const success = res.success;
 		const pet: Pet = res.data;
+
+		pet.imageUrl = res.data.profile_image;
 
 		if (pet && pet.id != '') {
 			setMyPet(pet);
