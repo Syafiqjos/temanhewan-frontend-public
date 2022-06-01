@@ -8,15 +8,21 @@ export async function GetCSRFToken() {
 }
 
 export async function PostAPI(url: string, body: any, headers?: any) {
+	const formData = new FormData();
+	for (const key in body) {
+		const value = body[key];
+		if (value !== undefined && value !== null) {
+			formData.append(key, value);
+		}
+	}
 	const res = await fetch(url, {
 		headers: {
 			'Accept': 'application/json',
-			'Content-Type': 'application/json',
 			...headers
 		},
 		credentials: 'same-origin',
 		method: 'POST',
-		body: JSON.stringify(body)
+		body: formData
 	});
 	const data = await res.json();
 
