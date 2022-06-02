@@ -69,6 +69,14 @@ function LoadingPage() {
 function SuccessPage({ user }: { user: User }) {
 	const router = useRouter();
 
+	function handleAskVet(e: any) {
+		e.preventDefault();
+	}
+
+	function handleConsultVet(e: any) {
+		e.preventDefault();
+	}
+
 	return (<>
 	<div className="flex flex-col gap-1">
 		<ul className="p-4">
@@ -89,7 +97,11 @@ function SuccessPage({ user }: { user: User }) {
 					  </div>
 					  <InputText label="No. HP" name="phone" type="text" placeholder="No. HP anda" disabled value={user.phone} />
 					  <InputText label="Alamat" name="address" type="text" placeholder="Alamat anda" disabled value={user.address} />
-			</form>
+					<div className="grid grid-cols-2 gap-3">
+																																																																																												<button className="bg-white text-orange-600 rounded-xl border-orange-600 p-2 inline border-2" onClick={handleAskVet}>Bertanya</button>
+																																																																																												<button className="bg-orange-600 text-white rounded-xl border-orange-600 p-2 inline border-2" onClick={handleConsultVet}>Pesan Konsultasi</button>
+</div>
+																					</form>
 	</>);
 }
 
