@@ -151,7 +151,7 @@ export default function HomePage() {
 						<LabelComponent handleFilter={handleFilter} filter={filter} role={'vet'}>Dokter Hewan</LabelComponent>
 						<LabelComponent handleFilter={handleFilter} filter={filter} role={'groomer'}>Jasa Grooming</LabelComponent>
 						*/}
-						<InputText label={'Cari'} name={'search-query'} value={searchInput} onChange={handleSearchInput} />
+						<InputText type="text"label={'Cari'} name={'search-query'} value={searchInput} onChange={handleSearchInput} />
 					</ul>
 				</div>
 				<div className="p-4 grid grid-cols-3 col-span-3">
