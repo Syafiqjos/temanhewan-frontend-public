@@ -19,7 +19,7 @@ const layanan = [
   {
     name: 'Konsultasi Dokter Hewan',
     description:
-      'Anda dapat melakukan konsultasi kondisi hewan peliharaan dengan dokter hewan melalui chat',
+      'Anda dapat memanggil dokter hewan ke rumah untuk melakukan pemeriksaan kondisi hewan peliharaan',
     icon: '/favicon/consultation.png',
   },
   {
