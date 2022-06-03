@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-// import ListUserAPI from '@/api/ListUserAPI';
+import GetDoctorList from '@/api/GetDoctorListAPI';
 
 import Layout from '@/components/layout/Layout';
 import ArrowLink from '@/components/links/ArrowLink';
@@ -56,52 +56,7 @@ export default function HomePage() {
   React.useEffect(() => {
 	(async () => {
 		// get users from server
-		// const res = await ListUserAPI({ offset:0, limit: 10 });
-		const res = {
-			success: true,
-			data: [
-				{
-					id: 'jayawati-xxx',
-					name: 'Jayawati',
-					role: 'doctor',
-					email: 'jayawati@gmail.com',
-					username: 'jayawati@gmail.com',
-					profile_image: 'https://api-temanhewan.mirzaq.com/image/pet_default.png'
-				},
-				{
-					id: 'arsenal-xxx',
-					name: 'Arsenal',
-					role: 'doctor',
-					email: 'arsenal@gmail.com',
-					username: 'arsenal@gmail.com',
-					profile_image: 'https://api-temanhewan.mirzaq.com/image/pet_default.png'
-				},
-				{
-					id: 'miku-xxx',
-					name: 'Miku',
-					role: 'doctor',
-					email: 'miku@gmail.com',
-					username: 'miku@gmail.com',
-					profile_image: 'https://api-temanhewan.mirzaq.com/image/pet_default.png'
-				},
-				{
-					id: 'hartent-xxx',
-					name: 'Hartent',
-					role: 'doctor',
-					email: 'hartent@gmail.com',
-					username: 'hartent@gmail.com',
-					profile_image: 'https://api-temanhewan.mirzaq.com/image/pet_default.png'
-				},
-				{
-					id: 'micro-xxx',
-					name: 'Micro',
-					role: 'doctor',
-					email: 'micro@gmail.com',
-					username: 'micro@gmail.com',
-					profile_image: 'https://api-temanhewan.mirzaq.com/image/pet_default.png'
-				}
-			]
-		};
+		const res = await GetDoctorList({ offset:0, limit: 100 });
 		const retrieveVets = res.data;
 		const sortedVets = retrieveVets.sort((a: User, b: User) => a.name.localeCompare(b.name));
 
@@ -160,7 +115,7 @@ export default function HomePage() {
 							<Link key={vet.id} href={`/vet/i/${vet.id}`}>
 								<a>
 									<div className="p-2">
-										<img className="rounded-xl object-cover w-full h-48" src={vet.profile_image ? vet.profile_image : 'https://api-temanhewan.mirzaq.com/image/pet_default.png'} />
+										<img className="rounded-xl object-cover w-full h-48" src={vet.avatar ? vet.avatar : 'https://api-temanhewan.mirzaq.com/image/pet_default.png'} />
 										<div className="flex flex-row justify-between">
 											<span>{vet.name}</span>
 											<span>{vet.gender == 'm' ? 'M' : 'F'}</span>
