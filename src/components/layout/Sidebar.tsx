@@ -3,6 +3,11 @@ import * as React from 'react';
 
 import UnstyledLink from '../links/UnstyledLink';
 
+const linksForum = [
+  { href: '/dashboard/my-question', label: 'Pertanyaan Saya' },
+  { href: '/dashboard/add-question', label: 'Tambah Pertanyaan' },
+];
+
 const linksProfile = [
   { href: '/dashboard/my-profile', label: 'Profil Saya' },
   { href: '/dashboard/edit-profile', label: 'Edit Profil' },
@@ -51,6 +56,22 @@ export default function Sidebar({ children }: { children: React.ReactNode }) {
                     <span className='ml-3 font-bold'>Dashboard</span>
                   </UnstyledLink>
                 </li>
+              </ul>
+              <ul className='mt-4 space-y-2 border-t border-gray-200 pt-4 dark:border-gray-700'>
+                {linksForum.map((feature) => (
+                  <li key={feature.href}>
+                    <UnstyledLink
+                      href={feature.href}
+                      className={
+                        router.pathname === `${feature.href}`
+                          ? activeClassNames
+                          : classNames
+                      }
+                    >
+                      {feature.label}
+                    </UnstyledLink>
+                  </li>
+                ))}
               </ul>
               <ul className='mt-4 space-y-2 border-t border-gray-200 pt-4 dark:border-gray-700'>
                 {linksProfile.map((feature) => (
