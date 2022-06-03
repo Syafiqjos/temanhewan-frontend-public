@@ -118,22 +118,9 @@ export default function HomePage() {
 		const id: string = router.query.id as string;
 
 		// get user from server
-		// const res = await GetPublicUserAPI({ id });
-		// const success = res.success;
-		// const user: User = res.data;
-
-		const user = {
-					id: 'arsenal-xxx',
-					name: 'Arsenal',
-					role: 'doctor',
-					email: 'arsenal@gmail.com',
-					username: 'arsenal@gmail.com',
-					profile_image: 'https://api-temanhewan.mirzaq.com/image/pet_default.png',
-					birthdate: '2000-12-05',
-					phone: '081234567882',
-					address: 'Keputih 5, Surabaya',
-					gender: 'm'
-				};
+		const res = await GetPublicUserAPI({ id });
+		const success = res.success;
+		const user: User = res.data;
 
 		if (user && user.id != '') {
 			setUser(user);
