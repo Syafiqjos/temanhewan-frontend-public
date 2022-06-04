@@ -44,6 +44,58 @@ interface User {
 	profile_image?: string
 }
 
+function ConsultationStatusComponent({ consultation }: { consultation: any }) {
+	const [className, setClassName] = React.useState('');
+	const [status, setStatus] = React.useState('');
+
+	React.useEffect(() => {
+		let _className = "p-2 mr-2 font-semibold";
+		let _status = 'UNDEFINED';
+
+		if (consultation.status == "pending") {
+			_className += " text-yellow-600";
+			_status = 'Pending';
+		} else if (consultation.status == "rejected") {
+			_className += " text-red-600";
+			_status = 'Rejected';
+		} else if (consultation.status == "Success") {
+			_className += " text-green-600";
+			_status = 'Success';
+		}
+
+		setStatus(_status);
+		setClassName(_className);
+	}, []);
+
+	return (
+		<div className={className}>
+			{status}
+		</div>
+	);
+}
+
+function ConsultationComponent({ consultation }: { consultation: any }) {
+	return (
+		<li className="mb-2">
+			<div className="p-4 border rounded rounded-lg border-orange-600 flex flex-row justify-between">
+				<div className="flex flex-col">
+					<div className="font-semibold">{consultation.complaint}</div>
+					<div className="mb-2">{consultation.address}</div>
+					<div>{new Date(consultation.date).toGMTString().split(' ', 4).join(' ')} ({consultation.time})</div>
+				</div>
+				<div className="flex flex-row">
+					<div>
+						<ConsultationStatusComponent consultation={consultation} />
+					</div>
+					<div>
+						<ButtonLink variant="primary" href="/">Lihat</ButtonLink>
+					</div>
+				</div>
+			</div>
+		</li>
+	);
+}
+
 export default function ConsultationByCustomerPage() {
   const [ consultations, setConsultations ] = React.useState<any>([]);
 
@@ -57,10 +109,10 @@ export default function ConsultationByCustomerPage() {
 		const res = await GetConsultationByCustomerAPI({ customer_id: userId, offset:0, limit: 100 });
 		const success = res.success;
 
-		console.log(res);
-
 		if (success) {
 			setConsultations(res.data);
+
+			console.log(consultations);
 		} else {
 			// something error
 		}
@@ -75,7 +127,36 @@ export default function ConsultationByCustomerPage() {
       <main>
 		<ShouldAuthorized roleSpecific="customer">
 			<section className='bg-white'>
-			  customer
+				<div className="p-4">
+					<h1 className="text-xl">Daftar Konsultasi</h1>
+					<div className="grid grid-cols-4 p-4">
+						<div className="col-span-1 p-2">
+							<div className="flex flex-col items-start w-full">
+								<label>Filter</label>
+								<select className="w-full">
+									<option>1</option>
+									<option>2</option>
+								</select>
+							</div>
+							<div className="flex flex-col items-start w-full">
+								<label>Sortir</label>
+								<select className="w-full">
+									<option>1</option>
+									<option>2</option>
+								</select>
+							</div>
+						</div>
+						<div className="col-span-3 p-4">
+							<ul className="pb-4">
+								{consultations.map((consultation) => {
+									return (
+										<ConsultationComponent consultation={consultation} />
+									);
+								})}
+							</ul>
+						</div>
+					</div>
+				</div>
 			</section>
 		</ShouldAuthorized>
       </main>
