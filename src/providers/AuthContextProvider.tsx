@@ -5,6 +5,7 @@ import AuthService from '@/services/AuthService';
 type User = {
   email: string;
   name: string;
+  role: string;
 } | null;
 type AuthState = {
   authenticated: boolean;
@@ -77,7 +78,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 		if (res && res.data && res.data.email) {
 			const user: User = {
 			  email: res.data.email,
-			  name: res.data.username
+			  name: res.data.username,
+			  role: res.data.role
 			};
 
 			dispatch({ type: 'LOGIN', payload: user });
