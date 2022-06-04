@@ -76,7 +76,7 @@ function ConsultationStatusComponent({ consultation }: { consultation: any }) {
 
 function ConsultationComponent({ consultation }: { consultation: any }) {
 	return (
-		<li className="mb-2" key={`consultation-${consultation.id}`}>
+		<li className="mb-2">
 			<div className="p-4 border rounded rounded-lg border-orange-600 flex flex-row justify-between">
 				<div className="flex flex-col">
 					<div className="font-semibold">{consultation.complaint}</div>
@@ -150,7 +150,7 @@ export default function ConsultationByCustomerPage() {
 							<ul className="pb-4">
 								{consultations.map((consultation) => {
 									return (
-										<ConsultationComponent consultation={consultation} />
+										<ConsultationComponent consultation={consultation} key={`consultation-${consultation.id}`} />
 									);
 								})}
 							</ul>
