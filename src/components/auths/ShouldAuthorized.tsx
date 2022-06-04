@@ -15,7 +15,7 @@ export default function ShouldAuthorized({ roleSpecific, children }: { roleSpeci
 
 	React.useEffect(() => {
 		if (isMounted.current && authState) {
-			const roleGranted = authState.authenticated && (roleSpecific === undefined || roleSpecific === authState.user.role);
+			const roleGranted = authState.authenticated && (roleSpecific === undefined || ( authState.user && roleSpecific === authState.user.role));
 
 			if (authState.authenticated && roleGranted && authState.loading == false) {
 				setShow(true);

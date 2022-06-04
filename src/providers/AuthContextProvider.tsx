@@ -78,7 +78,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 		if (res && res.data && res.data.email) {
 			const user: User = {
 			  email: res.data.email,
-			  name: res.data.username,
+			  name: res.data.name,
 			  role: res.data.role
 			};
 

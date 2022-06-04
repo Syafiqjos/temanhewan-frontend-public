@@ -23,7 +23,7 @@ interface User {
 	gender?: string,
 	address?: string,
 	phone?: string,
-	profile_image?: string
+	avatar?: string
 }
 
 /**
