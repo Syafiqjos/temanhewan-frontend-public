@@ -7,7 +7,7 @@ export default function CardForum(props: any) {
 
   return (
     <>
-      <div className="p-7">
+      <div className="p-5">
         <UnstyledLink href={props.slug}> 
             <div className="max-w-7xl rounded overflow-hidden shadow-lg hover:bg-primary-50">
               <div className="px-6 py-4">
