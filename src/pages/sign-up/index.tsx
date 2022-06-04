@@ -94,7 +94,7 @@ function RegisterForm() {
 		const accessToken = res.data.access_token;
 		if (accessToken !== null || accessToken !== undefined)  {
 			AuthService.storeToken(accessToken);
-			authDispatch({ type:'LOGIN', payload: { email, name } });
+			authDispatch({ type:'LOGIN', payload: { email, name, role } });
 			return true;
 		}
 		return false;
