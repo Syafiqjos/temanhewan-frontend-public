@@ -13,7 +13,7 @@ export default async function GetConsultationByDoctorAPI(
 }) {
 	API.GetCSRFToken();
 	const authToken = AuthService.getToken();
-	const url = API.GetAPIHost('/api/consultation/create');
+	const url = API.GetAPIHost('/api/consultation/doctor');
 	const body = { 
 		doctor_id,
 		offset,
