@@ -124,7 +124,7 @@ export default function Sidebar({ children }: { children: React.ReactNode }) {
             </div>
           </aside>
         </div>
-        <div className='pl-5 pt-5'>{children}</div>
+        <div className='flex-auto pl-5 pt-5'>{children}</div>
       </div>
     </>
   );
