@@ -76,7 +76,7 @@ function ConsultationStatusComponent({ consultation }: { consultation: any }) {
 
 function ConsultationComponent({ consultation }: { consultation: any }) {
 	return (
-		<li className="mb-2">
+		<li className="mb-2" key={`consultation-${consultation.id}`}>
 			<div className="p-4 border rounded rounded-lg border-orange-600 flex flex-row justify-between">
 				<div className="flex flex-col">
 					<div className="font-semibold">{consultation.complaint}</div>
@@ -88,7 +88,7 @@ function ConsultationComponent({ consultation }: { consultation: any }) {
 						<ConsultationStatusComponent consultation={consultation} />
 					</div>
 					<div>
-						<ButtonLink variant="primary" href="/">Lihat</ButtonLink>
+						<ButtonLink variant="primary" href={`/dashboard/consultation/${consultation.id}`}>Lihat</ButtonLink>
 					</div>
 				</div>
 			</div>
@@ -131,14 +131,14 @@ export default function ConsultationByCustomerPage() {
 					<h1 className="text-xl">Daftar Konsultasi</h1>
 					<div className="grid grid-cols-4 p-4">
 						<div className="col-span-1 p-2">
-							<div className="flex flex-col items-start w-full">
+							<div className="flex flex-col items-start w-full mb-2">
 								<label>Filter</label>
 								<select className="w-full">
 									<option>1</option>
 									<option>2</option>
 								</select>
 							</div>
-							<div className="flex flex-col items-start w-full">
+							<div className="flex flex-col items-start w-full mb-2">
 								<label>Sortir</label>
 								<select className="w-full">
 									<option>1</option>
