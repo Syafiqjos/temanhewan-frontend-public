@@ -25,7 +25,7 @@ export default function MyForum() {
       <main>
         <ShouldAuthorized roleSpecific='customer'>
           <Sidebar>
-            <div className='flex flex-col items-start justify-start gap-3 p-4 text-left'>
+            <div>
               <h1 className='p-5 text-xl font-semibold'>Pertanyaan Saya</h1>
               {myForum.map((forum) => {
                 return (
