@@ -46,7 +46,34 @@ interface User {
 }
 
 export default function ConsultationByDoctorPage() {
+  const [ originalConsultations, setOriginalConsultations ] = React.useState<any>([]);
   const [ consultations, setConsultations ] = React.useState<any>([]);
+  const filterRef = React.useRef(null);
+  const sortRef = React.useRef(null);
+
+  function handleFilter(e: any) {
+	if (filterRef && sortRef) {
+		let _consultations = [ ...originalConsultations ];
+		const filter = filterRef.current.value;
+		const sort = sortRef.current.value;
+
+		if (filter != 'all') {
+			_consultations = _consultations.filter((c: any) => { return c.status == filter; });
+		}
+
+		if (sort == 'newest') {
+			_consultations = _consultations.sort((a: any, b: any) => { return new Date(b.date + ' ' + b.time) - new Date(a.date + ' ' + a.time); });
+		} else if (sort == 'oldest') {
+			_consultations = _consultations.sort((a: any, b: any) => { return new Date(a.date + ' ' + a.time) - new Date(b.date + ' ' + b.time); });
+		} else if (sort == 'lowest_fee') {
+			_consultations = _consultations.sort((a: any, b: any) => { return parseInt(a.fee) - parseInt(b.fee); });
+		} else if (sort == 'highest_fee') {
+			_consultations = _consultations.sort((a: any, b: any) => { return parseInt(b.fee) - parseInt(a.fee); });
+		}
+
+		setConsultations(_consultations);
+	}
+  }
 
   React.useEffect(() => {
 	(async () => {
@@ -59,9 +86,10 @@ export default function ConsultationByDoctorPage() {
 		const success = res.success;
 
 		if (success) {
+			setOriginalConsultations(res.data);
 			setConsultations(res.data);
 
-			console.log(consultations);
+			console.log(originalConsultations);
 		} else {
 			// something error
 		}
@@ -81,17 +109,24 @@ export default function ConsultationByDoctorPage() {
 					<div className="grid grid-cols-4 p-4">
 						<div className="col-span-1 p-2">
 							<div className="flex flex-col items-start w-full mb-2">
-								<label>Filter</label>
-								<select className="w-full">
-									<option>1</option>
-									<option>2</option>
+								<label>Filter Status</label>
+								<select ref={filterRef} className="w-full" onChange={handleFilter}>
+									<option value="all">Semua</option>
+									<option value="pending">Menunggu Konfirmasi</option>
+									<option value="rejected">Ditolak</option>
+									<option value="accepted">Menunggu Pembayaran</option>
+									<option value="cancelled">Dibatalkan</option>
+									<option value="paid">Dibayar dan Menunggu Konsultasi</option>
+									<option value="completed">Selesai</option>
 								</select>
 							</div>
 							<div className="flex flex-col items-start w-full mb-2">
 								<label>Sortir</label>
-								<select className="w-full">
-									<option>1</option>
-									<option>2</option>
+								<select ref={sortRef} className="w-full" onChange={handleFilter}>
+									<option value="newest">Terbaru</option>
+									<option value="oldest">Terlama</option>
+									<option value="highest_fee">Termahal</option>
+									<option value="lowest_fee">Termurah</option>
 								</select>
 							</div>
 						</div>
