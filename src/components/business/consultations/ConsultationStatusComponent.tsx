@@ -2,7 +2,7 @@ import * as React from 'react';
 import InputText from '@/components/forms/InputText';
 import ButtonLink from '@/components/links/ButtonLink';
 
-const formatCurrency = (currency) => {
+const formatCurrency = (currency: number) => {
 	return new Intl.NumberFormat('en-US', {
 		style: 'currency',
 		currency: 'IDR'
@@ -27,18 +27,18 @@ function ConsultationStatusComponent({ consultation }: { consultation: any }) {
 		} else if (consultation.status == "accepted") {
 			_className += " text-green-600";
 			_status = 'Menunggu Pembayaran';
-			setPostfix(` (${formatCurrency(consultation.fee)})`);
+			setPostfix(` (${formatCurrency(consultation.fee as number)})`);
 		} else if (consultation.status == "cancelled") {
 			_className += " text-red-600";
 			_status = 'Dibatalkan';
 		} else if (consultation.status == "paid") {
 			_className += " text-teal-600";
 			_status = 'Dibayar dan Menunggu Konsultasi';
-			setPostfix(` (${formatCurrency(consultation.fee)})`);
+			setPostfix(` (${formatCurrency(consultation.fee as number)})`);
 		} else if (consultation.status == "completed") {
 			_className += " text-green-600";
 			_status = 'Selesai';
-			setPostfix(` (${formatCurrency(consultation.fee)})`);
+			setPostfix(` (${formatCurrency(consultation.fee as number)})`);
 		}
 
 		setStatus(_status);

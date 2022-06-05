@@ -11,7 +11,7 @@ function ConsultationComponent({ consultation }: { consultation: any }) {
 				<div className="flex flex-col">
 					<div className="font-semibold">{consultation.complaint}</div>
 					<div className="mb-2">{consultation.address}</div>
-					<div>{new Date(consultation.date).toGMTString().split(' ', 4).join(' ')} ({consultation.time})</div>
+					<div>{new Date(consultation.date).toUTCString().split(' ', 4).join(' ')} ({consultation.time})</div>
 				</div>
 				<div className="flex flex-row">
 					<div>

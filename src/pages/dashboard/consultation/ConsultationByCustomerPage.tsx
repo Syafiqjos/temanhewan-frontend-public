@@ -50,7 +50,7 @@ export default function ConsultationByCustomerPage() {
 
   React.useEffect(() => {
 	(async () => {
-		const token = AuthService.getToken();
+		const token = AuthService.getToken()!;
 		const resUser = await AuthAPI({ token });
 		const userId = resUser.data.id;
 
@@ -97,7 +97,7 @@ export default function ConsultationByCustomerPage() {
 						</div>
 						<div className="col-span-3 p-4">
 							<ul className="pb-4">
-								{consultations.map((consultation) => {
+								{consultations.map((consultation: any) => {
 									return (
 										<ConsultationComponent consultation={consultation} key={`consultation-${consultation.id}`} />
 									);

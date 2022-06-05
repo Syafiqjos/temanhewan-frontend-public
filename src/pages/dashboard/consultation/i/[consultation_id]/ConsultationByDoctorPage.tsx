@@ -160,7 +160,7 @@ function SuccessPage({ myUser, user, consultation, setStatus, refreshUser }: { m
 						</div>)}
 						{isInputingPrice && (<div className="grid grid-cols-2 gap-3">
 							<button className="bg-white text-orange-600 rounded-xl border-orange-600 p-2 inline border-2 row-span-2" onClick={handleCloseInputPrice}>Batal</button>
-							<InputText name="input_price" label="Biaya yang diajukan (Rupiah)" type="number" value={fee} onChange={handleFee} />
+							<InputText name="input_price" label="Biaya yang diajukan (Rupiah)" type="number" value={fee as any as string} onChange={handleFee} />
 							<button className="bg-orange-600 text-white rounded-xl border-orange-600 p-2 inline border-2" onClick={handleAcceptConsultation}>Ajukan Biaya Konsultasi</button>
 						</div>)}
 					</>
@@ -195,7 +195,7 @@ function SuccessPage({ myUser, user, consultation, setStatus, refreshUser }: { m
 	</>);
 }
 
-function AcceptedPage({ myUser, user, consultation, setStatus }: { myUser: any, user: any, consultation: any, setStatus: any }) {
+function AcceptedPage({ myUser, user, consultation }: { myUser: any, user: any, consultation: any }) {
 	return (<>
 	<div className="flex flex-col gap-1">
 		<ul className="p-4">
@@ -208,7 +208,7 @@ function AcceptedPage({ myUser, user, consultation, setStatus }: { myUser: any, 
 	</>);
 }
 
-function RejectedPage({ myUser, user, consultation, setStatus }: { myUser: any, user: any, consultation: any, setStatus: any }) {
+function RejectedPage({ myUser, user, consultation }: { myUser: any, user: any, consultation: any }) {
 	return (<>
 	<div className="flex flex-col gap-1">
 		<ul className="p-4">
@@ -221,7 +221,7 @@ function RejectedPage({ myUser, user, consultation, setStatus }: { myUser: any, 
 	</>);
 }
 
-function CanceledPage({ myUser, user, consultation, setStatus }: { myUser: any, user: any, consultation: any, setStatus: any }) {
+function CanceledPage({ myUser, user, consultation }: { myUser: any, user: any, consultation: any }) {
 	return (<>
 	<div className="flex flex-col gap-1">
 		<ul className="p-4">
@@ -248,7 +248,7 @@ function FailedPage() {
 }
 
 export default function HomePage() {
-  const [ status, setStatus ] = React.useState<'LOADING' | 'NOTFOUND' | 'SUCCESS' | 'ACCEPTED' | 'REJECTED' | 'CANCELED' | 'FAILED'>('LOADING');
+  const [ status, setStatus ] = React.useState<'LOADING' | 'NOTFOUND' | 'SUCCESS' | 'ACCEPTED' | 'REJECTED' | 'CANCELED' | 'PAID' | 'COMPLETED' | 'FAILED'>('LOADING');
   const [ myUser, setMyUser ] = React.useState<any>({});
   const [ user, setUser ] = React.useState<any>({});
   const [ consultation, setConsultation ] = React.useState<any>({});
@@ -258,10 +258,10 @@ export default function HomePage() {
   const refreshUser = async () => {
 		if (!router.isReady) return;
 
-		const resAuth = await AuthAPI({ token: AuthService.getToken() });
+		const resAuth = await AuthAPI({ token: AuthService.getToken()! });
 		setMyUser(resAuth.data);
 
-		const consultation_id = router.query.consultation_id
+		const consultation_id = router.query.consultation_id as string;
 		const res = await GetConsultationAPI({ id: consultation_id });
 		const success = res.success;
 

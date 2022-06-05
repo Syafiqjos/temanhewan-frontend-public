@@ -122,7 +122,7 @@ function SuccessPage({ user }: { user: User }) {
 	</>);
 }
 
-function MatchedPage({ user, setStatus }: { user: User }) {
+function MatchedPage({ user, setStatus }: { user: User, setStatus: any }) {
 	const router = useRouter();
 
 	const [ req, setReq ] = React.useState<any>({
@@ -134,7 +134,7 @@ function MatchedPage({ user, setStatus }: { user: User }) {
 	});
 
 	function handleComplaint(e: any) {
-		setReq((prev) => {
+		setReq((prev: any) => {
 			return {
 				...prev,
 				'complaint': e.target.value
@@ -143,7 +143,7 @@ function MatchedPage({ user, setStatus }: { user: User }) {
 	}
 
 	function handleAddress(e: any) {
-		setReq((prev) => {
+		setReq((prev: any) => {
 			return {
 				...prev,
 				'address': e.target.value
@@ -152,7 +152,7 @@ function MatchedPage({ user, setStatus }: { user: User }) {
 	}
 
 	function handleDate(e: any) {
-		setReq((prev) => {
+		setReq((prev: any) => {
 			return {
 				...prev,
 				'date': e.target.value
@@ -161,7 +161,7 @@ function MatchedPage({ user, setStatus }: { user: User }) {
 	}
 
 	function handleTime(e: any) {
-		setReq((prev) => {
+		setReq((prev: any) => {
 			return {
 				...prev,
 				'time': e.target.value
@@ -236,7 +236,7 @@ export default function HomePage() {
 	const refreshUser = async () => {
 		if (!router.isReady) return;
 
-		const userId = router.query.id;
+		const userId = router.query.id as string;
 		const res = await GetPublicUserAPI({ id: userId });
 		const success = res.success;
 

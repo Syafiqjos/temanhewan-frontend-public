@@ -188,7 +188,7 @@ function SuccessPage({ myUser, user, consultation, setStatus, refreshUser }: { m
 	</>);
 }
 
-function AcceptedPage({ myUser, user, consultation, setStatus }: { myUser: any, user: any, consultation: any, setStatus: any }) {
+function AcceptedPage({ myUser, user, consultation }: { myUser: any, user: any, consultation: any }) {
 	return (<>
 	<div className="flex flex-col gap-1">
 		<ul className="p-4">
@@ -201,7 +201,7 @@ function AcceptedPage({ myUser, user, consultation, setStatus }: { myUser: any, 
 	</>);
 }
 
-function RejectedPage({ myUser, user, consultation, setStatus }: { myUser: any, user: any, consultation: any, setStatus: any }) {
+function RejectedPage({ myUser, user, consultation }: { myUser: any, user: any, consultation: any }) {
 	return (<>
 	<div className="flex flex-col gap-1">
 		<ul className="p-4">
@@ -214,7 +214,7 @@ function RejectedPage({ myUser, user, consultation, setStatus }: { myUser: any, 
 	</>);
 }
 
-function CanceledPage({ myUser, user, consultation, setStatus }: { myUser: any, user: any, consultation: any, setStatus: any }) {
+function CanceledPage({ myUser, user, consultation }: { myUser: any, user: any, consultation: any }) {
 	return (<>
 	<div className="flex flex-col gap-1">
 		<ul className="p-4">
@@ -227,7 +227,7 @@ function CanceledPage({ myUser, user, consultation, setStatus }: { myUser: any, 
 	</>);
 }
 
-function PaidPage() {
+function PaidPage({ myUser, user, consultation }: { myUser: any, user: any, consultation: any }) {
 	return (<>
 	<div className="flex flex-col gap-1">
 		<ul className="p-4">
@@ -241,7 +241,7 @@ function PaidPage() {
 	</>);
 }
 
-function CompletedPage() {
+function CompletedPage({ myUser, user, consultation }: { myUser: any, user: any, consultation: any }) {
 	return (<>
 	<div className="flex flex-col gap-1">
 		<ul className="p-4">
@@ -269,7 +269,7 @@ function FailedPage() {
 }
 
 export default function HomePage() {
-  const [ status, setStatus ] = React.useState<'LOADING' | 'NOTFOUND' | 'SUCCESS' | 'ACCEPTED' | 'REJECTED' | 'CANCELED' | 'FAILED'>('LOADING');
+  const [ status, setStatus ] = React.useState<'LOADING' | 'NOTFOUND' | 'SUCCESS' | 'ACCEPTED' | 'REJECTED' | 'CANCELED' | 'PAID' | 'COMPLETED' | 'FAILED'>('LOADING');
   const [ myUser, setMyUser ] = React.useState<any>({});
   const [ user, setUser ] = React.useState<any>({});
   const [ consultation, setConsultation ] = React.useState<any>({});
@@ -279,10 +279,10 @@ export default function HomePage() {
   const refreshUser = async () => {
 		if (!router.isReady) return;
 
-		const resAuth = await AuthAPI({ token: AuthService.getToken() });
+		const resAuth = await AuthAPI({ token: AuthService.getToken()! });
 		setMyUser(resAuth.data);
 
-		const consultation_id = router.query.consultation_id
+		const consultation_id = router.query.consultation_id as string;
 		const res = await GetConsultationAPI({ id: consultation_id });
 		const success = res.success;
 
