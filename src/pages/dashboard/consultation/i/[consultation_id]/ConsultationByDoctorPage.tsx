@@ -5,6 +5,7 @@ import AuthAPI from '@/api/AuthAPI';
 import AuthService from '@/services/AuthService';
 import GetConsultationAPI from '@/api/GetConsultationAPI';
 import AcceptConsultationAPI from '@/api/AcceptConsultationAPI';
+import RejectConsultationAPI from '@/api/RejectConsultationAPI';
 import GetPublicUserAPI from '@/api/GetPublicUserAPI';
 
 import ShouldAuthorized from '@/components/auths/ShouldAuthorized';
@@ -107,6 +108,23 @@ function SuccessPage({ myUser, user, consultation, setStatus, refreshUser }: { m
 		setIsInputingPrice(true);
 	}
 
+	async function handleRejectConsultation(e: any) {
+		e.preventDefault();
+
+		const res = await RejectConsultationAPI({ id: consultation.id });
+		const success = res.success;
+
+		if (success) {
+			setStatus('REJECTED');
+
+			setTimeout(() => {
+				refreshUser();
+			}, 1000);
+		} else {
+			setStatus('FAILED');
+		}
+	}
+
 	async function handleAcceptConsultation(e: any) {
 		e.preventDefault();
 
@@ -135,8 +153,9 @@ function SuccessPage({ myUser, user, consultation, setStatus, refreshUser }: { m
 			if (consultation.status == 'pending') {
 				return (
 					<>
-						{!isInputingPrice && (<div className="grid grid-cols-2 gap-3">
+						{!isInputingPrice && (<div className="grid grid-cols-3 gap-3">
 							<button className="bg-white text-orange-600 rounded-xl border-orange-600 p-2 inline border-2" onClick={handleBack}>Kembali</button>
+							<button className="bg-white text-orange-600 rounded-xl border-orange-600 p-2 inline border-2" onClick={handleRejectConsultation}>Tolak Permintaan</button>
 							<button className="bg-orange-600 text-white rounded-xl border-orange-600 p-2 inline border-2" onClick={handleInputPrice}>Ajukan Biaya Konsultasi</button>
 						</div>)}
 						{isInputingPrice && (<div className="grid grid-cols-2 gap-3">
@@ -185,7 +204,7 @@ function RejectedPage({ myUser, user, consultation, setStatus }: { myUser: any, 
 		</ul>
 	</div>
 	<div className="p-4 grid grid-cols-1 col-span-3">
-	  <h1>Konsultasi Berhasil Ditolak</h1>
+	  <h1>Permintaan Konsultasi Berhasil Ditolak</h1>
 	</div>
 	</>);
 }
