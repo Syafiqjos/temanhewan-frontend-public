@@ -8,6 +8,7 @@ import GetConsultationByCustomerAPI from '@/api/GetConsultationByCustomerAPI';
 import ShouldAuthorized from '@/components/auths/ShouldAuthorized';
 
 import InputText from '@/components/forms/InputText';
+import ConsultationComponent from '@/components/business/consultations/ConsultationComponent';
 
 import Layout from '@/components/layout/Layout';
 import ArrowLink from '@/components/links/ArrowLink';
@@ -42,58 +43,6 @@ interface User {
 	address?: string,
 	phone?: string,
 	profile_image?: string
-}
-
-function ConsultationStatusComponent({ consultation }: { consultation: any }) {
-	const [className, setClassName] = React.useState('');
-	const [status, setStatus] = React.useState('');
-
-	React.useEffect(() => {
-		let _className = "p-2 mr-2 font-semibold";
-		let _status = 'UNDEFINED';
-
-		if (consultation.status == "pending") {
-			_className += " text-yellow-600";
-			_status = 'Pending';
-		} else if (consultation.status == "rejected") {
-			_className += " text-red-600";
-			_status = 'Rejected';
-		} else if (consultation.status == "Success") {
-			_className += " text-green-600";
-			_status = 'Success';
-		}
-
-		setStatus(_status);
-		setClassName(_className);
-	}, []);
-
-	return (
-		<div className={className}>
-			{status}
-		</div>
-	);
-}
-
-function ConsultationComponent({ consultation }: { consultation: any }) {
-	return (
-		<li className="mb-2">
-			<div className="p-4 border rounded rounded-lg border-orange-600 flex flex-row justify-between">
-				<div className="flex flex-col">
-					<div className="font-semibold">{consultation.complaint}</div>
-					<div className="mb-2">{consultation.address}</div>
-					<div>{new Date(consultation.date).toGMTString().split(' ', 4).join(' ')} ({consultation.time})</div>
-				</div>
-				<div className="flex flex-row">
-					<div>
-						<ConsultationStatusComponent consultation={consultation} />
-					</div>
-					<div>
-						<ButtonLink variant="primary" href={`/dashboard/consultation/${consultation.id}`}>Lihat</ButtonLink>
-					</div>
-				</div>
-			</div>
-		</li>
-	);
 }
 
 export default function ConsultationByCustomerPage() {
