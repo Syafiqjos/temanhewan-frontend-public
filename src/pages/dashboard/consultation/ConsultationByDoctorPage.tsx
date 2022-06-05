@@ -52,23 +52,23 @@ export default function ConsultationByDoctorPage() {
   const sortRef = React.useRef(null);
 
   function handleFilter(e: any) {
-	if (filterRef && sortRef) {
+	if (filterRef && sortRef && filterRef.current && sortRef.current) {
 		let _consultations = [ ...originalConsultations ];
-		const filter = filterRef.current.value;
-		const sort = sortRef.current.value;
+		const filter = (filterRef.current as any).value;
+		const sort = (sortRef.current as any).value;
 
 		if (filter != 'all') {
 			_consultations = _consultations.filter((c: any) => { return c.status == filter; });
 		}
 
 		if (sort == 'newest') {
-			_consultations = _consultations.sort((a: any, b: any) => { return new Date(b.date + ' ' + b.time) - new Date(a.date + ' ' + a.time); });
+			_consultations = _consultations.sort((a: any, b: any) => { return ((new Date(b.date + ' ' + b.time)).getTime() - (new Date(a.date + ' ' + a.time)).getTime()); });
 		} else if (sort == 'oldest') {
-			_consultations = _consultations.sort((a: any, b: any) => { return new Date(a.date + ' ' + a.time) - new Date(b.date + ' ' + b.time); });
+			_consultations = _consultations.sort((a: any, b: any) => { return ((new Date(a.date + ' ' + a.time)).getTime() - (new Date(b.date + ' ' + b.time)).getTime()); });
 		} else if (sort == 'lowest_fee') {
-			_consultations = _consultations.sort((a: any, b: any) => { return parseInt(a.fee) - parseInt(b.fee); });
+			_consultations = _consultations.sort((a: any, b: any) => { return (parseInt(a.fee) - parseInt(b.fee)); });
 		} else if (sort == 'highest_fee') {
-			_consultations = _consultations.sort((a: any, b: any) => { return parseInt(b.fee) - parseInt(a.fee); });
+			_consultations = _consultations.sort((a: any, b: any) => { return (parseInt(b.fee) - parseInt(a.fee)); });
 		}
 
 		setConsultations(_consultations);
