@@ -183,6 +183,12 @@ function SuccessPage({ myUser, user, consultation, setStatus, refreshUser }: { m
 						<button className="bg-white text-orange-600 rounded-xl border-orange-600 p-2 inline border-2" onClick={handleBack}>Kembali</button>
 					</div>
 				);
+			} else if (consultation.status == 'completed') {
+				return (
+					<div className="grid grid-cols-2 gap-3">
+						<button className="bg-white text-orange-600 rounded-xl border-orange-600 p-2 inline border-2" onClick={handleBack}>Kembali</button>
+					</div>
+				);
 			}
 		})()}
 	</div>
