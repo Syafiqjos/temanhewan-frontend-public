@@ -163,14 +163,14 @@ function SuccessPage({ myUser, user, consultation, review, setStatus, refreshUse
 	async function handleReviewConsultation(e: any) {
 		e.preventDefault();
 
-		if (ratingReviewRef && ratingReviewRef.current) {
-			const rating = ratingReviewRef.current.find(el => el.checked)!.value;
+		if (ratingReviewRef && ratingReviewRef.current && inputReviewRef && inputReviewRef.current && privateReviewRef && privateReviewRef.current) {
+			const rating = (ratingReviewRef.current.find(el => (el as any).checked) as any).value;
 
 			const res = await CreateConsultationReviewAPI({
 				id: consultation.id,
 				rating: rating,
-				review: inputReviewRef.current.value,
-				is_public: !privateReviewRef.current.checked
+				review: (inputReviewRef.current as any).value,
+				is_public: !(privateReviewRef.current as any).checked
 			});
 			const success = res.success;
 
@@ -242,17 +242,17 @@ function SuccessPage({ myUser, user, consultation, review, setStatus, refreshUse
 							<form className="w-full col-span-2">
 								<span className="font-semibold">Rating</span>
 								<ul className="grid grid-cols-5">
-									<li><input ref={el => ratingReviewRef.current[0] = el} className="p-1" type="radio" name="review_rating" value="1" /> 1 Star</li>
-									<li><input ref={el => ratingReviewRef.current[1] = el} className="p-1" type="radio" name="review_rating" value="2" /> 2 Stars</li>
-									<li><input ref={el => ratingReviewRef.current[2] = el} className="p-1" type="radio" name="review_rating" value="3" /> 3 Stars</li>
-									<li><input ref={el => ratingReviewRef.current[3] = el} className="p-1" type="radio" name="review_rating" value="4" /> 4 Stars</li>
-									<li><input ref={el => ratingReviewRef.current[4] = el} className="p-1" type="radio" name="review_rating" value="5" /> 5 Stars</li>
+									<li><input ref={el => ratingReviewRef.current[0] = (el as never)} className="p-1" type="radio" name="review_rating" value="1" /> 1 Star</li>
+									<li><input ref={el => ratingReviewRef.current[1] = (el as never)} className="p-1" type="radio" name="review_rating" value="2" /> 2 Stars</li>
+									<li><input ref={el => ratingReviewRef.current[2] = (el as never)} className="p-1" type="radio" name="review_rating" value="3" /> 3 Stars</li>
+									<li><input ref={el => ratingReviewRef.current[3] = (el as never)} className="p-1" type="radio" name="review_rating" value="4" /> 4 Stars</li>
+									<li><input ref={el => ratingReviewRef.current[4] = (el as never)} className="p-1" type="radio" name="review_rating" value="5" /> 5 Stars</li>
 								</ul>
 							</form>
 							<textarea ref={inputReviewRef} className="bg-white text-orange-600 rounded-xl border-orange-600 p-4 inline border-2 col-span-2" placeholder="Review anda"></textarea>
 							<form className="p-4">
 								<input className="mr-2" ref={privateReviewRef} id="review_public" name="review_public" type="checkbox" />
-								<label forhtml="review_public">Review secara privasi?</label>
+								<label htmlFor="review_public">Review secara privasi?</label>
 							</form>
 							<button className="bg-orange-600 text-white rounded-xl border-orange-600 p-2 inline border-2 col-span-1" onClick={handleReviewConsultation}>Tambahkan Review Konsultasi</button>
 						</div>)}
