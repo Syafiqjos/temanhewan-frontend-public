@@ -4,6 +4,7 @@ import { useRouter } from 'next/router'
 import AuthAPI from '@/api/AuthAPI';
 import AuthService from '@/services/AuthService';
 import GetConsultationAPI from '@/api/GetConsultationAPI';
+import GetConsultationReviewAPI from '@/api/GetConsultationReviewAPI';
 import CancelConsultationAPI from '@/api/CancelConsultationAPI';
 import PaidConsultationAPI from '@/api/PaidConsultationAPI';
 import CompleteConsultationAPI from '@/api/CompleteConsultationAPI';
@@ -80,7 +81,7 @@ function LoadingPage() {
 	</>);
 }
 
-function SuccessPage({ myUser, user, consultation, setStatus, refreshUser }: { myUser: any, user: any, consultation: any, setStatus: any, refreshUser: any }) {
+function SuccessPage({ myUser, user, consultation, review, setStatus, refreshUser }: { myUser: any, user: any, consultation: any, review: any, setStatus: any, refreshUser: any }) {
 	const router = useRouter();
 
 	const [ isInputingReview, setIsInputingReview ] = React.useState(false);
@@ -190,11 +191,11 @@ function SuccessPage({ myUser, user, consultation, setStatus, refreshUser }: { m
 		<ConsultationFormComponent consultation={consultation} />
 		<DoctorFormComponent user={user} />
 		<CustomerFormComponent user={myUser} />
-		{<ReviewFormComponent review={{rating: 5, review: 'Good tho', is_public: 1}} />}
+		{consultation.is_reviewed && <ReviewFormComponent review={review} />}
 		<ConsultationStatusFormComponent consultation={consultation} />
 		
 		{(()=>{
-			if (consultation.reviewed == true) {
+			if (consultation.is_reviewed) {
 				return (
 					<div className="grid grid-cols-2 gap-3">
 						<button className="bg-white text-orange-600 rounded-xl border-orange-600 p-2 inline border-2" onClick={handleBack}>Kembali</button>
@@ -362,6 +363,7 @@ export default function HomePage() {
   const [ myUser, setMyUser ] = React.useState<any>({});
   const [ user, setUser ] = React.useState<any>({});
   const [ consultation, setConsultation ] = React.useState<any>({});
+  const [ review, setReview ] = React.useState<any>({});
 
   const router = useRouter();
 
@@ -378,6 +380,13 @@ export default function HomePage() {
 		if (success) {
 			const _consultation = res.data;
 			setConsultation(_consultation);
+
+			if (_consultation.is_reviewed) {
+				const resReview = await GetConsultationReviewAPI({ id: _consultation.id });
+				if (resReview.success) {
+					setReview(resReview.data);
+				}
+			}
 
 			const userId = _consultation.doctor_id;
 			const resUser = await GetPublicUserAPI({ id: userId });
@@ -417,7 +426,7 @@ export default function HomePage() {
 				<div className="px-4 grid grid-cols-1 gap-3">
 					{status === 'LOADING' && <LoadingPage />
 					|| status === 'NOTFOUND' && <NotFoundPage />
-					|| status === 'SUCCESS' && <SuccessPage myUser={myUser} user={user} consultation={consultation} setStatus={setStatus} refreshUser={refreshUser} />
+					|| status === 'SUCCESS' && <SuccessPage myUser={myUser} user={user} consultation={consultation} review={review} setStatus={setStatus} refreshUser={refreshUser} />
 					|| status === 'ACCEPTED' && <AcceptedPage myUser={myUser} user={user} consultation={consultation} />
 					|| status === 'REJECTED' && <RejectedPage myUser={myUser} user={user} consultation={consultation} />
 					|| status === 'CANCELED' && <CanceledPage myUser={myUser} user={user} consultation={consultation} />
