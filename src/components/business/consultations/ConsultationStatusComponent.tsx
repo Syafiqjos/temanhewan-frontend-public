@@ -2,9 +2,17 @@ import * as React from 'react';
 import InputText from '@/components/forms/InputText';
 import ButtonLink from '@/components/links/ButtonLink';
 
+const formatCurrency = (currency) => {
+	return new Intl.NumberFormat('en-US', {
+		style: 'currency',
+		currency: 'IDR'
+	}).format(currency);
+};
+
 function ConsultationStatusComponent({ consultation }: { consultation: any }) {
 	const [className, setClassName] = React.useState('');
 	const [status, setStatus] = React.useState('');
+	const [postfix, setPostfix] = React.useState('');
 
 	React.useEffect(() => {
 		let _className = "p-2 mr-2 font-semibold";
@@ -19,6 +27,7 @@ function ConsultationStatusComponent({ consultation }: { consultation: any }) {
 		} else if (consultation.status == "accepted") {
 			_className += " text-green-600";
 			_status = 'Menunggu Pembayaran';
+			setPostfix(` (${formatCurrency(consultation.fee)})`);
 		} else if (consultation.status == "cancelled") {
 			_className += " text-red-600";
 			_status = 'Dibatalkan';
@@ -36,7 +45,7 @@ function ConsultationStatusComponent({ consultation }: { consultation: any }) {
 
 	return (
 		<div className={className}>
-			{status}
+			{status} {postfix}
 		</div>
 	);
 }
