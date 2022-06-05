@@ -20,7 +20,7 @@ export default function HomePage() {
 			<ShouldAuthorized roleSpecific="doctor" dontRedirect={true}>
 				<ConsultationByDoctorPage />
 			</ShouldAuthorized>
-		<ShouldAuthorized>
+		</ShouldAuthorized>
     </>
   );
 }
