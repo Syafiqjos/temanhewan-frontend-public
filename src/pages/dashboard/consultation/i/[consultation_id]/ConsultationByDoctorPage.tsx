@@ -3,11 +3,17 @@ import { useRouter } from 'next/router'
 
 import AuthAPI from '@/api/AuthAPI';
 import AuthService from '@/services/AuthService';
-import GetConsultationByCustomerAPI from '@/api/GetConsultationByCustomerAPI';
+import GetConsultationAPI from '@/api/GetConsultationAPI';
+import AcceptConsultationAPI from '@/api/AcceptConsultationAPI';
+import GetPublicUserAPI from '@/api/GetPublicUserAPI';
 
 import ShouldAuthorized from '@/components/auths/ShouldAuthorized';
 
 import InputText from '@/components/forms/InputText';
+import DoctorFormComponent from '@/components/business/consultations/DoctorFormComponent';
+import CustomerFormComponent from '@/components/business/consultations/CustomerFormComponent';
+import ConsultationFormComponent from '@/components/business/consultations/ConsultationFormComponent';
+import ConsultationStatusFormComponent from '@/components/business/consultations/ConsultationStatusFormComponent';
 
 import Layout from '@/components/layout/Layout';
 import ArrowLink from '@/components/links/ArrowLink';
@@ -44,80 +50,218 @@ interface User {
 	profile_image?: string
 }
 
-function ConsultationStatusComponent({ consultation }: { consultation: any }) {
-	const [className, setClassName] = React.useState('');
-	const [status, setStatus] = React.useState('');
+function NotFoundPage() {
+	return (<>
+	<div className="flex flex-col gap-1">
+		<ul className="p-4">
+			<img className="rounded-xl object-cover w-full h-48" src="/images/cover/register-cover.png" />
+		</ul>
+	</div>
+	<div className="p-4 grid grid-cols-1 col-span-3">
+	  <h1>Dokter hewan tidak ditemukan</h1>
+	</div>
+	</>);
+}
 
-	React.useEffect(() => {
-		let _className = "p-2 mr-2 font-semibold";
-		let _status = 'UNDEFINED';
+function LoadingPage() {
+	return (<>
+	<div className="flex flex-col gap-1">
+		<ul className="p-4">
+			<img className="rounded-xl object-cover w-full h-48" src="/images/cover/register-cover.png" />
+		</ul>
+	</div>
+	<div className="p-4 grid grid-cols-1 col-span-3">
+	  <h1>Memuat..</h1>
+	</div>
+	</>);
+}
 
-		if (consultation.status == "pending") {
-			_className += " text-yellow-600";
-			_status = 'Pending';
-		} else if (consultation.status == "rejected") {
-			_className += " text-red-600";
-			_status = 'Rejected';
-		} else if (consultation.status == "Success") {
-			_className += " text-green-600";
-			_status = 'Success';
+function SuccessPage({ myUser, user, consultation, setStatus, refreshUser }: { myUser: any, user: any, consultation: any, setStatus: any, refreshUser: any }) {
+	const router = useRouter();
+	
+	const [ isInputingPrice, setIsInputingPrice ] = React.useState(false);
+	const [ fee, setFee ] = React.useState(100000);
+
+	function handleBack(e: any) {
+		e.preventDefault();
+
+		if (router.isReady) {
+			router.push(`/dashboard/consultation`);
 		}
+	}
 
-		setStatus(_status);
-		setClassName(_className);
-	}, []);
+	function handleFee(e: any) {
+		e.preventDefault();
+		setFee(e.target.value);
+	}
 
-	return (
-		<div className={className}>
-			{status}
-		</div>
-	);
-}
+	function handleCloseInputPrice(e: any) {
+		e.preventDefault();
 
-function ConsultationComponent({ consultation }: { consultation: any }) {
-	return (
-		<li className="mb-2">
-			<div className="p-4 border rounded rounded-lg border-orange-600 flex flex-row justify-between">
-				<div className="flex flex-col">
-					<div className="font-semibold">{consultation.complaint}</div>
-					<div className="mb-2">{consultation.address}</div>
-					<div>{new Date(consultation.date).toGMTString().split(' ', 4).join(' ')} ({consultation.time})</div>
-				</div>
-				<div className="flex flex-row">
-					<div>
-						<ConsultationStatusComponent consultation={consultation} />
-					</div>
-					<div>
-						<ButtonLink variant="primary" href={`/dashboard/consultation/${consultation.id}`}>Lihat</ButtonLink>
-					</div>
-				</div>
-			</div>
-		</li>
-	);
-}
+		setIsInputingPrice(false);
+	}
 
-export default function HomePage() {
-  const [ consultation, setConsultation ] = React.useState<any>(null);
+	function handleInputPrice(e: any) {
+		e.preventDefault();
 
-  React.useEffect(() => {
-	(async () => {
-		const token = AuthService.getToken();
-		const resUser = await AuthAPI({ token });
-		const userId = resUser.data.id;
+		setIsInputingPrice(true);
+	}
 
-		// get users from server
-		const res = await GetConsultationByCustomerAPI({ customer_id: userId, offset:0, limit: 100 });
+	async function handleAcceptConsultation(e: any) {
+		e.preventDefault();
+
+		const res = await AcceptConsultationAPI({ id: consultation.id, fee: fee });
 		const success = res.success;
 
 		if (success) {
-			setConsultations(res.data);
+			setStatus('ACCEPTED');
 
-			console.log(consultations);
+			setTimeout(() => {
+				refreshUser();
+			}, 1000);
 		} else {
-			// something error
+			setStatus('FAILED');
 		}
-	})();
-  }, []);
+	}
+
+	return (<>
+	<div className="flex flex-col gap-1 p-4">
+		<ConsultationFormComponent consultation={consultation} />
+		<DoctorFormComponent user={myUser} />
+		<CustomerFormComponent user={user} />
+		<ConsultationStatusFormComponent consultation={consultation} />
+		
+		{(()=>{
+			if (consultation.status == 'pending') {
+				return (
+					<>
+						{!isInputingPrice && (<div className="grid grid-cols-2 gap-3">
+							<button className="bg-white text-orange-600 rounded-xl border-orange-600 p-2 inline border-2" onClick={handleBack}>Kembali</button>
+							<button className="bg-orange-600 text-white rounded-xl border-orange-600 p-2 inline border-2" onClick={handleInputPrice}>Ajukan Biaya Konsultasi</button>
+						</div>)}
+						{isInputingPrice && (<div className="grid grid-cols-2 gap-3">
+							<button className="bg-white text-orange-600 rounded-xl border-orange-600 p-2 inline border-2 row-span-2" onClick={handleCloseInputPrice}>Batal</button>
+							<InputText name="input_price" label="Biaya yang diajukan (Rupiah)" type="number" value={fee} onChange={handleFee} />
+							<button className="bg-orange-600 text-white rounded-xl border-orange-600 p-2 inline border-2" onClick={handleAcceptConsultation}>Ajukan Biaya Konsultasi</button>
+						</div>)}
+					</>
+				);
+			} else if (consultation.status == 'cancelled') {
+				return (
+					<div className="grid grid-cols-2 gap-3">
+						<button className="bg-white text-orange-600 rounded-xl border-orange-600 p-2 inline border-2" onClick={handleBack}>Kembali</button>
+					</div>
+				);
+			} else if (consultation.status == 'accepted') {
+				return (
+					<div className="grid grid-cols-2 gap-3">
+						<button className="bg-white text-orange-600 rounded-xl border-orange-600 p-2 inline border-2" onClick={handleBack}>Kembali</button>
+					</div>
+				);
+			}
+		})()}
+	</div>
+	</>);
+}
+
+function AcceptedPage({ myUser, user, consultation, setStatus }: { myUser: any, user: any, consultation: any, setStatus: any }) {
+	return (<>
+	<div className="flex flex-col gap-1">
+		<ul className="p-4">
+			<img className="rounded-xl object-cover w-full h-48" src="/images/cover/register-cover.png" />
+		</ul>
+	</div>
+	<div className="p-4 grid grid-cols-1 col-span-3">
+	  <h1>Ajuan harga konsultasi berhasil dikirimkan ke pelanggan. Mohon tunggu konfirmasi pelanggan.</h1>
+	</div>
+	</>);
+}
+
+function RejectedPage({ myUser, user, consultation, setStatus }: { myUser: any, user: any, consultation: any, setStatus: any }) {
+	return (<>
+	<div className="flex flex-col gap-1">
+		<ul className="p-4">
+			<img className="rounded-xl object-cover w-full h-48" src="/images/cover/register-cover.png" />
+		</ul>
+	</div>
+	<div className="p-4 grid grid-cols-1 col-span-3">
+	  <h1>Konsultasi Berhasil Ditolak</h1>
+	</div>
+	</>);
+}
+
+function CanceledPage({ myUser, user, consultation, setStatus }: { myUser: any, user: any, consultation: any, setStatus: any }) {
+	return (<>
+	<div className="flex flex-col gap-1">
+		<ul className="p-4">
+			<img className="rounded-xl object-cover w-full h-48" src="/images/cover/register-cover.png" />
+		</ul>
+	</div>
+	<div className="p-4 grid grid-cols-1 col-span-3">
+	  <h1>Konsultasi Berhasil Dibatalkan</h1>
+	</div>
+	</>);
+}
+
+function FailedPage() {
+	return (<>
+	<div className="flex flex-col gap-1">
+		<ul className="p-4">
+			<img className="rounded-xl object-cover w-full h-48" src="/images/cover/register-cover.png" />
+		</ul>
+	</div>
+	<div className="p-4 grid grid-cols-1 col-span-3">
+	  <h1>Ada yang salah, silahkan ulangi lagi</h1>
+	</div>
+	</>);
+}
+
+export default function HomePage() {
+  const [ status, setStatus ] = React.useState<'LOADING' | 'NOTFOUND' | 'SUCCESS' | 'ACCEPTED' | 'REJECTED' | 'CANCELED' | 'FAILED'>('LOADING');
+  const [ myUser, setMyUser ] = React.useState<any>({});
+  const [ user, setUser ] = React.useState<any>({});
+  const [ consultation, setConsultation ] = React.useState<any>({});
+
+  const router = useRouter();
+
+  const refreshUser = async () => {
+		if (!router.isReady) return;
+
+		const resAuth = await AuthAPI({ token: AuthService.getToken() });
+		setMyUser(resAuth.data);
+
+		const consultation_id = router.query.consultation_id
+		const res = await GetConsultationAPI({ id: consultation_id });
+		const success = res.success;
+
+		if (success) {
+			const _consultation = res.data;
+			setConsultation(_consultation);
+
+			const userId = _consultation.customer_id;
+			const resUser = await GetPublicUserAPI({ id: userId });
+			const success = resUser.success;
+
+			if (success) {
+				const user = resUser.data;
+
+				if (user.role == 'customer') {
+					setUser(user);
+					setStatus('SUCCESS');
+				} else {
+					setStatus('NOTFOUND');
+				}
+			} else {
+				setStatus('NOTFOUND');
+			}
+		} else {
+			setStatus('NOTFOUND');
+		}
+	};
+
+  React.useEffect(() => {
+	refreshUser();
+  }, [ router.isReady ]);
 
   return (
     <>
@@ -125,38 +269,21 @@ export default function HomePage() {
       <Seo />
 
       <main>
-		<ShouldAuthorized roleSpecific="customer">
+		<ShouldAuthorized roleSpecific="doctor">
 			<section className='bg-white'>
-				<div className="p-4">
-					<h1 className="text-xl">Daftar Konsultasi</h1>
-					<div className="grid grid-cols-4 p-4">
-						<div className="col-span-1 p-2">
-							<div className="flex flex-col items-start w-full mb-2">
-								<label>Filter</label>
-								<select className="w-full">
-									<option>1</option>
-									<option>2</option>
-								</select>
-							</div>
-							<div className="flex flex-col items-start w-full mb-2">
-								<label>Sortir</label>
-								<select className="w-full">
-									<option>1</option>
-									<option>2</option>
-								</select>
-							</div>
-						</div>
-						<div className="col-span-3 p-4">
-							<ul className="pb-4">
-								{consultations.map((consultation) => {
-									return (
-										<ConsultationComponent consultation={consultation} key={`consultation-${consultation.id}`} />
-									);
-								})}
-							</ul>
-						</div>
-					</div>
+			  <div className='layout grid grid-cols-1 mt-8 w-100'>
+				<h1 className="text-xl font-semibold mb-2">Informasi Konsultasi</h1>
+				<div className="px-4 grid grid-cols-1 gap-3">
+					{status === 'LOADING' && <LoadingPage />
+					|| status === 'NOTFOUND' && <NotFoundPage />
+					|| status === 'SUCCESS' && <SuccessPage myUser={myUser} user={user} consultation={consultation} setStatus={setStatus} refreshUser={refreshUser} />
+					|| status === 'ACCEPTED' && <AcceptedPage myUser={myUser} user={user} consultation={consultation} />
+					|| status === 'REJECTED' && <RejectedPage myUser={myUser} user={user} consultation={consultation} />
+					|| status === 'CANCELED' && <CanceledPage myUser={myUser} user={user} consultation={consultation} />
+					|| status === 'FAILED' && <FailedPage />
+					}
 				</div>
+			  </div>
 			</section>
 		</ShouldAuthorized>
       </main>
