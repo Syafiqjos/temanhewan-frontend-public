@@ -6,6 +6,7 @@ import AuthService from '@/services/AuthService';
 import GetConsultationAPI from '@/api/GetConsultationAPI';
 import CancelConsultationAPI from '@/api/CancelConsultationAPI';
 import PaidConsultationAPI from '@/api/PaidConsultationAPI';
+import CompleteConsultationAPI from '@/api/CompleteConsultationAPI';
 import GetPublicUserAPI from '@/api/GetPublicUserAPI';
 
 import ShouldAuthorized from '@/components/auths/ShouldAuthorized';
@@ -122,6 +123,23 @@ function SuccessPage({ myUser, user, consultation, setStatus, refreshUser }: { m
 		}
 	}
 
+	async function handleCompleteConsultation(e: any) {
+		e.preventDefault();
+
+		const res = await CompleteConsultationAPI({ id: consultation.id });
+		const success = res.success;
+
+		if (success) {
+			setStatus('COMPLETED');
+
+			setTimeout(() => {
+				refreshUser();
+			}, 3000);
+		} else {
+			setStatus('FAILED');
+		}
+	}
+
 	return (<>
 	<div className="flex flex-col gap-1 p-4">
 		<ConsultationFormComponent consultation={consultation} />
@@ -155,6 +173,7 @@ function SuccessPage({ myUser, user, consultation, setStatus, refreshUser }: { m
 				return (
 					<div className="grid grid-cols-2 gap-3">
 						<button className="bg-white text-orange-600 rounded-xl border-orange-600 p-2 inline border-2" onClick={handleBack}>Kembali</button>
+						<button className="bg-orange-600 text-white rounded-xl border-orange-600 p-2 inline border-2" onClick={handleCompleteConsultation}>Selesaikan Konsultasi</button>
 					</div>
 				);
 			}
@@ -212,6 +231,20 @@ function PaidPage() {
 	<div className="p-4 grid grid-cols-1 col-span-3">
 	  <h1>Pembayaran konsultasi berhasil</h1>
 	  <h2 className="text-xl">Silahkan bersiap ditempat dan waktu yang telah dijanjikan. Nantikan dokter hewan pilihan anda untuk memeriksa!</h2>
+	</div>
+	</>);
+}
+
+function CompletedPage() {
+	return (<>
+	<div className="flex flex-col gap-1">
+		<ul className="p-4">
+			<img className="rounded-xl object-cover w-full h-48" src="/images/cover/register-cover.png" />
+		</ul>
+	</div>
+	<div className="p-4 grid grid-cols-1 col-span-3">
+	  <h1>Konsultasi telah diselesaikan</h1>
+	  <h2 className="text-xl">Selamat konsultasi bersama dokter hewan peliharaan anda telah selesai. Jangan lupa untuk berikan review dan testimoni terhadap dokter hewan peliharaan yang telah membantu anda ya.</h2>
 	</div>
 	</>);
 }
@@ -294,6 +327,7 @@ export default function HomePage() {
 					|| status === 'REJECTED' && <RejectedPage myUser={myUser} user={user} consultation={consultation} />
 					|| status === 'CANCELED' && <CanceledPage myUser={myUser} user={user} consultation={consultation} />
 					|| status === 'PAID' && <PaidPage myUser={myUser} user={user} consultation={consultation} />
+					|| status === 'COMPLETED' && <CompletedPage myUser={myUser} user={user} consultation={consultation} />
 					|| status === 'FAILED' && <FailedPage />
 					}
 				</div>
