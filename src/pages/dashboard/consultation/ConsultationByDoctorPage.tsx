@@ -8,6 +8,7 @@ import GetConsultationByDoctorAPI from '@/api/GetConsultationByDoctorAPI';
 import ShouldAuthorized from '@/components/auths/ShouldAuthorized';
 
 import InputText from '@/components/forms/InputText';
+import ConsultationComponent from '@/components/business/consultations/ConsultationComponent';
 
 import Layout from '@/components/layout/Layout';
 import ArrowLink from '@/components/links/ArrowLink';
@@ -57,10 +58,10 @@ export default function ConsultationByDoctorPage() {
 		const res = await GetConsultationByDoctorAPI({ doctor_id: userId, offset:0, limit: 100 });
 		const success = res.success;
 
-		console.log(res);
-
 		if (success) {
 			setConsultations(res.data);
+
+			console.log(consultations);
 		} else {
 			// something error
 		}
@@ -75,7 +76,36 @@ export default function ConsultationByDoctorPage() {
       <main>
 		<ShouldAuthorized roleSpecific="doctor">
 			<section className='bg-white'>
-			  doctor
+				<div className="p-4">
+					<h1 className="text-xl">Daftar Konsultasi</h1>
+					<div className="grid grid-cols-4 p-4">
+						<div className="col-span-1 p-2">
+							<div className="flex flex-col items-start w-full mb-2">
+								<label>Filter</label>
+								<select className="w-full">
+									<option>1</option>
+									<option>2</option>
+								</select>
+							</div>
+							<div className="flex flex-col items-start w-full mb-2">
+								<label>Sortir</label>
+								<select className="w-full">
+									<option>1</option>
+									<option>2</option>
+								</select>
+							</div>
+						</div>
+						<div className="col-span-3 p-4">
+							<ul className="pb-4">
+								{consultations.map((consultation) => {
+									return (
+										<ConsultationComponent consultation={consultation} key={`consultation-${consultation.id}`} />
+									);
+								})}
+							</ul>
+						</div>
+					</div>
+				</div>
 			</section>
 		</ShouldAuthorized>
       </main>
