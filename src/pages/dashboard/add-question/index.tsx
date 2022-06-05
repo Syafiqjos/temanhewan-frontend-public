@@ -2,6 +2,7 @@ import { useRouter } from 'next/router';
 import * as React from 'react';
 
 import ShouldAuthorized from '@/components/auths/ShouldAuthorized';
+import CardForum from '@/components/card/CardForum';
 import InputText from '@/components/forms/InputText';
 import Sidebar from '@/components/layout/Sidebar';
 import Seo from '@/components/Seo';
@@ -12,15 +13,16 @@ import Forum from '@/interfaces/Forum';
 
 function InitialPage({ router, setMyForum, setErrorMessage, setStatus}: {router: any, setMyForum: any, setErrorMessage: any, setStatus: any}) {
 
+  const forumImageInput = React.useRef(null);
   const [title, setTitle] = React.useState('');
   const [subtitle, setSubtitle] = React.useState('');
   const [content, setContent] = React.useState('');
-  const forumImage = React.useRef(null);
+  const [forumImage, setForumImage] = React.useState('');
 
   function getForumImage(){
-    const input: any = forumImage.current;
+    const input: any = forumImageInput.current!;
     if(input.files && input.files.length > 0){
-      return input.files[0];
+      return input.files;
     }
 
     return undefined;
@@ -47,13 +49,14 @@ function InitialPage({ router, setMyForum, setErrorMessage, setStatus}: {router:
         title,
         subtitle,
         content,
+        forum_images: res.data.forum_images
       });
       setStatus('SUCCESS');
     } else {
       setErrorMessage("Something went wrong" + res.message);
       setStatus("ERROR");
     }
-    setTimeout(() => {router.push('/' + slug)}, 1000);
+    // setTimeout(() => {router.push('/' + slug)}, 1000);
   }
 
   function handleSetTitle(e: any) {
@@ -74,7 +77,7 @@ function InitialPage({ router, setMyForum, setErrorMessage, setStatus}: {router:
     <form className="py-4 grid grid-cols-1 gap-2" onSubmit={handleSubmit}>
       <div className="flex flex-col items-start w-full">
         <label htmlFor='forum_images'>Foto Pertanyaan</label>
-        <input ref={forumImage} name="forum_images" type="file" accept="image/*" />
+        <input ref={forumImageInput} name="forum_images[]" type="file" accept="image/*" multiple />
       </div>
       <InputText label="Judul Pertanyaan" name="title" type="text" value="" onChange={handleSetTitle} />
       <InputText label="Sub Judul" name="subtitle" type="text" value="" onChange={handleSetSubtitle} />
@@ -92,7 +95,7 @@ function InitialPage({ router, setMyForum, setErrorMessage, setStatus}: {router:
 function ErrorPage({ errorMessage }: { errorMessage: string }) {
   return (
     <>
-      <h1 className="text-center">{errorMessage}</h1>
+      <p className="text-center">{errorMessage}</p>
     </>
   );
 }
@@ -101,14 +104,14 @@ function SuccessPage({ myForum }: { myForum: Forum }) {
   return (
     <>
       <h1 className="text-center">Pertanyaan berhasil ditambahkan</h1>
-      <div className="flex flex-col items-start w-full">
-        <img className="rounded-xl object-cover w-full h-48" alt="forum image" src="https://api-temanhewan.mirzaq.com/image/pet_default.png" />
-      </div>
-      <div className="flex flex-col items-start w-full">
-        <h1 className="text-xl font-semibold">{myForum.title}</h1>
-        <h2 className="text-sm font-semibold">{myForum.subtitle}</h2>
-        <p className="text-sm">{myForum.content}</p>
-      </div>
+  
+      <CardForum
+        image = {myForum.forum_images ? myForum.forum_images[0] : '/images/image_post.png'}
+        slug={myForum.slug}
+        title={myForum.title}
+        subtitle={myForum.subtitle}
+        content={myForum.content.length > 200 ? myForum.content.substring(0, 200) + '...' : myForum.content}
+      />
     </>
   );
 }
@@ -117,7 +120,7 @@ function SuccessPage({ myForum }: { myForum: Forum }) {
 export default function AddQuestion() {
   const router = useRouter();
   const [status, setStatus] = React.useState<'INITIAL' | 'ERROR' | 'SUCCESS' >('INITIAL');
-  const [myForum, setMyForum] = React.useState<Forum>({ id : '', slug: '', title: '', subtitle: '', content: ''});
+  const [myForum, setMyForum] = React.useState<Forum>({ id : '', slug: '', title: '', subtitle: '', content: '', forum_images: '' });
   const [ errorMessage, setErrorMessage ] = React.useState<string>('');
 
   return (
