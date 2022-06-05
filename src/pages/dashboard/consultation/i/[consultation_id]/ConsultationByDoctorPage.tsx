@@ -4,6 +4,7 @@ import { useRouter } from 'next/router'
 import AuthAPI from '@/api/AuthAPI';
 import AuthService from '@/services/AuthService';
 import GetConsultationAPI from '@/api/GetConsultationAPI';
+import GetConsultationReviewAPI from '@/api/GetConsultationReviewAPI';
 import AcceptConsultationAPI from '@/api/AcceptConsultationAPI';
 import RejectConsultationAPI from '@/api/RejectConsultationAPI';
 import GetPublicUserAPI from '@/api/GetPublicUserAPI';
@@ -15,6 +16,7 @@ import DoctorFormComponent from '@/components/business/consultations/DoctorFormC
 import CustomerFormComponent from '@/components/business/consultations/CustomerFormComponent';
 import ConsultationFormComponent from '@/components/business/consultations/ConsultationFormComponent';
 import ConsultationStatusFormComponent from '@/components/business/consultations/ConsultationStatusFormComponent';
+import ReviewFormComponent from '@/components/business/consultations/ReviewFormComponent';
 
 import Layout from '@/components/layout/Layout';
 import ArrowLink from '@/components/links/ArrowLink';
@@ -77,7 +79,7 @@ function LoadingPage() {
 	</>);
 }
 
-function SuccessPage({ myUser, user, consultation, setStatus, refreshUser }: { myUser: any, user: any, consultation: any, setStatus: any, refreshUser: any }) {
+function SuccessPage({ myUser, user, consultation, review, setStatus, refreshUser }: { myUser: any, user: any, consultation: any, review: any, setStatus: any, refreshUser: any }) {
 	const router = useRouter();
 	
 	const [ isInputingPrice, setIsInputingPrice ] = React.useState(false);
@@ -147,6 +149,7 @@ function SuccessPage({ myUser, user, consultation, setStatus, refreshUser }: { m
 		<ConsultationFormComponent consultation={consultation} />
 		<DoctorFormComponent user={myUser} />
 		<CustomerFormComponent user={user} />
+		{consultation.is_reviewed && <ReviewFormComponent review={review} />}
 		<ConsultationStatusFormComponent consultation={consultation} />
 		
 		{(()=>{
@@ -252,6 +255,7 @@ export default function HomePage() {
   const [ myUser, setMyUser ] = React.useState<any>({});
   const [ user, setUser ] = React.useState<any>({});
   const [ consultation, setConsultation ] = React.useState<any>({});
+  const [ review, setReview ] = React.useState<any>({});
 
   const router = useRouter();
 
@@ -268,6 +272,13 @@ export default function HomePage() {
 		if (success) {
 			const _consultation = res.data;
 			setConsultation(_consultation);
+
+			if (_consultation.is_reviewed) {
+				const resReview = await GetConsultationReviewAPI({ id: _consultation.id });
+				if (resReview.success) {
+					setReview(resReview.data);
+				}
+			}
 
 			const userId = _consultation.customer_id;
 			const resUser = await GetPublicUserAPI({ id: userId });
@@ -307,7 +318,7 @@ export default function HomePage() {
 				<div className="px-4 grid grid-cols-1 gap-3">
 					{status === 'LOADING' && <LoadingPage />
 					|| status === 'NOTFOUND' && <NotFoundPage />
-					|| status === 'SUCCESS' && <SuccessPage myUser={myUser} user={user} consultation={consultation} setStatus={setStatus} refreshUser={refreshUser} />
+					|| status === 'SUCCESS' && <SuccessPage myUser={myUser} user={user} consultation={consultation} review={review} setStatus={setStatus} refreshUser={refreshUser} />
 					|| status === 'ACCEPTED' && <AcceptedPage myUser={myUser} user={user} consultation={consultation} />
 					|| status === 'REJECTED' && <RejectedPage myUser={myUser} user={user} consultation={consultation} />
 					|| status === 'CANCELED' && <CanceledPage myUser={myUser} user={user} consultation={consultation} />
