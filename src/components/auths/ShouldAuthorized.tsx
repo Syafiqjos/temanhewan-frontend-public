@@ -7,7 +7,7 @@ function BlockingAuth({ show, children }: { show: boolean, children: any }) {
 	return show && children;
 }
 
-export default function ShouldAuthorized({ roleSpecific, children }: { roleSpecific?: string, children: React.ReactNode }) {
+export default function ShouldAuthorized({ roleSpecific, children, dontRedirect }: { roleSpecific?: string, children: React.ReactNode, dontRedirect?: boolean }) {
 	const authState = useAuthState();
 
 	const [ show, setShow ] = React.useState(false);
@@ -22,11 +22,15 @@ export default function ShouldAuthorized({ roleSpecific, children }: { roleSpeci
 			} else if (!roleGranted && authState.loading == false) {
 				setShow(false);
 				isMounted.current = false;
-				try {
-					Router.push({
-						pathname: '/'
-					});
-				} catch {}
+				if (dontRedirect === undefined || dontRedirect == false) {
+					try {
+						Router.push({
+							pathname: '/'
+						});
+					} catch {
+						// skip catch
+					}
+				}
 			}
 		}
 
