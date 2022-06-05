@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router'
 import * as React from 'react';
 
 import InputButton from '@/components/forms/InputButton';
@@ -12,6 +13,7 @@ import AuthService from '@/services/AuthService';
 
 export default function EditProfile({ onSubmit }: { onSubmit?: any }) {
 
+	const router = useRouter();
 	const profileImageInput = React.useRef(null);
 
 	const [profileImage, setProfileImage] = React.useState('');
@@ -93,6 +95,7 @@ export default function EditProfile({ onSubmit }: { onSubmit?: any }) {
 		const success = res.success;
 		if (success) {
 			console.log('update user success');
+			router.push('/dashboard/my-profile');
 		} else {
 			console.log('update user failed');
 		}
@@ -101,6 +104,7 @@ export default function EditProfile({ onSubmit }: { onSubmit?: any }) {
 		if (onSubmit !== undefined) {
 			onSubmit();
 		}
+
 	}
 
 	return <>
