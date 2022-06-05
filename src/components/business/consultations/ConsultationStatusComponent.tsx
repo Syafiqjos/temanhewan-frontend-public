@@ -16,9 +16,9 @@ function ConsultationStatusComponent({ consultation }: { consultation: any }) {
 		} else if (consultation.status == "rejected") {
 			_className += " text-red-600";
 			_status = 'Ditolak';
-		} else if (consultation.status == "success") {
+		} else if (consultation.status == "accepted") {
 			_className += " text-green-600";
-			_status = 'Berhasil';
+			_status = 'Menunggu Pembayaran';
 		} else if (consultation.status == "cancelled") {
 			_className += " text-red-600";
 			_status = 'Dibatalkan';
