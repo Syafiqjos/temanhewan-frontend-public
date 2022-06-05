@@ -27,7 +27,9 @@ export default function ShouldAuthorized({ roleSpecific, children, dontRedirect 
 						Router.push({
 							pathname: '/'
 						});
-					} catch {}
+					} catch {
+						// skip catch
+					}
 				}
 			}
 		}
