@@ -4,7 +4,7 @@ export default function InputText(
 {
 	label,
 	name,
-	type,
+	type = 'text',
 	placeholder,
 	onChange,
 	disabled = false,
@@ -12,7 +12,7 @@ export default function InputText(
 }: {
 	label: string,
 	name: string,
-	type: 'text' | 'password' | 'date',
+	type?: 'text' | 'password' | 'date' | 'number' | 'time',
 	placeholder?: string,
 	onChange?: any,
 	disabled?: boolean,

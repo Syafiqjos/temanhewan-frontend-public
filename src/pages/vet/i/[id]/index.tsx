@@ -75,6 +75,10 @@ function SuccessPage({ user }: { user: User }) {
 
 	function handleConsultVet(e: any) {
 		e.preventDefault();
+
+		if (router.isReady) {
+			router.push(`/vet/i/${user.id}/consult`);
+		}
 	}
 
 	return (<>
