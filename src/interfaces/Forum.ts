@@ -4,4 +4,5 @@ export default interface Forum {
   title: string;
   subtitle: string;
   content: string;
+  forum_images?: string;
 }
