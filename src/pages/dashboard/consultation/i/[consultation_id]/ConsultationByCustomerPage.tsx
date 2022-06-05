@@ -151,6 +151,12 @@ function SuccessPage({ myUser, user, consultation, setStatus, refreshUser }: { m
 						<button className="bg-orange-600 text-white rounded-xl border-orange-600 p-2 inline border-2" onClick={handlePayConsultation}>Bayar Biaya Konsultasi</button>
 					</div>
 				);
+			} else if (consultation.status == 'paid') {
+				return (
+					<div className="grid grid-cols-2 gap-3">
+						<button className="bg-white text-orange-600 rounded-xl border-orange-600 p-2 inline border-2" onClick={handleBack}>Kembali</button>
+					</div>
+				);
 			}
 		})()}
 	</div>
