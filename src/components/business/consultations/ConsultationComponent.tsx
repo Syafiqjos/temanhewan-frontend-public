@@ -18,7 +18,7 @@ function ConsultationComponent({ consultation }: { consultation: any }) {
 						<ConsultationStatusComponent consultation={consultation} />
 					</div>
 					<div>
-						<ButtonLink variant="primary" href={`/dashboard/consultation/${consultation.id}`}>Lihat</ButtonLink>
+						<ButtonLink variant="primary" href={`/dashboard/consultation/i/${consultation.id}`}>Lihat</ButtonLink>
 					</div>
 				</div>
 			</div>
