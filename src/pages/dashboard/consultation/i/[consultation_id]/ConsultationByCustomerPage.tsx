@@ -7,6 +7,7 @@ import GetConsultationAPI from '@/api/GetConsultationAPI';
 import CancelConsultationAPI from '@/api/CancelConsultationAPI';
 import PaidConsultationAPI from '@/api/PaidConsultationAPI';
 import CompleteConsultationAPI from '@/api/CompleteConsultationAPI';
+import CreateConsultationReviewAPI from '@/api/CreateConsultationReviewAPI';
 import GetPublicUserAPI from '@/api/GetPublicUserAPI';
 
 import ShouldAuthorized from '@/components/auths/ShouldAuthorized';
@@ -16,6 +17,7 @@ import DoctorFormComponent from '@/components/business/consultations/DoctorFormC
 import CustomerFormComponent from '@/components/business/consultations/CustomerFormComponent';
 import ConsultationFormComponent from '@/components/business/consultations/ConsultationFormComponent';
 import ConsultationStatusFormComponent from '@/components/business/consultations/ConsultationStatusFormComponent';
+import ReviewFormComponent from '@/components/business/consultations/ReviewFormComponent';
 
 import Layout from '@/components/layout/Layout';
 import ArrowLink from '@/components/links/ArrowLink';
@@ -81,6 +83,11 @@ function LoadingPage() {
 function SuccessPage({ myUser, user, consultation, setStatus, refreshUser }: { myUser: any, user: any, consultation: any, setStatus: any, refreshUser: any }) {
 	const router = useRouter();
 
+	const [ isInputingReview, setIsInputingReview ] = React.useState(false);
+	const inputReviewRef = React.useRef(null);
+	const ratingReviewRef = React.useRef([]);
+	const privateReviewRef = React.useRef(null);
+
 	function handleBack(e: any) {
 		e.preventDefault();
 
@@ -140,15 +147,61 @@ function SuccessPage({ myUser, user, consultation, setStatus, refreshUser }: { m
 		}
 	}
 
+	function handleCloseInputReviewConsultation(e: any) {
+		e.preventDefault();
+
+		setIsInputingReview(false);
+	}
+
+	function handleInputReviewConsultation(e: any) {
+		e.preventDefault();
+
+		setIsInputingReview(true);
+	}
+
+	async function handleReviewConsultation(e: any) {
+		e.preventDefault();
+
+		if (ratingReviewRef && ratingReviewRef.current) {
+			const rating = ratingReviewRef.current.find(el => el.checked)!.value;
+
+			const res = await CreateConsultationReviewAPI({
+				id: consultation.id,
+				rating: rating,
+				review: inputReviewRef.current.value,
+				is_public: !privateReviewRef.current.checked
+			});
+			const success = res.success;
+
+			if (success) {
+				setStatus('REVIEWED');
+
+				setTimeout(() => {
+					refreshUser();
+				}, 3000);
+			} else {
+				setStatus('FAILED');
+			}
+		}
+	}
+
 	return (<>
 	<div className="flex flex-col gap-1 p-4">
 		<ConsultationFormComponent consultation={consultation} />
 		<DoctorFormComponent user={user} />
 		<CustomerFormComponent user={myUser} />
+		{<ReviewFormComponent review={{rating: 5, review: 'Good tho', is_public: 1}} />}
 		<ConsultationStatusFormComponent consultation={consultation} />
 		
 		{(()=>{
-			if (consultation.status == 'pending') {
+			if (consultation.reviewed == true) {
+				return (
+					<div className="grid grid-cols-2 gap-3">
+						<button className="bg-white text-orange-600 rounded-xl border-orange-600 p-2 inline border-2" onClick={handleBack}>Kembali</button>
+					</div>
+				);
+			}
+			else if (consultation.status == 'pending') {
 				return (
 					<div className="grid grid-cols-2 gap-3">
 						<button className="bg-white text-orange-600 rounded-xl border-orange-600 p-2 inline border-2" onClick={handleBack}>Kembali</button>
@@ -178,9 +231,31 @@ function SuccessPage({ myUser, user, consultation, setStatus, refreshUser }: { m
 				);
 			} else if (consultation.status == 'completed') {
 				return (
-					<div className="grid grid-cols-2 gap-3">
-						<button className="bg-white text-orange-600 rounded-xl border-orange-600 p-2 inline border-2" onClick={handleBack}>Kembali</button>
-					</div>
+					<>
+						{(!isInputingReview && <div className="grid grid-cols-2 gap-3">
+							<button className="bg-white text-orange-600 rounded-xl border-orange-600 p-2 inline border-2" onClick={handleBack}>Kembali</button>
+							<button className="bg-orange-600 text-white rounded-xl border-orange-600 p-2 inline border-2" onClick={handleInputReviewConsultation}>Tambahkan Review Konsultasi</button>
+						</div>)}
+						{(isInputingReview && <div className="grid grid-cols-3 gap-3">
+							<button className="bg-white text-orange-600 rounded-xl border-orange-600 p-2 inline border-2 row-span-3" onClick={handleCloseInputReviewConsultation}>Batal</button>
+							<form className="w-full col-span-2">
+								<span className="font-semibold">Rating</span>
+								<ul className="grid grid-cols-5">
+									<li><input ref={el => ratingReviewRef.current[0] = el} className="p-1" type="radio" name="review_rating" value="1" /> 1 Star</li>
+									<li><input ref={el => ratingReviewRef.current[1] = el} className="p-1" type="radio" name="review_rating" value="2" /> 2 Stars</li>
+									<li><input ref={el => ratingReviewRef.current[2] = el} className="p-1" type="radio" name="review_rating" value="3" /> 3 Stars</li>
+									<li><input ref={el => ratingReviewRef.current[3] = el} className="p-1" type="radio" name="review_rating" value="4" /> 4 Stars</li>
+									<li><input ref={el => ratingReviewRef.current[4] = el} className="p-1" type="radio" name="review_rating" value="5" /> 5 Stars</li>
+								</ul>
+							</form>
+							<textarea ref={inputReviewRef} className="bg-white text-orange-600 rounded-xl border-orange-600 p-4 inline border-2 col-span-2" placeholder="Review anda"></textarea>
+							<form className="p-4">
+								<input className="mr-2" ref={privateReviewRef} id="review_public" name="review_public" type="checkbox" />
+								<label forhtml="review_public">Review secara privasi?</label>
+							</form>
+							<button className="bg-orange-600 text-white rounded-xl border-orange-600 p-2 inline border-2 col-span-1" onClick={handleReviewConsultation}>Tambahkan Review Konsultasi</button>
+						</div>)}
+					</>
 				);
 			}
 		})()}
@@ -255,6 +330,20 @@ function CompletedPage({ myUser, user, consultation }: { myUser: any, user: any,
 	</>);
 }
 
+function ReviewedPage({ myUser, user, consultation }: { myUser: any, user: any, consultation: any }) {
+	return (<>
+	<div className="flex flex-col gap-1">
+		<ul className="p-4">
+			<img className="rounded-xl object-cover w-full h-48" src="/images/cover/register-cover.png" />
+		</ul>
+	</div>
+	<div className="p-4 grid grid-cols-1 col-span-3">
+	  <h1>Review berhasil diteruskan</h1>
+	  <h2 className="text-xl">Terima kasih telah menambahkan review konsultasi bersama dokter hewan peliharaan anda. Sehat selalu ya.</h2>
+	</div>
+	</>);
+}
+
 function FailedPage() {
 	return (<>
 	<div className="flex flex-col gap-1">
@@ -269,7 +358,7 @@ function FailedPage() {
 }
 
 export default function HomePage() {
-  const [ status, setStatus ] = React.useState<'LOADING' | 'NOTFOUND' | 'SUCCESS' | 'ACCEPTED' | 'REJECTED' | 'CANCELED' | 'PAID' | 'COMPLETED' | 'FAILED'>('LOADING');
+  const [ status, setStatus ] = React.useState<'LOADING' | 'NOTFOUND' | 'SUCCESS' | 'ACCEPTED' | 'REJECTED' | 'CANCELED' | 'PAID' | 'COMPLETED' | 'REVIEWED' | 'FAILED'>('LOADING');
   const [ myUser, setMyUser ] = React.useState<any>({});
   const [ user, setUser ] = React.useState<any>({});
   const [ consultation, setConsultation ] = React.useState<any>({});
@@ -334,6 +423,7 @@ export default function HomePage() {
 					|| status === 'CANCELED' && <CanceledPage myUser={myUser} user={user} consultation={consultation} />
 					|| status === 'PAID' && <PaidPage myUser={myUser} user={user} consultation={consultation} />
 					|| status === 'COMPLETED' && <CompletedPage myUser={myUser} user={user} consultation={consultation} />
+					|| status === 'REVIEWED' && <ReviewedPage myUser={myUser} user={user} consultation={consultation} />
 					|| status === 'FAILED' && <FailedPage />
 					}
 				</div>
