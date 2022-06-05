@@ -13,12 +13,14 @@ export default function HomePage() {
 
   return (
     <>
-		<ShouldAuthorized roleSpecific="customer" dontRedirect={true}>
-			<ConsultationByCustomerPage />
-		</ShouldAuthorized>
-		<ShouldAuthorized roleSpecific="doctor" dontRedirect={true}>
-			<ConsultationByDoctorPage />
-		</ShouldAuthorized>
+		<ShouldAuthorized>
+			<ShouldAuthorized roleSpecific="customer" dontRedirect={true}>
+				<ConsultationByCustomerPage />
+			</ShouldAuthorized>
+			<ShouldAuthorized roleSpecific="doctor" dontRedirect={true}>
+				<ConsultationByDoctorPage />
+			</ShouldAuthorized>
+		<ShouldAuthorized>
     </>
   );
 }
