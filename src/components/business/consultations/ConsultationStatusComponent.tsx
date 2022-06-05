@@ -33,10 +33,12 @@ function ConsultationStatusComponent({ consultation }: { consultation: any }) {
 			_status = 'Dibatalkan';
 		} else if (consultation.status == "paid") {
 			_className += " text-teal-600";
-			_status = 'Dibayar';
+			_status = 'Dibayar dan Menunggu Konsultasi';
+			setPostfix(` (${formatCurrency(consultation.fee)})`);
 		} else if (consultation.status == "completed") {
 			_className += " text-green-600";
 			_status = 'Selesai';
+			setPostfix(` (${formatCurrency(consultation.fee)})`);
 		}
 
 		setStatus(_status);
