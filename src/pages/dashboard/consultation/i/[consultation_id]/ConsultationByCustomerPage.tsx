@@ -76,7 +76,7 @@ function LoadingPage() {
 	</>);
 }
 
-function SuccessPage({ myUser, user, consultation, setStatus }: { myUser: any, user: any, consultation: any, setStatus: any }) {
+function SuccessPage({ myUser, user, consultation, setStatus, refreshUser }: { myUser: any, user: any, consultation: any, setStatus: any, refreshUser: any }) {
 	const router = useRouter();
 
 	function handleBack(e: any) {
@@ -95,6 +95,10 @@ function SuccessPage({ myUser, user, consultation, setStatus }: { myUser: any, u
 
 		if (success) {
 			setStatus('CANCELED');
+
+			setTimeout(() => {
+				refreshUser();
+			}, 1000);
 		} else {
 			setStatus('FAILED');
 		}
@@ -187,8 +191,7 @@ export default function HomePage() {
 
   const router = useRouter();
 
-  React.useEffect(() => {
-	const refreshUser = async () => {
+  const refreshUser = async () => {
 		if (!router.isReady) return;
 
 		const resAuth = await AuthAPI({ token: AuthService.getToken() });
@@ -223,6 +226,7 @@ export default function HomePage() {
 		}
 	};
 
+  React.useEffect(() => {
 	refreshUser();
   }, [ router.isReady ]);
 
@@ -239,7 +243,7 @@ export default function HomePage() {
 				<div className="px-4 grid grid-cols-1 gap-3">
 					{status === 'LOADING' && <LoadingPage />
 					|| status === 'NOTFOUND' && <NotFoundPage />
-					|| status === 'SUCCESS' && <SuccessPage myUser={myUser} user={user} consultation={consultation} setStatus={setStatus} />
+					|| status === 'SUCCESS' && <SuccessPage myUser={myUser} user={user} consultation={consultation} setStatus={setStatus} refreshUser={refreshUser} />
 					|| status === 'ACCEPTED' && <AcceptedPage myUser={myUser} user={user} consultation={consultation} />
 					|| status === 'REJECTED' && <RejectedPage myUser={myUser} user={user} consultation={consultation} />
 					|| status === 'CANCELED' && <CanceledPage myUser={myUser} user={user} consultation={consultation} />
