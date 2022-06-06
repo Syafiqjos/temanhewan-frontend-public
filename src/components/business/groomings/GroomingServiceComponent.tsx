@@ -13,7 +13,7 @@ const formatCurrency = (currency: number) => {
 
 function GroomingServiceComponent({ service, children }: { service: any, children: any }) {
 	return (
-		<div className="mb-2">
+		<div className="mb-2 w-full">
 			<div className="p-4 border rounded rounded-lg border-orange-600 flex flex-row justify-between">
 				<div className="flex flex-col">
 					<div className="font-semibold mb-2">{service.name}</div>
