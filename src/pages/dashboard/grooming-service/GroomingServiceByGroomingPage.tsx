@@ -48,31 +48,18 @@ interface User {
 export default function GroomingServiceByGroomingPage() {
   const [ originalServices, setOriginalServices ] = React.useState<any>([]);
   const [ services, setServices ] = React.useState<any>([]);
-  const filterRef = React.useRef(null);
-  const sortRef = React.useRef(null);
 
-  function handleFilter(e: any) {
-	if (filterRef && sortRef && filterRef.current && sortRef.current) {
-		let _services = [ ...originalServices ];
-		const filter = (filterRef.current as any).value;
-		const sort = (sortRef.current as any).value;
+  function handleSearch(e: any) {
+	let _services = [ ...originalServices ];
+	const searchQuery = e.target.value;
 
-		if (filter != 'all') {
-			_services = _services.filter((c: any) => { return c.status == filter; });
-		}
-
-		if (sort == 'newest') {
-			_services = _services.sort((a: any, b: any) => { return ((new Date(b.date + ' ' + b.time)).getTime() - (new Date(a.date + ' ' + a.time)).getTime()); });
-		} else if (sort == 'oldest') {
-			_services = _services.sort((a: any, b: any) => { return ((new Date(a.date + ' ' + a.time)).getTime() - (new Date(b.date + ' ' + b.time)).getTime()); });
-		} else if (sort == 'lowest_fee') {
-			_services = _services.sort((a: any, b: any) => { return (parseInt(a.fee) - parseInt(b.fee)); });
-		} else if (sort == 'highest_fee') {
-			_services = _services.sort((a: any, b: any) => { return (parseInt(b.fee) - parseInt(a.fee)); });
-		}
-
-		setServices(_services);
+	if (searchQuery != null && searchQuery != '') {
+		_services = _services.filter((e: any) => {
+			return e.name.indexOf(searchQuery) !== -1 || e.description.indexOf(searchQuery) !== -1 ;
+		});
 	}
+
+	setServices(_services);
   }
 
   React.useEffect(() => {
@@ -108,7 +95,7 @@ export default function GroomingServiceByGroomingPage() {
 					<h1 className="text-xl">Daftar Layanan Grooming</h1>
 					<div className="grid grid-cols-4 p-4">
 						<div className="col-span-1 p-2">
-							<InputText label="Cari" name="search" type="text" />
+							<InputText label="Cari" name="search" type="text" onChange={handleSearch} />
 						</div>
 						<div className="col-span-3 p-4">
 							<ul className="pb-4">
