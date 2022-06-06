@@ -98,11 +98,11 @@ function SuccessPage({ user, services }: { user: User, services: any }) {
 		*/}
 	</div>
 
-	<div className='flex flex-col items-start justify-start gap-3'>
+	<div className='flex flex-col items-start justify-start gap-3 col-span-2 w-full'>
 			<span className="font-semibold text-lg">Layanan Grooming</span>
 			{services.map((service: any) => {
 				return (
-					<GroomingServiceComponent service={service}>
+					<GroomingServiceComponent service={service} key={`service-${service.id}`}>
 						<ButtonLink variant="primary" href={`/grooming/i/${user.id}/service/${service.id}`}>Pesan</ButtonLink>
 					</GroomingServiceComponent>
 				);
