@@ -101,7 +101,9 @@ export default function GroomingServiceByGroomingPage() {
 							<ul className="pb-4">
 								{services.map((service: any) => {
 									return (
-										<GroomingServiceComponent service={service} key={`service-${service.id}`} />
+										<GroomingServiceComponent service={service} key={`service-${service.id}`}>
+											<ButtonLink variant="primary" href={`/dashboard/grooming-service/i/${service.id}`}>Lihat</ButtonLink>
+										</GroomingServiceComponent>
 									);
 								})}
 							</ul>
