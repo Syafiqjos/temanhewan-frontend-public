@@ -138,6 +138,13 @@ function FailedPage() {
 
 function SuccessPage({ user, service, pets, groomer }: { user: User, service: any, pets: any, groomer: any }) {
 	const [ selectedPet, setSelectedPet ] = React.useState<any>(null);
+	const [ address, setAddress ] = React.useState<any>('');
+
+	function handleAddress(e: any) {
+		e.preventDefault();
+
+		setAddress(e.target.value);
+	}
 
 	async function handleSubmit(e: any) {
 		e.preventDefault();
@@ -149,8 +156,14 @@ function SuccessPage({ user, service, pets, groomer }: { user: User, service: an
 	<div className="p-4 grid grid-cols-1 col-span-3">
 	  {service && <GroomingServiceComponent service={service} />}
 	  {pets && <PetsBlockList pets={pets} selectedPet={selectedPet} setSelectedPet={setSelectedPet} />}
+		<div className="px-4">
+			<div className="p-4">
+				<h1 className="text-xl font-semibold mb-2">Alamat Grooming Anda</h1>
+				<InputText label="" name="address" type="text" onChange={handleAddress} placeholder="Alamat grooming anda" />
+			</div>
+		</div>
 		<form className="w-full flex flex-row justify-end" onSubmit={handleSubmit}>
-			<InputButton disabled={selectedPet == null} text="Pasang Pesanan Grooming" />
+			<InputButton disabled={selectedPet == null || address == ''} text="Pasang Pesanan Grooming" />
 		</form>
 	</div>
 	</>);
