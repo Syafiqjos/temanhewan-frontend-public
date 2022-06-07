@@ -3,12 +3,12 @@ import { useRouter } from 'next/router'
 
 import AuthAPI from '@/api/AuthAPI';
 import AuthService from '@/services/AuthService';
-import GetConsultationByDoctorAPI from '@/api/GetConsultationByDoctorAPI';
+import GetGroomingOrderGroomingAPI from '@/api/GetGroomingOrderGroomingAPI';
 
 import ShouldAuthorized from '@/components/auths/ShouldAuthorized';
 
 import InputText from '@/components/forms/InputText';
-import ConsultationComponent from '@/components/business/consultations/ConsultationComponent';
+import GroomingOrderComponent from '@/components/business/groomings/GroomingOrderComponent';
 
 import Layout from '@/components/layout/Layout';
 import ArrowLink from '@/components/links/ArrowLink';
@@ -45,33 +45,33 @@ interface User {
 	profile_image?: string
 }
 
-export default function ConsultationByDoctorPage() {
-  const [ originalConsultations, setOriginalConsultations ] = React.useState<any>([]);
-  const [ consultations, setConsultations ] = React.useState<any>([]);
+export default function GroomingOrderByGroomingPage() {
+  const [ originalOrders, setOriginalOrders ] = React.useState<any>([]);
+  const [ orders, setOrders ] = React.useState<any>([]);
   const filterRef = React.useRef(null);
   const sortRef = React.useRef(null);
 
   function handleFilter(e: any) {
 	if (filterRef && sortRef && filterRef.current && sortRef.current) {
-		let _consultations = [ ...originalConsultations ];
+		let _orders = [ ...originalOrders ];
 		const filter = (filterRef.current as any).value;
 		const sort = (sortRef.current as any).value;
 
 		if (filter != 'all') {
-			_consultations = _consultations.filter((c: any) => { return c.status == filter; });
+			_orders = _orders.filter((c: any) => { return c.status == filter; });
 		}
 
 		if (sort == 'newest') {
-			_consultations = _consultations.sort((a: any, b: any) => { return ((new Date(b.date + ' ' + b.time)).getTime() - (new Date(a.date + ' ' + a.time)).getTime()); });
+			_orders = _orders.sort((a: any, b: any) => { return ((new Date(b.date + ' ' + b.time)).getTime() - (new Date(a.date + ' ' + a.time)).getTime()); });
 		} else if (sort == 'oldest') {
-			_consultations = _consultations.sort((a: any, b: any) => { return ((new Date(a.date + ' ' + a.time)).getTime() - (new Date(b.date + ' ' + b.time)).getTime()); });
+			_orders = _orders.sort((a: any, b: any) => { return ((new Date(a.date + ' ' + a.time)).getTime() - (new Date(b.date + ' ' + b.time)).getTime()); });
 		} else if (sort == 'lowest_fee') {
-			_consultations = _consultations.sort((a: any, b: any) => { return (parseInt(a.fee) - parseInt(b.fee)); });
+			_orders = _orders.sort((a: any, b: any) => { return (parseInt(a.fee) - parseInt(b.fee)); });
 		} else if (sort == 'highest_fee') {
-			_consultations = _consultations.sort((a: any, b: any) => { return (parseInt(b.fee) - parseInt(a.fee)); });
+			_orders = _orders.sort((a: any, b: any) => { return (parseInt(b.fee) - parseInt(a.fee)); });
 		}
 
-		setConsultations(_consultations);
+		setOrders(_orders);
 	}
   }
 
@@ -82,14 +82,14 @@ export default function ConsultationByDoctorPage() {
 		const userId = resUser.data.id;
 
 		// get users from server
-		const res = await GetConsultationByDoctorAPI({ doctor_id: userId, offset:0, limit: 100 });
+		const res = await GetGroomingOrderGroomingAPI({ grooming_id: userId, offset:0, limit: 100 });
 		const success = res.success;
 
 		if (success) {
-			setOriginalConsultations(res.data);
-			setConsultations(res.data);
+			setOriginalOrders(res.data);
+			setOrders(res.data);
 
-			console.log(originalConsultations);
+			console.log(originalOrders);
 		} else {
 			// something error
 		}
@@ -102,10 +102,10 @@ export default function ConsultationByDoctorPage() {
       <Seo />
 
       <main>
-		<ShouldAuthorized roleSpecific="doctor">
+		<ShouldAuthorized roleSpecific="grooming">
 			<section className='bg-white'>
 				<div className="p-4">
-					<h1 className="text-xl">Daftar Konsultasi</h1>
+					<h1 className="text-xl">Daftar Pesanan Grooming</h1>
 					<div className="grid grid-cols-4 p-4">
 						<div className="col-span-1 p-2">
 							<div className="flex flex-col items-start w-full mb-2">
@@ -132,9 +132,9 @@ export default function ConsultationByDoctorPage() {
 						</div>
 						<div className="col-span-3 p-4">
 							<ul className="pb-4">
-								{consultations.map((consultation: any) => {
+								{orders.map((order: any) => {
 									return (
-										<ConsultationComponent consultation={consultation} key={`consultation-${consultation.id}`} />
+										<GroomingOrderComponent order={order} key={`order-${order.id}`} />
 									);
 								})}
 							</ul>
