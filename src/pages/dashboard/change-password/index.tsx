@@ -54,7 +54,7 @@ export default function ChangePassword({ onSubmit }: { onSubmit?: any }) {
 			<main>
 				<ShouldAuthorized>
 					<form className='flex flex-col items-start justify-start p-4 text-left gap-3' onSubmit={handleSubmit}>
-						<h1 className="text-xl font-semibold">Ubah password</h1>
+						<h1 className="text-xl font-semibold">Ubah Password</h1>
 						<InputText label="Password lama" name="old_password" type="password" placeholder="Password lama anda" value={oldPassword} onChange={handleOldPassword} />
 						<InputText label="Password baru" name="password" type="password" placeholder="Password baru anda" value={password} onChange={handlePassword} />
 						<InputText label="Ketik ulang password baru anda" name="password_confirmation" type="password" placeholder="Password baru anda" value={passwordConf} onChange={handlePasswordConf} />
