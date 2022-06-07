@@ -31,6 +31,7 @@ export default function MyForum() {
                 return (
                   <div key={forum.id}>
                     <CardForum
+                      avatar = 'none'
                       image = {forum.forum_images ? forum.forum_images[0] : '/images/image_post.png'}
                       slug={'/dashboard/my-question/i/' + forum.id}
                       title={forum.title}
