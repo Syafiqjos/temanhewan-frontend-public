@@ -122,7 +122,7 @@ function FailedPage({ groomer, service }: { groomer: any, service: any }) {
 	React.useEffect(() => {
 		setTimeout(() => {
 			Router.push({
-				pathname: `/grooming-order/i/${order.id}`
+				pathname: `/grooming/i/${groomer.id}/service/${service.id}`
 			});
 		}, 400);
 	}, []);
@@ -143,7 +143,7 @@ function OrderedPage({ order }: { order: any }) {
 	React.useEffect(() => {
 		setTimeout(() => {
 			Router.push({
-				pathname: `/grooming-order/i/${order.id}`
+				pathname: `/dashboard/grooming-order/i/${order.id}`
 			});
 		}, 400);
 	}, []);
