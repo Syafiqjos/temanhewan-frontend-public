@@ -125,7 +125,7 @@ function InitialPage({ router, setMyPet, setErrorMessage, setStatus }: { router:
           <img className="rounded-xl object-cover w-full h-48" src="https://api-temanhewan.mirzaq.com/image/pet_default.png" />
         </ul>
       </form> */}
-      <form className="p-4 grid grid-cols-1 gap-2" onSubmit={handleSubmit}>
+      <form className="py-4 grid grid-cols-1 gap-4" onSubmit={handleSubmit}>
         <div className="flex flex-col items-start w-full">
           <label htmlFor="petType">Foto Peliharaan</label>
           <input ref={profileImageInput} name="profile_image" type="file" accept="image/*" />
@@ -163,7 +163,7 @@ function ErrorPage({ errorMessage }: { errorMessage: string }) {
 	return (<>
 	<div className="flex flex-col gap-1">
 		<ul className="p-4">
-			<img className="rounded-xl object-cover w-full h-48" src="/images/cover/register-cover.png" />
+			<img className="rounded-xl object-cover w-full h-48" src="/images/cover/register-cover.png" alt="register image"/>
 		</ul>
 	</div>
 	<div className="p-4 grid grid-cols-1">
@@ -199,14 +199,14 @@ export default function HomePage() {
 				<main>
 					<ShouldAuthorized roleSpecific='customer'>
 						<section className='bg-white'>
-							<div className='layout grid grid-cols-1 mt-8 w-100'>
-							<h1 className="text-xl font-semibold mb-2">Tambah Hewan peliharaan saya</h1>
-										<div className="px-4 grid grid-cols-2 gap-3">
-								{errorMessage !== '' && <ErrorPage errorMessage={errorMessage} />
-								|| status === 'INITIAL' && <InitialPage router={router} setMyPet={setMyPet} setErrorMessage={setErrorMessage} setStatus={setStatus} />
-								|| status === 'SUCCESS' && <SuccessPage myPet={myPet} />
-								}
-										</div>
+							<div className='text-left p-4'>
+							<h1 className="text-xl font-semibold">Tambah Hewan Peliharaan Saya</h1>
+								<div>
+									{errorMessage !== '' && <ErrorPage errorMessage={errorMessage} />
+									|| status === 'INITIAL' && <InitialPage router={router} setMyPet={setMyPet} setErrorMessage={setErrorMessage} setStatus={setStatus} />
+									|| status === 'SUCCESS' && <SuccessPage myPet={myPet} />
+									}
+								</div>
 							</div>
 						</section>
 					</ShouldAuthorized>
