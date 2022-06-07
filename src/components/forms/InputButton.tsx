@@ -2,13 +2,15 @@ import * as React from 'react';
 
 export default function InputButton(
 {
-	text
+	text,
+	disabled = false
 }: {
-	text: string
+	text: string,
+	disabled?: boolean
 }) {
 	return (
 		<div>
-			<input className="bg-orange-600 text-white p-4 px-8 cursor-pointer rounded-xl" type="submit" value={text} />
+			<input className={`p-4 px-8 cursor-pointer rounded-xl ${!disabled ? 'bg-orange-600 text-white' : 'bg-gray-400 text-white'}`} type="submit" value={text} disabled={disabled} />
 		</div>
 	);
 }
