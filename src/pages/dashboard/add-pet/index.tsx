@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router'
 import * as React from 'react';
 
+import ShouldAuthorized from '@/components/auths/ShouldAuthorized';
 import InputText from '@/components/forms/InputText';
 import Sidebar from '@/components/layout/Sidebar';
 import Seo from '@/components/Seo';
@@ -119,11 +120,11 @@ function InitialPage({ router, setMyPet, setErrorMessage, setStatus }: { router:
 	}
 
 	return (<>
-      <form className="flex flex-col gap-1">
+      {/* <form className="flex flex-col gap-1">
         <ul className="p-4">
           <img className="rounded-xl object-cover w-full h-48" src="https://api-temanhewan.mirzaq.com/image/pet_default.png" />
         </ul>
-      </form>
+      </form> */}
       <form className="p-4 grid grid-cols-1 gap-2" onSubmit={handleSubmit}>
         <div className="flex flex-col items-start w-full">
           <label htmlFor="petType">Foto Peliharaan</label>
@@ -192,23 +193,24 @@ export default function HomePage() {
 
   return (
     <>
-      {/* <Seo templateTitle='Home' /> */}
       <Seo title = "Add Pet"/>
 
       <Sidebar>
-      <main>
-        <section className='bg-white'>
-          <div className='layout grid grid-cols-1 mt-8 w-100'>
-			<h1 className="text-xl font-semibold mb-2">Tambah peliharaan saya</h1>
-            <div className="px-4 grid grid-cols-2 gap-3">
-				{errorMessage !== '' && <ErrorPage errorMessage={errorMessage} />
-				|| status === 'INITIAL' && <InitialPage router={router} setMyPet={setMyPet} setErrorMessage={setErrorMessage} setStatus={setStatus} />
-				|| status === 'SUCCESS' && <SuccessPage myPet={myPet} />
-				}
-            </div>
-		  </div>
-        </section>
-      </main>
+				<main>
+					<ShouldAuthorized roleSpecific='customer'>
+						<section className='bg-white'>
+							<div className='layout grid grid-cols-1 mt-8 w-100'>
+							<h1 className="text-xl font-semibold mb-2">Tambah Hewan peliharaan saya</h1>
+										<div className="px-4 grid grid-cols-2 gap-3">
+								{errorMessage !== '' && <ErrorPage errorMessage={errorMessage} />
+								|| status === 'INITIAL' && <InitialPage router={router} setMyPet={setMyPet} setErrorMessage={setErrorMessage} setStatus={setStatus} />
+								|| status === 'SUCCESS' && <SuccessPage myPet={myPet} />
+								}
+										</div>
+							</div>
+						</section>
+					</ShouldAuthorized>
+				</main>
       </Sidebar>
     </>
   );
