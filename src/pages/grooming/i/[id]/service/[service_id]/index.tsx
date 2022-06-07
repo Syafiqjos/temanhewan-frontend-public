@@ -8,6 +8,7 @@ import AuthAPI from '@/api/AuthAPI';
 import ListPetAPI from '@/api/ListPetAPI';
 import GetPublicUserAPI from '@/api/GetPublicUserAPI';
 import GetGroomingServiceAPI from '@/api/GetGroomingServiceAPI';
+import CreateGroomingOrderAPI from '@/api/CreateGroomingOrderAPI';
 
 import GroomingServiceComponent from '@/components/business/groomings/GroomingServiceComponent';
 
@@ -117,11 +118,13 @@ function NotFoundPage() {
 	</>);
 }
 
-function FailedPage() {
+function FailedPage({ groomer, service }: { groomer: any, service: any }) {
 	React.useEffect(() => {
-		Router.push({
-			pathname: `/vet/i/${user.id}/consult`
-		});
+		setTimeout(() => {
+			Router.push({
+				pathname: `/grooming-order/i/${order.id}`
+			});
+		}, 400);
 	}, []);
 
 	return (<>
@@ -136,7 +139,28 @@ function FailedPage() {
 	</>);
 }
 
-function SuccessPage({ user, service, pets, groomer }: { user: User, service: any, pets: any, groomer: any }) {
+function OrderedPage({ order }: { order: any }) {
+	React.useEffect(() => {
+		setTimeout(() => {
+			Router.push({
+				pathname: `/grooming-order/i/${order.id}`
+			});
+		}, 400);
+	}, []);
+
+	return (<>
+	<div className="flex flex-col gap-1">
+		<ul className="p-4">
+			<img className="rounded-xl object-cover w-full h-48" src="/images/cover/register-cover.png" />
+		</ul>
+	</div>
+	<div className="p-4 grid grid-cols-1 col-span-3">
+	  <h1>Pesanan Grooming berhasil dipasang!</h1>
+	</div>
+	</>);
+}
+
+function SuccessPage({ user, service, pets, groomer, setStatus, setOrder }: { user: User, service: any, pets: any, groomer: any, setStatus: any, setOrder: any }) {
 	const [ selectedPet, setSelectedPet ] = React.useState<any>(null);
 	const [ address, setAddress ] = React.useState<any>('');
 
@@ -149,7 +173,16 @@ function SuccessPage({ user, service, pets, groomer }: { user: User, service: an
 	async function handleSubmit(e: any) {
 		e.preventDefault();
 
-		console.log('Submit');
+		const res = await CreateGroomingOrderAPI({ address, grooming_service_id: service.id, pet_id: selectedPet });
+		const success = res.success;
+		const orderData = res.data;
+
+		if (res.success) {
+			setOrder(orderData);
+			setStatus('ORDERED');
+		} else {
+			setStatus('FAILED');
+		}
 	}
 
 	return (<>
@@ -170,11 +203,12 @@ function SuccessPage({ user, service, pets, groomer }: { user: User, service: an
 }
 
 export default function HomePage() {
-  const [ status, setStatus ] = React.useState<'LOADING' | 'FAILED' | 'NOTFOUND' | 'SUCCESS'>('LOADING');
+  const [ status, setStatus ] = React.useState<'LOADING' | 'FAILED' | 'NOTFOUND' | 'SUCCESS' | 'ORDERED'>('LOADING');
   const [ user, setUser ] = React.useState<any>(null);
   const [ pets, setPets ] = React.useState<any>(null);
   const [ groomer, setGroomer ] = React.useState<any>(null);
   const [ service, setService ] = React.useState<any>(null);
+  const [ order, setOrder ] = React.useState<any>(null);
 
   const router = useRouter();
 
@@ -270,7 +304,8 @@ export default function HomePage() {
 				<div className="px-4 grid grid-cols-1 gap-3">
 					{status === 'LOADING' && <LoadingPage />
 					|| status === 'NOTFOUND' && <NotFoundPage />
-					|| status === 'SUCCESS' && <SuccessPage user={user} pets={pets} groomer={groomer} service={service} />
+					|| status === 'SUCCESS' && <SuccessPage setStatus={setStatus} user={user} pets={pets} groomer={groomer} service={service} setOrder={setOrder} />
+					|| status === 'ORDERED' && <OrderedPage order={order} />
 					|| status === 'FAILED' && <FailedPage />
 					}
 				</div>
