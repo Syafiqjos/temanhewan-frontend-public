@@ -1,5 +1,6 @@
 import * as React from 'react';
 
+import ShouldAuthorized from '@/components/auths/ShouldAuthorized';
 import Sidebar from '@/components/layout/Sidebar';
 import Seo from '@/components/Seo';
 
@@ -8,7 +9,11 @@ export default function Dashboard() {
     <>
       <Seo title='Dashboard' />
       <Sidebar>
-          <h1 className="text-xl font-semibold">Dashboard</h1>
+        <main>
+          <ShouldAuthorized roleSpecific='customer'>
+            <h1 className="text-xl font-semibold">Dashboard</h1>
+          </ShouldAuthorized>
+        </main>
       </Sidebar>
     </>
   );
