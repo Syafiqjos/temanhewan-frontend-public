@@ -74,7 +74,7 @@ function InitialPage({ router, setMyForum, setErrorMessage, setStatus}: {router:
   return (
     <>
 
-    <form className="py-4 grid grid-cols-1 gap-2" onSubmit={handleSubmit}>
+    <form className="py-4 grid grid-cols-1 gap-4" onSubmit={handleSubmit}>
       <div className="flex flex-col items-start w-full">
         <label htmlFor='forum_images'>Foto Pertanyaan</label>
         <input ref={forumImageInput} name="forum_images[]" type="file" accept="image/*" multiple />
