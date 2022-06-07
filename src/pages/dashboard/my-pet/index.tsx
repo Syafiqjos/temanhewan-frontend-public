@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import * as React from 'react';
 
+import ShouldAuthorized from '@/components/auths/ShouldAuthorized';
 import Sidebar from '@/components/layout/Sidebar';
 import Seo from '@/components/Seo';
 
@@ -81,43 +82,45 @@ export default function HomePage() {
 
   return (
     <>
-      <Seo title = "My Pet"/>
+    <Seo title = "My Pet"/>
 
-			<Sidebar>
+		<Sidebar>
       <main>
-        <section className='bg-white'>
-          <div className='layout grid grid-cols-1 mt-8 w-100'>
-			<h1 className="text-xl font-semibold mb-2">Peliharaan saya</h1>
-            <div className="px-4 grid grid-cols-4 gap-3">
-				<div className="flex flex-col gap-1">
-					<ul className="p-4">
-						<PetLabelComponent handlePetFilter={handlePetFilter} filter={getPetRace(filter)} petType={null}>Semua</PetLabelComponent>
-						<PetLabelComponent handlePetFilter={handlePetFilter} filter={getPetRace(filter)} petType={PetType.Cat}>Kucing</PetLabelComponent>
-						<PetLabelComponent handlePetFilter={handlePetFilter} filter={getPetRace(filter)} petType={PetType.Dog}>Anjing</PetLabelComponent>
-					</ul>
-				</div>
-				<div className="p-4 grid grid-cols-3 col-span-3">
-				  {myFilteredPets.map((pet) => {
-						return (
-							<Link key={pet.id} href={`/dashboard/my-pet/i/${pet.id}`}>
-								<a>
-									<div className="p-2">
-										<img className="rounded-xl object-cover w-full h-48" src={pet.imageUrl ? pet.imageUrl : ''} />
-										<div className="flex flex-row justify-between">
-											<span>{pet.name}</span>
-											<span>{pet.gender == 'm' ? 'M' : 'F'}</span>
-										</div>
-									</div>
-								</a>
-							</Link>);
-                     })}
-				</div>
-            </div>
-			<Link href="/dashboard/add-pet"><a className="fixed right-4 bottom-4 bg-orange-600 text-white rounded-xl w-16 h-16 flex flex-col items-center justify-center font-semibold text-xl">+</a></Link>
-		  </div>
-        </section>
+				<ShouldAuthorized roleSpecific='customer'>
+					<section className='bg-white'>
+						<div className='layout grid grid-cols-1 mt-8 w-100'>
+							<h1 className="text-xl font-semibold mb-2">Hewan Peliharaan saya</h1>
+							<div className="grid grid-cols-4 gap-3">
+								<div className="flex flex-col gap-1">
+									<ul>
+										<PetLabelComponent handlePetFilter={handlePetFilter} filter={getPetRace(filter)} petType={null}>Semua</PetLabelComponent>
+										<PetLabelComponent handlePetFilter={handlePetFilter} filter={getPetRace(filter)} petType={PetType.Cat}>Kucing</PetLabelComponent>
+										<PetLabelComponent handlePetFilter={handlePetFilter} filter={getPetRace(filter)} petType={PetType.Dog}>Anjing</PetLabelComponent>
+									</ul>
+								</div>
+								<div className="p-4 grid grid-cols-3 col-span-3">
+									{myFilteredPets.map((pet) => {
+										return (
+											<Link key={pet.id} href={`/dashboard/my-pet/i/${pet.id}`}>
+												<a>
+													<div className="p-2">
+														<img className="rounded-xl object-cover w-full h-48" src={pet.imageUrl ? pet.imageUrl : ''} alt="hewan saya"/>
+														<div className="flex flex-row justify-between">
+															<span>{pet.name}</span>
+															<span>{pet.gender == 'm' ? 'M' : 'F'}</span>
+														</div>
+													</div>
+												</a>
+											</Link>);
+														})}
+								</div>
+							</div>
+						<Link href="/dashboard/add-pet"><a className="fixed right-4 bottom-4 bg-orange-600 text-white rounded-xl w-16 h-16 flex flex-col items-center justify-center font-semibold text-xl">+</a></Link>
+						</div>
+					</section>
+				</ShouldAuthorized>
       </main>
-			</Sidebar>
+		</Sidebar>
     </>
   );
 }

@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router'
 import * as React from 'react';
 
+import ShouldAuthorized from '@/components/auths/ShouldAuthorized';
 import InputText from '@/components/forms/InputText';
 import Sidebar from '@/components/layout/Sidebar';
 import Seo from '@/components/Seo';
@@ -222,17 +223,19 @@ export default function HomePage() {
 
 			<Sidebar>
 				<main>
-					<section className='bg-white'>
-						<div className='layout grid grid-cols-1 mt-8 w-100'>
-				<h1 className="text-xl font-semibold mb-2">Peliharaan saya</h1>
-							<div className="px-4 grid grid-cols-2 gap-3">
-					{status === 'LOADING' && <LoadingPage />
-					|| status === 'NOTFOUND' && <NotFoundPage />
-					|| status === 'SUCCESS' && <SuccessPage myPet={myPet} />
-					}
+					<ShouldAuthorized roleSpecific='customer'>
+						<section className='bg-white'>
+							<div className='layout grid grid-cols-1 mt-8 w-100'>
+								<h1 className="text-xl font-semibold mb-2">Hewan Peliharaan saya</h1>
+								<div className="px-4 grid grid-cols-2 gap-3">
+									{status === 'LOADING' && <LoadingPage />
+									|| status === 'NOTFOUND' && <NotFoundPage />
+									|| status === 'SUCCESS' && <SuccessPage myPet={myPet} />
+									}
+								</div>
 							</div>
-				</div>
-					</section>
+						</section>
+					</ShouldAuthorized>
 				</main>
 			</Sidebar>
     </>
