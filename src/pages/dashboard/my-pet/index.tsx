@@ -88,8 +88,8 @@ export default function HomePage() {
       <main>
 				<ShouldAuthorized roleSpecific='customer'>
 					<section className='bg-white'>
-						<div className='layout grid grid-cols-1 mt-8 w-100'>
-							<h1 className="text-xl font-semibold mb-2">Hewan Peliharaan saya</h1>
+						<div className='p-4'>
+							<h1 className="text-xl font-semibold mb-4">Hewan Peliharaan saya</h1>
 							<div className="grid grid-cols-4 gap-3">
 								<div className="flex flex-col gap-1">
 									<ul>
