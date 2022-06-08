@@ -34,7 +34,7 @@ export default function Sidebar({ children }: { children: React.ReactNode }) {
 
   return (
     <>
-      <div className='flex flex-row'>
+      <div className='layout flex flex-row'>
         <div>
           <aside className='w-64' aria-label='Sidebar'>
             <div className='overflow-y-auto rounded bg-white py-4 px-3 dark:bg-gray-800'>
