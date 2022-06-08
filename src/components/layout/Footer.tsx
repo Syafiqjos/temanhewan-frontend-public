@@ -42,8 +42,9 @@ import UnstyledLink from '@/components/links/UnstyledLink';
 
 export default function Footer() {
   return (
-    <footer className='bg-gray-50'>
-      <div className='mx-auto max-w-screen-2xl px-4 py-14 lg:px-24'>
+    <footer className="bg-gray-50">
+      <div className="layout">
+      <div className='max-w-screen-2xl py-14'>
         <div className='grid lg:grid-cols-12'>
           <div className='md:col-span-12 lg:col-span-6'>
             <UnstyledLink
@@ -118,6 +119,7 @@ export default function Footer() {
             </div>
           </div>
         </div>
+      </div>
       </div>
     </footer>
   );
