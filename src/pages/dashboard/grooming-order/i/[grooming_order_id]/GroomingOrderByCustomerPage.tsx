@@ -93,7 +93,9 @@ function LoadingPage() {
 		order,
 		customer,
 		groomer,
-		pet
+		pet,
+		refreshOrder,
+		setStatus
 	} = React.useContext(PageContext);
 
 	return (<>
@@ -115,7 +117,8 @@ function SuccessPage() {
 		customer,
 		groomer,
 		pet,
-		refreshOrder
+		refreshOrder,
+		setStatus
 	} = React.useContext(PageContext);
 
 	const router = useRouter();
@@ -308,7 +311,9 @@ function AcceptedPage() {
 		order,
 		customer,
 		groomer,
-		pet
+		pet,
+		refreshOrder,
+		setStatus
 	} = React.useContext(PageContext);
 
 	return (<>
@@ -329,7 +334,9 @@ function RejectedPage() {
 		order,
 		customer,
 		groomer,
-		pet
+		pet,
+		refreshOrder,
+		setStatus
 	} = React.useContext(PageContext);
 
 	return (<>
@@ -350,7 +357,9 @@ function CanceledPage() {
 		order,
 		customer,
 		groomer,
-		pet
+		pet,
+		refreshOrder,
+		setStatus
 	} = React.useContext(PageContext);
 
 	return (<>
@@ -371,7 +380,9 @@ function PaidPage() {
 		order,
 		customer,
 		groomer,
-		pet
+		pet,
+		refreshOrder,
+		setStatus
 	} = React.useContext(PageContext);
 
 	return (<>
@@ -393,7 +404,9 @@ function CompletedPage() {
 		order,
 		customer,
 		groomer,
-		pet
+		pet,
+		refreshOrder,
+		setStatus
 	} = React.useContext(PageContext);
 
 	return (<>
@@ -415,7 +428,9 @@ function ReviewedPage() {
 		order,
 		customer,
 		groomer,
-		pet
+		pet,
+		refreshOrder,
+		setStatus
 	} = React.useContext(PageContext);
 
 	return (<>
@@ -437,7 +452,9 @@ function FailedPage() {
 		order,
 		customer,
 		groomer,
-		pet
+		pet,
+		refreshOrder,
+		setStatus
 	} = React.useContext(PageContext);
 
 	return (<>
@@ -581,7 +598,7 @@ export default function HomePage() {
 			  <div className='layout grid grid-cols-1 mt-8 w-100'>
 				<h1 className="text-xl font-semibold mb-2">Informasi Pesanan Grooming</h1>
 				<div className="px-4 grid grid-cols-1 gap-3">
-					<PageContext.Provider value={ {service, order, customer, groomer, pet, refreshOrder} }>
+					<PageContext.Provider value={ {service, order, customer, groomer, pet, refreshOrder, setStatus} }>
 						{status === 'LOADING' && <LoadingPage />
 						|| status === 'NOTFOUND' && <NotFoundPage />
 						|| status === 'SUCCESS' && <SuccessPage />
