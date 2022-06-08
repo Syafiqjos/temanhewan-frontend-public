@@ -2,19 +2,17 @@ import { useRouter } from 'next/router';
 import * as React from'react';
 
 import CardDetailForum from '@/components/card/CardDetailForum';
-import Sidebar from '@/components/layout/Sidebar';
 import Seo from '@/components/Seo';
 
-import GetCommentAPI from '@/api/GetCommentAPI';
 import GetForumAPI from '@/api/GetForumAPI';
+import GetForumCommentsAPI from '@/api/GetForumCommentsAPI';
 import Comment from '@/interfaces/Comment';
 import Forum from '@/interfaces/Forum';
 
 
-
 export default function DetailForum() {
   const [ forum, setForum ] = React.useState<Forum>({ id: '', slug:'', title: '', subtitle: '', content: '', forum_images:[], author: {name: '', avatar: ''}, updated_at: '' });
-  const [ comment, setComment] = React.useState<Comment>( { id: '', content: '', comment_images:[], author: {name: '', avatar: ''}, updated_at: '' });
+  const [ comment, setComment] = React.useState<Comment[]>( [] );
   const router = useRouter();
 
   React.useEffect(() => {
@@ -22,17 +20,17 @@ export default function DetailForum() {
       if (!router.isReady) return;
 
       const id: string = router.query.id as string
-      const comment_id : string = id
+      const forum_id : string = id
 
       const resForum = await GetForumAPI({ id });
-      const resComment = await GetCommentAPI({ comment_id });
+      const resComment = await GetForumCommentsAPI({ forum_id });
+
+      if(resComment.data.length > 0){
+        setComment(resComment.data);
+      } 
 
       const dataForum = resForum.data;
-      const dataComment = resComment.data
-
       setForum(dataForum);
-      setComment(dataComment);
-
     })();
   }, [ router.isReady ]);
 
@@ -40,7 +38,6 @@ export default function DetailForum() {
     <>
       <Seo title="Detail Forum" />
 
-      <Sidebar>
       <main>
         <section className='bg-white py-10 2xl:py-40'>
           <div className='container mx-auto px-4'>
@@ -59,26 +56,29 @@ export default function DetailForum() {
                 />
             </div>
             <p className="px-4 text-2xl font-bold">Comment:</p>
-            {comment ? (
-              <div className="pb-5">
-                <CardDetailForum
-                  author = {comment.author.name}
-                  avatar = {comment.author.avatar}
-                  date = {comment.updated_at.split(' ')[0]}
-                  image = {comment.comment_images}
-                  title = ''
-                  subtitle = ''
-                  content = {comment.content}
-                  />
-              </div>
+            {comment.length > 0 ? (
+              comment.map((item) => (
+                <>
+                <div key = {item.id} className="pb-5">
+                    <CardDetailForum
+                      author = {item.author.name}
+                      avatar = {item.author.avatar}
+                      date = {item.updated_at.split(' ')[0]}
+                      image = {item.comment_images}
+                      title = ''
+                      subtitle = ''
+                      content = {item.content}
+                      />
+                </div>
+                </>
+              ))
                 ) : (
-                  <p className="px-4 text-lg font-bold">Belum ada komentar</p>
-                ) 
+                  <p className="px-4 text-lg">Belum ada komentar</p>
+                )
             }
           </div>
         </section>
       </main>
-      </Sidebar>
     </>
   )
 
