@@ -2,6 +2,7 @@ import * as React from 'react';
 
 import ShouldAuthorized from '@/components/auths/ShouldAuthorized';
 import ConsultationComponent from '@/components/business/consultations/ConsultationComponent';
+import Sidebar from '@/components/layout/Sidebar';
 import Seo from '@/components/Seo';
 
 import AuthAPI from '@/api/AuthAPI';
@@ -88,49 +89,51 @@ export default function ConsultationByCustomerPage() {
     <>
       <Seo title="Consultation" />
 
-      <main>
-				<ShouldAuthorized roleSpecific="customer">
-					<section className='bg-white'>
-						<div className="p-4">
-							<h1 className="text-xl">Daftar Konsultasi</h1>
-							<div className="grid grid-cols-4 p-4">
-								<div className="col-span-1 p-2">
-									<div className="flex flex-col items-start w-full mb-2">
-										<label>Filter Status</label>
-										<select ref={filterRef} className="w-full" onChange={handleFilter}>
-											<option value="all">Semua</option>
-											<option value="pending">Menunggu Konfirmasi</option>
-											<option value="rejected">Ditolak</option>
-											<option value="accepted">Menunggu Pembayaran</option>
-											<option value="cancelled">Dibatalkan</option>
-											<option value="paid">Dibayar dan Menunggu Konsultasi</option>
-											<option value="completed">Selesai</option>
-										</select>
+			<Sidebar>
+				<main>
+					<ShouldAuthorized roleSpecific="customer">
+						<section className='bg-white'>
+							<div className="p-4">
+								<h1 className="text-xl">Daftar Konsultasi</h1>
+								<div className="grid grid-cols-4 p-4">
+									<div className="col-span-1 p-2">
+										<div className="flex flex-col items-start w-full mb-2">
+											<label>Filter Status</label>
+											<select ref={filterRef} className="w-full" onChange={handleFilter}>
+												<option value="all">Semua</option>
+												<option value="pending">Menunggu Konfirmasi</option>
+												<option value="rejected">Ditolak</option>
+												<option value="accepted">Menunggu Pembayaran</option>
+												<option value="cancelled">Dibatalkan</option>
+												<option value="paid">Dibayar dan Menunggu Konsultasi</option>
+												<option value="completed">Selesai</option>
+											</select>
+										</div>
+										<div className="flex flex-col items-start w-full mb-2">
+											<label>Sortir</label>
+											<select ref={sortRef} className="w-full" onChange={handleFilter}>
+												<option value="newest">Terbaru</option>
+												<option value="oldest">Terlama</option>
+												<option value="highest_fee">Termahal</option>
+												<option value="lowest_fee">Termurah</option>
+											</select>
+										</div>
 									</div>
-									<div className="flex flex-col items-start w-full mb-2">
-										<label>Sortir</label>
-										<select ref={sortRef} className="w-full" onChange={handleFilter}>
-											<option value="newest">Terbaru</option>
-											<option value="oldest">Terlama</option>
-											<option value="highest_fee">Termahal</option>
-											<option value="lowest_fee">Termurah</option>
-										</select>
+									<div className="col-span-3 p-4">
+										<ul className="pb-4">
+											{consultations.map((consultation: any) => {
+												return (
+													<ConsultationComponent consultation={consultation} key={`consultation-${consultation.id}`} />
+												);
+											})}
+										</ul>
 									</div>
-								</div>
-								<div className="col-span-3 p-4">
-									<ul className="pb-4">
-										{consultations.map((consultation: any) => {
-											return (
-												<ConsultationComponent consultation={consultation} key={`consultation-${consultation.id}`} />
-											);
-										})}
-									</ul>
 								</div>
 							</div>
-						</div>
-					</section>
-				</ShouldAuthorized>
-      </main>
+						</section>
+					</ShouldAuthorized>
+				</main>
+			</Sidebar>
     </>
   );
 }

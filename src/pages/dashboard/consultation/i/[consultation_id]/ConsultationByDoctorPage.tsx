@@ -1,31 +1,23 @@
-import * as React from 'react';
 import { useRouter } from 'next/router'
-
-import AuthAPI from '@/api/AuthAPI';
-import AuthService from '@/services/AuthService';
-import GetConsultationAPI from '@/api/GetConsultationAPI';
-import GetConsultationReviewAPI from '@/api/GetConsultationReviewAPI';
-import AcceptConsultationAPI from '@/api/AcceptConsultationAPI';
-import RejectConsultationAPI from '@/api/RejectConsultationAPI';
-import GetPublicUserAPI from '@/api/GetPublicUserAPI';
+import * as React from 'react';
 
 import ShouldAuthorized from '@/components/auths/ShouldAuthorized';
-
-import InputText from '@/components/forms/InputText';
-import DoctorFormComponent from '@/components/business/consultations/DoctorFormComponent';
-import CustomerFormComponent from '@/components/business/consultations/CustomerFormComponent';
 import ConsultationFormComponent from '@/components/business/consultations/ConsultationFormComponent';
 import ConsultationStatusFormComponent from '@/components/business/consultations/ConsultationStatusFormComponent';
+import CustomerFormComponent from '@/components/business/consultations/CustomerFormComponent';
+import DoctorFormComponent from '@/components/business/consultations/DoctorFormComponent';
 import ReviewFormComponent from '@/components/business/consultations/ReviewFormComponent';
-
-import Layout from '@/components/layout/Layout';
-import ArrowLink from '@/components/links/ArrowLink';
-import ButtonLink from '@/components/links/ButtonLink';
-import UnderlineLink from '@/components/links/UnderlineLink';
-import UnstyledLink from '@/components/links/UnstyledLink';
+import InputText from '@/components/forms/InputText';
+import SidebarDoctor from '@/components/layout/SidebarDoctor';
 import Seo from '@/components/Seo';
 
-import Link from 'next/link';
+import AcceptConsultationAPI from '@/api/AcceptConsultationAPI';
+import AuthAPI from '@/api/AuthAPI';
+import GetConsultationAPI from '@/api/GetConsultationAPI';
+import GetConsultationReviewAPI from '@/api/GetConsultationReviewAPI';
+import GetPublicUserAPI from '@/api/GetPublicUserAPI';
+import RejectConsultationAPI from '@/api/RejectConsultationAPI';
+import AuthService from '@/services/AuthService';
 
 /**
  * SVGR Support
@@ -34,7 +26,6 @@ import Link from 'next/link';
  * You can override the next-env if the type is important to you
  * @see https://stackoverflow.com/questions/68103844/how-to-override-next-js-svg-module-declaration
  */
-import Vercel from '~/svg/Vercel.svg';
 
 // !STARTERCONF -> Select !STARTERCONF and CMD + SHIFT + F
 // Before you begin editing, follow all comments with `STARTERCONF`,
@@ -308,27 +299,29 @@ export default function HomePage() {
   return (
     <>
       {/* <Seo templateTitle='Home' /> */}
-      <Seo />
+      <Seo title="Detail Consultation" />
 
-      <main>
-		<ShouldAuthorized roleSpecific="doctor">
-			<section className='bg-white'>
-			  <div className='layout grid grid-cols-1 mt-8 w-100'>
-				<h1 className="text-xl font-semibold mb-2">Informasi Konsultasi</h1>
-				<div className="px-4 grid grid-cols-1 gap-3">
-					{status === 'LOADING' && <LoadingPage />
-					|| status === 'NOTFOUND' && <NotFoundPage />
-					|| status === 'SUCCESS' && <SuccessPage myUser={myUser} user={user} consultation={consultation} review={review} setStatus={setStatus} refreshUser={refreshUser} />
-					|| status === 'ACCEPTED' && <AcceptedPage myUser={myUser} user={user} consultation={consultation} />
-					|| status === 'REJECTED' && <RejectedPage myUser={myUser} user={user} consultation={consultation} />
-					|| status === 'CANCELED' && <CanceledPage myUser={myUser} user={user} consultation={consultation} />
-					|| status === 'FAILED' && <FailedPage />
-					}
-				</div>
-			  </div>
-			</section>
-		</ShouldAuthorized>
-      </main>
+			<SidebarDoctor>
+      	<main>
+					<ShouldAuthorized roleSpecific="doctor">
+						<section className='bg-white'>
+							<div className='layout grid grid-cols-1 mt-8 w-100'>
+							<h1 className="text-xl font-semibold mb-2">Informasi Konsultasi</h1>
+							<div className="px-4 grid grid-cols-1 gap-3">
+								{status === 'LOADING' && <LoadingPage />
+								|| status === 'NOTFOUND' && <NotFoundPage />
+								|| status === 'SUCCESS' && <SuccessPage myUser={myUser} user={user} consultation={consultation} review={review} setStatus={setStatus} refreshUser={refreshUser} />
+								|| status === 'ACCEPTED' && <AcceptedPage myUser={myUser} user={user} consultation={consultation} />
+								|| status === 'REJECTED' && <RejectedPage myUser={myUser} user={user} consultation={consultation} />
+								|| status === 'CANCELED' && <CanceledPage myUser={myUser} user={user} consultation={consultation} />
+								|| status === 'FAILED' && <FailedPage />
+								}
+							</div>
+							</div>
+						</section>
+					</ShouldAuthorized>
+				</main>
+			</SidebarDoctor>
     </>
   );
 }
