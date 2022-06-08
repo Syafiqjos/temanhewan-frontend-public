@@ -4,6 +4,7 @@ import * as React from'react';
 import CardDetailForum from '@/components/card/CardDetailForum';
 import Seo from '@/components/Seo';
 
+import DeleteForumAPI from '@/api/DeleteForumAPI';
 import GetForumAPI from '@/api/GetForumAPI';
 import GetForumCommentsAPI from '@/api/GetForumCommentsAPI';
 import Comment from '@/interfaces/Comment';
@@ -14,6 +15,19 @@ export default function DetailForum() {
   const [ forum, setForum ] = React.useState<Forum>({ id: '', slug:'', title: '', subtitle: '', content: '', forum_images:[], author: {name: '', avatar: ''}, updated_at: '' });
   const [ comment, setComment] = React.useState<Comment[]>( [] );
   const router = useRouter();
+
+  async function handleDeleteQuestion() {
+
+    const res = await DeleteForumAPI({ id: forum.id! });
+
+    if(res.success) {
+      router.push('/dashboard/my-question');
+    }
+  }
+
+  async function handleUpdateQuestion() {
+    router.push(`/dashboard/my-question/i/${forum.id}/update`);
+  }
 
   React.useEffect(() => {
     (async () => {
@@ -55,10 +69,11 @@ export default function DetailForum() {
                 content = {forum.content}
                 />
             </div>
-            <p className="px-4 text-2xl font-bold">Comment:</p>
+            
             {comment.length > 0 ? (
               comment.map((item) => (
                 <>
+                <p className="px-4 text-2xl font-bold">Comment:</p>
                 <div key = {item.id} className="pb-5">
                     <CardDetailForum
                       author = {item.author.name}
@@ -73,7 +88,18 @@ export default function DetailForum() {
                 </>
               ))
                 ) : (
-                  <p className="px-4 text-lg">Belum ada komentar</p>
+                  <>
+                    <div className = "layout">
+                      <div className="flex justify-center">
+                        <div className="px-3">
+                          <button className="bg-white text-primary-500 rounded-xl border-primary-500 p-2 inline border-2 w-full" onClick={handleDeleteQuestion}>Hapus Pertanyaan</button>
+                        </div>
+                        <div className="px-3">
+                          <button className="bg-primary-500 text-white rounded-xl border-primary-500 p-2 inline border-2 w-full" onClick={handleUpdateQuestion}>Perbarui Pertanyaan</button>
+                        </div>
+                      </div>
+                    </div>
+                  </>
                 )
             }
           </div>
