@@ -3,19 +3,30 @@ import { useRouter } from 'next/router'
 
 import AuthAPI from '@/api/AuthAPI';
 import AuthService from '@/services/AuthService';
-import GetConsultationAPI from '@/api/GetConsultationAPI';
-import GetConsultationReviewAPI from '@/api/GetConsultationReviewAPI';
-import AcceptConsultationAPI from '@/api/AcceptConsultationAPI';
-import RejectConsultationAPI from '@/api/RejectConsultationAPI';
+
+import GetGroomingOrderAPI from '@/api/GetGroomingOrderAPI';
+import GetGroomingServiceAPI from '@/api/GetGroomingServiceAPI';
+import RetrievePetAPI from '@/api/RetrievePetAPI';
+
+import CancelGroomingOrderAPI from '@/api/CancelGroomingOrderAPI';
+import PaidGroomingOrderAPI from '@/api/PaidGroomingOrderAPI';
+import CompleteGroomingOrderAPI from '@/api/CompleteGroomingOrderAPI';
+import CreateGroomingOrderReviewAPI from '@/api/CreateGroomingOrderReviewAPI';
 import GetPublicUserAPI from '@/api/GetPublicUserAPI';
 
 import ShouldAuthorized from '@/components/auths/ShouldAuthorized';
 
 import InputText from '@/components/forms/InputText';
-import DoctorFormComponent from '@/components/business/consultations/DoctorFormComponent';
-import CustomerFormComponent from '@/components/business/consultations/CustomerFormComponent';
-import ConsultationFormComponent from '@/components/business/consultations/ConsultationFormComponent';
-import ConsultationStatusFormComponent from '@/components/business/consultations/ConsultationStatusFormComponent';
+import GroomingServiceComponent from '@/components/business/groomings/GroomingServiceComponent';
+import GroomingOrderComponent from '@/components/business/groomings/GroomingOrderComponent';
+import GroomingOrderStatusComponent from '@/components/business/groomings/GroomingOrderStatusComponent';
+import GroomingOrderStatusFormComponent from '@/components/business/groomings/GroomingOrderStatusFormComponent';
+
+import GroomingServiceFormComponent from '@/components/business/groomings/GroomingServiceFormComponent';
+import GroomingOrderFormComponent from '@/components/business/groomings/GroomingOrderFormComponent';
+import CustomerFormComponent from '@/components/business/groomings/CustomerFormComponent';
+import GroomingFormComponent from '@/components/business/groomings/GroomingFormComponent';
+import PetFormComponent from '@/components/business/groomings/PetFormComponent';
 import ReviewFormComponent from '@/components/business/consultations/ReviewFormComponent';
 
 import Layout from '@/components/layout/Layout';
@@ -40,6 +51,8 @@ import Vercel from '~/svg/Vercel.svg';
 // Before you begin editing, follow all comments with `STARTERCONF`,
 // to customize the default configuration.
 
+const PageContext = React.createContext({ service: null, order: null, customer: null, groomer: null, pet: null });
+
 interface User {
 	id: string,
 	email: string,
@@ -54,6 +67,14 @@ interface User {
 }
 
 function NotFoundPage() {
+	const {
+		service,
+		order,
+		customer,
+		groomer,
+		pet
+	} = React.useContext(PageContext);
+
 	return (<>
 	<div className="flex flex-col gap-1">
 		<ul className="p-4">
@@ -61,12 +82,20 @@ function NotFoundPage() {
 		</ul>
 	</div>
 	<div className="p-4 grid grid-cols-1 col-span-3">
-	  <h1>Dokter hewan tidak ditemukan</h1>
+	  <h1>Pesanaan Grooming tidak ditemukan</h1>
 	</div>
 	</>);
 }
 
 function LoadingPage() {
+	const {
+		service,
+		order,
+		customer,
+		groomer,
+		pet
+	} = React.useContext(PageContext);
+
 	return (<>
 	<div className="flex flex-col gap-1">
 		<ul className="p-4">
@@ -79,41 +108,29 @@ function LoadingPage() {
 	</>);
 }
 
-function SuccessPage({ myUser, user, consultation, review, setStatus, refreshUser }: { myUser: any, user: any, consultation: any, review: any, setStatus: any, refreshUser: any }) {
+function SuccessPage() {
+	const {
+		service,
+		order,
+		customer,
+		groomer,
+		pet
+	} = React.useContext(PageContext);
+
 	const router = useRouter();
-	
-	const [ isInputingPrice, setIsInputingPrice ] = React.useState(false);
-	const [ fee, setFee ] = React.useState(100000);
 
 	function handleBack(e: any) {
 		e.preventDefault();
 
 		if (router.isReady) {
-			router.push(`/dashboard/consultation`);
+			router.push(`/dashboard/grooming-order`);
 		}
 	}
 
-	function handleFee(e: any) {
-		e.preventDefault();
-		setFee(e.target.value);
-	}
-
-	function handleCloseInputPrice(e: any) {
+	async function handleRejectGroomingOrder(e: any) {
 		e.preventDefault();
 
-		setIsInputingPrice(false);
-	}
-
-	function handleInputPrice(e: any) {
-		e.preventDefault();
-
-		setIsInputingPrice(true);
-	}
-
-	async function handleRejectConsultation(e: any) {
-		e.preventDefault();
-
-		const res = await RejectConsultationAPI({ id: consultation.id });
+		const res = await RejectGroomingOrderAPI({ id: order.id });
 		const success = res.success;
 
 		if (success) {
@@ -127,10 +144,10 @@ function SuccessPage({ myUser, user, consultation, review, setStatus, refreshUse
 		}
 	}
 
-	async function handleAcceptConsultation(e: any) {
+	async function handleAcceptGroomingOrder(e: any) {
 		e.preventDefault();
 
-		const res = await AcceptConsultationAPI({ id: consultation.id, fee: fee });
+		const res = await AcceptGroomingOrderAPI({ id: order.id });
 		const success = res.success;
 
 		if (success) {
@@ -146,47 +163,41 @@ function SuccessPage({ myUser, user, consultation, review, setStatus, refreshUse
 
 	return (<>
 	<div className="flex flex-col gap-1 p-4">
-		<ConsultationFormComponent consultation={consultation} />
-		<DoctorFormComponent user={myUser} />
-		<CustomerFormComponent user={user} />
-		{consultation.is_reviewed && <ReviewFormComponent review={review} />}
-		<ConsultationStatusFormComponent consultation={consultation} />
+		<GroomingServiceFormComponent service={service} />
+		<GroomingOrderFormComponent order={order} />
+		<GroomingFormComponent user={groomer} />
+		<CustomerFormComponent user={customer} />
+		<PetFormComponent pet={pet} />
+		{order.is_reviewed && <ReviewFormComponent review={review} />}
+		<GroomingOrderStatusFormComponent order={order} />
 		
 		{(()=>{
-			if (consultation.status == 'pending') {
+			if (order.status == 'pending') {
 				return (
-					<>
-						{!isInputingPrice && (<div className="grid grid-cols-3 gap-3">
-							<button className="bg-white text-orange-600 rounded-xl border-orange-600 p-2 inline border-2" onClick={handleBack}>Kembali</button>
-							<button className="bg-white text-orange-600 rounded-xl border-orange-600 p-2 inline border-2" onClick={handleRejectConsultation}>Tolak Permintaan</button>
-							<button className="bg-orange-600 text-white rounded-xl border-orange-600 p-2 inline border-2" onClick={handleInputPrice}>Ajukan Biaya Konsultasi</button>
-						</div>)}
-						{isInputingPrice && (<div className="grid grid-cols-2 gap-3">
-							<button className="bg-white text-orange-600 rounded-xl border-orange-600 p-2 inline border-2 row-span-2" onClick={handleCloseInputPrice}>Batal</button>
-							<InputText name="input_price" label="Biaya yang diajukan (Rupiah)" type="number" value={fee as any as string} onChange={handleFee} />
-							<button className="bg-orange-600 text-white rounded-xl border-orange-600 p-2 inline border-2" onClick={handleAcceptConsultation}>Ajukan Biaya Konsultasi</button>
-						</div>)}
-					</>
+					<div className="grid grid-cols-3 gap-3">
+						<button className="bg-white text-orange-600 rounded-xl border-orange-600 p-2 inline border-2" onClick={handleBack}>Kembali</button>
+						<button className="bg-white text-orange-600 rounded-xl border-orange-600 p-2 inline border-2" onClick={handleRejectGroomingOrder}>Tolak Permintaan</button>
+					</div>
 				);
-			} else if (consultation.status == 'cancelled') {
+			} else if (order.status == 'cancelled') {
 				return (
 					<div className="grid grid-cols-2 gap-3">
 						<button className="bg-white text-orange-600 rounded-xl border-orange-600 p-2 inline border-2" onClick={handleBack}>Kembali</button>
 					</div>
 				);
-			} else if (consultation.status == 'accepted') {
+			} else if (order.status == 'accepted') {
 				return (
 					<div className="grid grid-cols-2 gap-3">
 						<button className="bg-white text-orange-600 rounded-xl border-orange-600 p-2 inline border-2" onClick={handleBack}>Kembali</button>
 					</div>
 				);
-			} else if (consultation.status == 'paid') {
+			} else if (order.status == 'paid') {
 				return (
 					<div className="grid grid-cols-2 gap-3">
 						<button className="bg-white text-orange-600 rounded-xl border-orange-600 p-2 inline border-2" onClick={handleBack}>Kembali</button>
 					</div>
 				);
-			} else if (consultation.status == 'completed') {
+			} else if (order.status == 'completed') {
 				return (
 					<div className="grid grid-cols-2 gap-3">
 						<button className="bg-white text-orange-600 rounded-xl border-orange-600 p-2 inline border-2" onClick={handleBack}>Kembali</button>
@@ -198,7 +209,15 @@ function SuccessPage({ myUser, user, consultation, review, setStatus, refreshUse
 	</>);
 }
 
-function AcceptedPage({ myUser, user, consultation }: { myUser: any, user: any, consultation: any }) {
+function AcceptedPage() {
+	const {
+		service,
+		order,
+		customer,
+		groomer,
+		pet
+	} = React.useContext(PageContext);
+
 	return (<>
 	<div className="flex flex-col gap-1">
 		<ul className="p-4">
@@ -206,12 +225,20 @@ function AcceptedPage({ myUser, user, consultation }: { myUser: any, user: any, 
 		</ul>
 	</div>
 	<div className="p-4 grid grid-cols-1 col-span-3">
-	  <h1>Ajuan harga konsultasi berhasil dikirimkan ke pelanggan. Mohon tunggu konfirmasi pelanggan.</h1>
+	  <h1>Pesanan Diterima, silahkan datang untuk melakukan grooming pada hewan peliharaan pelanggan. Mohon tunggu konfirmasi pelanggan.</h1>
 	</div>
 	</>);
 }
 
-function RejectedPage({ myUser, user, consultation }: { myUser: any, user: any, consultation: any }) {
+function RejectedPage() {
+	const {
+		service,
+		order,
+		customer,
+		groomer,
+		pet
+	} = React.useContext(PageContext);
+
 	return (<>
 	<div className="flex flex-col gap-1">
 		<ul className="p-4">
@@ -219,12 +246,20 @@ function RejectedPage({ myUser, user, consultation }: { myUser: any, user: any, 
 		</ul>
 	</div>
 	<div className="p-4 grid grid-cols-1 col-span-3">
-	  <h1>Permintaan Konsultasi Berhasil Ditolak</h1>
+	  <h1>Permintaan Pesanan Grooming Berhasil Ditolak</h1>
 	</div>
 	</>);
 }
 
-function CanceledPage({ myUser, user, consultation }: { myUser: any, user: any, consultation: any }) {
+function CanceledPage() {
+	const {
+		service,
+		order,
+		customer,
+		groomer,
+		pet
+	} = React.useContext(PageContext);
+
 	return (<>
 	<div className="flex flex-col gap-1">
 		<ul className="p-4">
@@ -232,12 +267,20 @@ function CanceledPage({ myUser, user, consultation }: { myUser: any, user: any, 
 		</ul>
 	</div>
 	<div className="p-4 grid grid-cols-1 col-span-3">
-	  <h1>Konsultasi Berhasil Dibatalkan</h1>
+	  <h1>Pesanan Grooming Berhasil Dibatalkan</h1>
 	</div>
 	</>);
 }
 
 function FailedPage() {
+	const {
+		service,
+		order,
+		customer,
+		groomer,
+		pet
+	} = React.useContext(PageContext);
+
 	return (<>
 	<div className="flex flex-col gap-1">
 		<ul className="p-4">
@@ -252,58 +295,127 @@ function FailedPage() {
 
 export default function HomePage() {
   const [ status, setStatus ] = React.useState<'LOADING' | 'NOTFOUND' | 'SUCCESS' | 'ACCEPTED' | 'REJECTED' | 'CANCELED' | 'PAID' | 'COMPLETED' | 'FAILED'>('LOADING');
-  const [ myUser, setMyUser ] = React.useState<any>({});
-  const [ user, setUser ] = React.useState<any>({});
-  const [ consultation, setConsultation ] = React.useState<any>({});
-  const [ review, setReview ] = React.useState<any>({});
+  const [ customer, setCustomer ] = React.useState<any>(null);
+  const [ groomer, setGroomer ] = React.useState<any>(null);
+  const [ service, setService ] = React.useState<any>(null);
+  const [ order, setOrder ] = React.useState<any>(null);
+  const [ pet, setPet ] = React.useState<any>(null);
+  const [ review, setReview ] = React.useState<any>(null);
 
   const router = useRouter();
 
-  const refreshUser = async () => {
-		if (!router.isReady) return;
-
-		const resAuth = await AuthAPI({ token: AuthService.getToken()! });
-		setMyUser(resAuth.data);
-
-		const consultation_id = router.query.consultation_id as string;
-		const res = await GetConsultationAPI({ id: consultation_id });
+  const refreshGroomer = async () => {
+		// get user
+		const token = AuthService.getToken()!;
+		const res = await AuthAPI({ token });
 		const success = res.success;
+		const groomerData = res.data;
+
+		console.log('groomer res');
+		console.log(res);
 
 		if (success) {
-			const _consultation = res.data;
-			setConsultation(_consultation);
-
-			if (_consultation.is_reviewed) {
-				const resReview = await GetConsultationReviewAPI({ id: _consultation.id });
-				if (resReview.success) {
-					setReview(resReview.data);
-				}
-			}
-
-			const userId = _consultation.customer_id;
-			const resUser = await GetPublicUserAPI({ id: userId });
-			const success = resUser.success;
-
-			if (success) {
-				const user = resUser.data;
-
-				if (user.role == 'customer') {
-					setUser(user);
-					setStatus('SUCCESS');
-				} else {
-					setStatus('NOTFOUND');
-				}
-			} else {
-				setStatus('NOTFOUND');
+			if (groomerData.role == 'grooming') {
+				setGroomer(groomerData);
+				console.log('SUCCESSSS GROOMER');
 			}
 		} else {
 			setStatus('NOTFOUND');
 		}
-	};
+  };
+
+  const refreshCustomer = async () => {
+		// get groomer
+		const res = await GetPublicUserAPI({ id: order.customer_id });
+		const success = res.success;
+		const customerData = res.data;
+
+		console.log('customer res');
+		console.log(res);
+
+		if (success) {
+			if (customerData.role == 'customer') {
+				setCustomer(customerData);
+				console.log('SUCCESSSS CUSTOMER');
+			}
+		} else {
+			setStatus('NOTFOUND');
+		}
+  };
+
+  const refreshPet = async () => {
+		// get pets
+		const res = await RetrievePetAPI({ id: order.pet_id });
+		const success = res.success;
+		const petData = res.data;
+
+		console.log('pet res');
+		console.log(res);
+
+		if (success) {
+			setPet(petData);
+			console.log('SUCCESSSS PET');
+		} else {
+			setStatus('NOTFOUND');
+		}
+  };
+
+  const refreshService = async () => {
+		const serviceRes = await GetGroomingServiceAPI({ id: order.grooming_service_id });
+		const serviceSuccess = serviceRes.success;
+		const serviceData = serviceRes.data;
+
+		console.log('service res');
+		console.log(serviceRes);
+
+		if (serviceSuccess) {
+			setService(serviceData);
+			console.log('SUCCESSSS SERVICE');
+		} else {
+			setStatus('NOTFOUND');
+		}
+  };
+
+  const refreshOrder = async () => {
+		const orderId = router.query.grooming_order_id as string;
+		const orderRes = await GetGroomingOrderAPI({ id: orderId });
+		const orderSuccess = orderRes.success;
+		const orderData = orderRes.data;
+
+		console.log('order res');
+		console.log(orderRes);
+
+		if (orderSuccess) {
+			setOrder(orderData);
+			console.log('SUCCESSSS ORDER');
+		} else {
+			setStatus('NOTFOUND');
+		}
+  };
 
   React.useEffect(() => {
-	refreshUser();
+	refreshOrder();
   }, [ router.isReady ]);
+
+  React.useEffect(() => {
+	if (order) {
+		setService(null);
+		setCustomer(null);
+		setGroomer(null);
+		setPet(null);
+
+		refreshService();
+		refreshCustomer();
+		refreshGroomer();
+		refreshPet();
+	}
+  }, [order]);
+
+  React.useEffect(() => {
+    if (service && customer && groomer && pet) {
+		setStatus('SUCCESS');
+	}
+  }, [service, customer, groomer, pet]);
 
   return (
     <>
@@ -311,19 +423,21 @@ export default function HomePage() {
       <Seo />
 
       <main>
-		<ShouldAuthorized roleSpecific="doctor">
+		<ShouldAuthorized roleSpecific="grooming">
 			<section className='bg-white'>
 			  <div className='layout grid grid-cols-1 mt-8 w-100'>
-				<h1 className="text-xl font-semibold mb-2">Informasi Konsultasi</h1>
+				<h1 className="text-xl font-semibold mb-2">Informasi Pesanan Grooming</h1>
 				<div className="px-4 grid grid-cols-1 gap-3">
-					{status === 'LOADING' && <LoadingPage />
-					|| status === 'NOTFOUND' && <NotFoundPage />
-					|| status === 'SUCCESS' && <SuccessPage myUser={myUser} user={user} consultation={consultation} review={review} setStatus={setStatus} refreshUser={refreshUser} />
-					|| status === 'ACCEPTED' && <AcceptedPage myUser={myUser} user={user} consultation={consultation} />
-					|| status === 'REJECTED' && <RejectedPage myUser={myUser} user={user} consultation={consultation} />
-					|| status === 'CANCELED' && <CanceledPage myUser={myUser} user={user} consultation={consultation} />
-					|| status === 'FAILED' && <FailedPage />
-					}
+					<PageContext.Provider value={ {service, order, customer, groomer, pet, refreshOrder, setStatus} }>
+						{status === 'LOADING' && <LoadingPage />
+						|| status === 'NOTFOUND' && <NotFoundPage />
+						|| status === 'SUCCESS' && <SuccessPage />
+						|| status === 'ACCEPTED' && <AcceptedPage />
+						|| status === 'REJECTED' && <RejectedPage />
+						|| status === 'CANCELED' && <CanceledPage />
+						|| status === 'FAILED' && <FailedPage />
+						}
+					</PageContext.Provider>
 				</div>
 			  </div>
 			</section>
