@@ -82,7 +82,7 @@ function NotFoundPage() {
 		</ul>
 	</div>
 	<div className="p-4 grid grid-cols-1 col-span-3">
-	  <h1>Dokter hewan tidak ditemukan</h1>
+	  <h1>Pesanan Grooming tidak ditemukan</h1>
 	</div>
 	</>);
 }
