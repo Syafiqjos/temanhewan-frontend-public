@@ -1,7 +1,7 @@
 import * as API from '@/api/API';
 import AuthService from '@/services/AuthService';
 
-export default async function GetForumAPI(
+export default async function GetCommentAPI(
 {
 	comment_id
 }: {
