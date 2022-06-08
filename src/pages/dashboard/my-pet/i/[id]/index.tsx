@@ -26,11 +26,11 @@ import Pet from '@/interfaces/Pet';
 function NotFoundPage() {
 	return (<>
 	<div className="flex flex-col gap-1">
-		<ul className="p-4">
-			<img className="rounded-xl object-cover w-full h-48" src="/images/cover/register-cover.png" />
+		<ul>
+			<img className="rounded-xl object-cover w-full h-auto" src="/images/cover/register-cover.png" />
 		</ul>
 	</div>
-	<div className="p-4 grid grid-cols-1">
+	<div className="grid grid-cols-1">
 	  <h1>Peliharaan tidak ditemukan</h1>
 	</div>
 	</>);
@@ -39,11 +39,11 @@ function NotFoundPage() {
 function LoadingPage() {
 	return (<>
 	<div className="flex flex-col gap-1">
-		<ul className="p-4">
-			<img className="rounded-xl object-cover w-full h-48" src="/images/cover/register-cover.png" />
+		<ul>
+			<img className="rounded-xl object-cover w-full h-auto" src="/images/cover/register-cover.png" />
 		</ul>
 	</div>
-	<div className="p-4 grid grid-cols-1">
+	<div className="grid grid-cols-1">
 	  <h1>Memuat..</h1>
 	</div>
 	</>);
@@ -104,12 +104,12 @@ function SuccessPage({ myPet }: { myPet: Pet }) {
 	}
 
 	return (<>
-	<div className="flex flex-col gap-1">
+	<div>
 		<ul className="p-4">
-			<img className="rounded-xl object-cover w-full h-48" src={myPet.imageUrl} />
+			<img className="rounded-xl object-cover w-full h-auto" src={myPet.imageUrl} />
 		</ul>
 	</div>
-	<div className="p-4 grid grid-cols-1">
+	<div className="grid grid-cols-1">
 	  <h1>{myPet.name}</h1>
 	  <p className="my-4">{myPet.description}</p>
 	  <InputText label="Jenis Peliharaan" type="text" name="petType" disabled value={getPetType(myPet.race)} />
@@ -160,7 +160,7 @@ export default function HomePage() {
 						<section className='bg-white'>
 							<div className='layout grid grid-cols-1 mt-8 w-100'>
 								<h1 className="text-xl font-semibold mb-2">Hewan Peliharaan saya</h1>
-								<div className="px-4 grid grid-cols-2 gap-3">
+								<div className="grid grid-cols-2 gap-3">
 									{status === 'LOADING' && <LoadingPage />
 									|| status === 'NOTFOUND' && <NotFoundPage />
 									|| status === 'SUCCESS' && <SuccessPage myPet={myPet} />
