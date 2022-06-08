@@ -17,10 +17,16 @@ import GetPublicUserAPI from '@/api/GetPublicUserAPI';
 import ShouldAuthorized from '@/components/auths/ShouldAuthorized';
 
 import InputText from '@/components/forms/InputText';
-import DoctorFormComponent from '@/components/business/consultations/DoctorFormComponent';
-import CustomerFormComponent from '@/components/business/consultations/CustomerFormComponent';
-import ConsultationFormComponent from '@/components/business/consultations/ConsultationFormComponent';
-import ConsultationStatusFormComponent from '@/components/business/consultations/ConsultationStatusFormComponent';
+import GroomingServiceComponent from '@/components/business/groomings/GroomingServiceComponent';
+import GroomingOrderComponent from '@/components/business/groomings/GroomingOrderComponent';
+import GroomingOrderStatusComponent from '@/components/business/groomings/GroomingOrderStatusComponent';
+import GroomingOrderStatusFormComponent from '@/components/business/groomings/GroomingOrderStatusFormComponent';
+
+import GroomingServiceFormComponent from '@/components/business/groomings/GroomingServiceFormComponent';
+import GroomingOrderFormComponent from '@/components/business/groomings/GroomingOrderFormComponent';
+import CustomerFormComponent from '@/components/business/groomings/CustomerFormComponent';
+import GroomingFormComponent from '@/components/business/groomings/GroomingFormComponent';
+import PetFormComponent from '@/components/business/groomings/PetFormComponent';
 import ReviewFormComponent from '@/components/business/consultations/ReviewFormComponent';
 
 import Layout from '@/components/layout/Layout';
@@ -108,7 +114,8 @@ function SuccessPage() {
 		order,
 		customer,
 		groomer,
-		pet
+		pet,
+		refreshOrder
 	} = React.useContext(PageContext);
 
 	const router = useRouter();
@@ -122,81 +129,81 @@ function SuccessPage() {
 		e.preventDefault();
 
 		if (router.isReady) {
-			router.push(`/dashboard/consultation`);
+			router.push(`/dashboard/grooming-order`);
 		}
 	}
 
-	async function handleCancelConsultation(e: any) {
+	async function handleCancelGroomingOrder(e: any) {
 		e.preventDefault();
 
-		const res = await CancelConsultationAPI({ id: consultation.id });
+		const res = await CancelGroomingOrderAPI({ id: order.id });
 		const success = res.success;
 
 		if (success) {
 			setStatus('CANCELED');
 
 			setTimeout(() => {
-				refreshUser();
+				refreshOrder();
 			}, 1000);
 		} else {
 			setStatus('FAILED');
 		}
 	}
 
-	async function handlePayConsultation(e: any) {
+	async function handlePayGroomingOrder(e: any) {
 		e.preventDefault();
 
-		const res = await PaidConsultationAPI({ id: consultation.id });
+		const res = await PaidGroomingOrderAPI({ id: order.id });
 		const success = res.success;
 
 		if (success) {
 			setStatus('PAID');
 
 			setTimeout(() => {
-				refreshUser();
+				refreshOrder();
 			}, 2000);
 		} else {
 			setStatus('FAILED');
 		}
 	}
 
-	async function handleCompleteConsultation(e: any) {
+	async function handleCompleteGroomingOrder(e: any) {
 		e.preventDefault();
 
-		const res = await CompleteConsultationAPI({ id: consultation.id });
+		const res = await CompleteGroomingOrderAPI({ id: order.id });
 		const success = res.success;
 
 		if (success) {
 			setStatus('COMPLETED');
 
 			setTimeout(() => {
-				refreshUser();
+				refreshOrder();
 			}, 3000);
 		} else {
 			setStatus('FAILED');
 		}
 	}
 
-	function handleCloseInputReviewConsultation(e: any) {
+	function handleCloseInputReviewGroomingOrder(e: any) {
 		e.preventDefault();
 
 		setIsInputingReview(false);
 	}
 
-	function handleInputReviewConsultation(e: any) {
+	function handleInputReviewGroomingOrder(e: any) {
 		e.preventDefault();
 
 		setIsInputingReview(true);
 	}
 
-	async function handleReviewConsultation(e: any) {
+	async function handleReviewGroomingOrder(e: any) {
 		e.preventDefault();
 
 		if (ratingReviewRef && ratingReviewRef.current && inputReviewRef && inputReviewRef.current && privateReviewRef && privateReviewRef.current) {
 			const rating = (ratingReviewRef.current.find(el => (el as any).checked) as any).value;
 
-			const res = await CreateConsultationReviewAPI({
-				id: consultation.id,
+			const res = await CreateGroomingOrderReviewAPI({
+				id: order.id,
 				rating: rating,
 				review: (inputReviewRef.current as any).value,
 				is_public: !(privateReviewRef.current as any).checked
@@ -207,7 +214,7 @@ function SuccessPage() {
 				setStatus('REVIEWED');
 
 				setTimeout(() => {
-					refreshUser();
+					refreshOrder();
 				}, 3000);
 			} else {
 				setStatus('FAILED');
@@ -217,57 +224,59 @@ function SuccessPage() {
 
 	return (<>
 	<div className="flex flex-col gap-1 p-4">
-		<ConsultationFormComponent consultation={consultation} />
-		<DoctorFormComponent user={user} />
-		<CustomerFormComponent user={myUser} />
-		{consultation.is_reviewed && <ReviewFormComponent review={review} />}
-		<ConsultationStatusFormComponent consultation={consultation} />
+		<GroomingServiceFormComponent service={service} />
+		<GroomingOrderFormComponent order={order} />
+		<GroomingFormComponent user={groomer} />
+		<CustomerFormComponent user={customer} />
+		<PetFormComponent pet={pet} />
+		{order.is_reviewed && <ReviewFormComponent review={review} />}
+		<GroomingOrderStatusFormComponent order={order} />
 		
 		{(()=>{
-			if (consultation.is_reviewed) {
+			if (order.is_reviewed) {
 				return (
 					<div className="grid grid-cols-2 gap-3">
 						<button className="bg-white text-orange-600 rounded-xl border-orange-600 p-2 inline border-2" onClick={handleBack}>Kembali</button>
 					</div>
 				);
 			}
-			else if (consultation.status == 'pending') {
+			else if (order.status == 'pending') {
 				return (
 					<div className="grid grid-cols-2 gap-3">
 						<button className="bg-white text-orange-600 rounded-xl border-orange-600 p-2 inline border-2" onClick={handleBack}>Kembali</button>
-						<button className="bg-orange-600 text-white rounded-xl border-orange-600 p-2 inline border-2" onClick={handleCancelConsultation}>Batalkan Konsultasi</button>
+						<button className="bg-orange-600 text-white rounded-xl border-orange-600 p-2 inline border-2" onClick={handleCancelGroomingOrder}>Batalkan Pesanan</button>
 					</div>
 				);
-			} else if (consultation.status == 'cancelled') {
+			} else if (order.status == 'cancelled') {
 				return (
 					<div className="grid grid-cols-2 gap-3">
 						<button className="bg-white text-orange-600 rounded-xl border-orange-600 p-2 inline border-2" onClick={handleBack}>Kembali</button>
 					</div>
 				);
-			} else if (consultation.status == 'accepted') {
+			} else if (order.status == 'accepted') {
 				return (
 					<div className="grid grid-cols-3 gap-3">
 						<button className="bg-white text-orange-600 rounded-xl border-orange-600 p-2 inline border-2" onClick={handleBack}>Kembali</button>
-						<button className="bg-white text-orange-600 rounded-xl border-orange-600 p-2 inline border-2" onClick={handleCancelConsultation}>Batalkan Konsultasi</button>
-						<button className="bg-orange-600 text-white rounded-xl border-orange-600 p-2 inline border-2" onClick={handlePayConsultation}>Bayar Biaya Konsultasi</button>
+						<button className="bg-white text-orange-600 rounded-xl border-orange-600 p-2 inline border-2" onClick={handleCancelGroomingOrder}>Batalkan Pesanan</button>
+						<button className="bg-orange-600 text-white rounded-xl border-orange-600 p-2 inline border-2" onClick={handlePayGroomingOrder}>Bayar Biaya Pesanan</button>
 					</div>
 				);
-			} else if (consultation.status == 'paid') {
+			} else if (order.status == 'paid') {
 				return (
 					<div className="grid grid-cols-2 gap-3">
 						<button className="bg-white text-orange-600 rounded-xl border-orange-600 p-2 inline border-2" onClick={handleBack}>Kembali</button>
-						<button className="bg-orange-600 text-white rounded-xl border-orange-600 p-2 inline border-2" onClick={handleCompleteConsultation}>Selesaikan Konsultasi</button>
+						<button className="bg-orange-600 text-white rounded-xl border-orange-600 p-2 inline border-2" onClick={handleCompleteGroomingOrder}>Selesaikan Pesanan</button>
 					</div>
 				);
-			} else if (consultation.status == 'completed') {
+			} else if (order.status == 'completed') {
 				return (
 					<>
 						{(!isInputingReview && <div className="grid grid-cols-2 gap-3">
 							<button className="bg-white text-orange-600 rounded-xl border-orange-600 p-2 inline border-2" onClick={handleBack}>Kembali</button>
-							<button className="bg-orange-600 text-white rounded-xl border-orange-600 p-2 inline border-2" onClick={handleInputReviewConsultation}>Tambahkan Review Konsultasi</button>
+							<button className="bg-orange-600 text-white rounded-xl border-orange-600 p-2 inline border-2" onClick={handleInputReviewGroomingOrder}>Tambahkan Review Jasa Grooming</button>
 						</div>)}
 						{(isInputingReview && <div className="grid grid-cols-3 gap-3">
-							<button className="bg-white text-orange-600 rounded-xl border-orange-600 p-2 inline border-2 row-span-3" onClick={handleCloseInputReviewConsultation}>Batal</button>
+							<button className="bg-white text-orange-600 rounded-xl border-orange-600 p-2 inline border-2 row-span-3" onClick={handleCloseInputReviewGroomingOrder}>Batal</button>
 							<form className="w-full col-span-2">
 								<span className="font-semibold">Rating</span>
 								<ul className="grid grid-cols-5">
@@ -283,7 +292,7 @@ function SuccessPage() {
 								<input className="mr-2" ref={privateReviewRef} id="review_public" name="review_public" type="checkbox" />
 								<label htmlFor="review_public">Review secara privasi?</label>
 							</form>
-							<button className="bg-orange-600 text-white rounded-xl border-orange-600 p-2 inline border-2 col-span-1" onClick={handleReviewConsultation}>Tambahkan Review Konsultasi</button>
+							<button className="bg-orange-600 text-white rounded-xl border-orange-600 p-2 inline border-2 col-span-1" onClick={handleReviewGroomingOrder}>Tambahkan Review Jasa Grooming</button>
 						</div>)}
 					</>
 				);
@@ -309,7 +318,7 @@ function AcceptedPage() {
 		</ul>
 	</div>
 	<div className="p-4 grid grid-cols-1 col-span-3">
-	  <h1>Konsultasi Berhasil Diterima</h1>
+	  <h1>Pesanan Grooming Berhasil Diterima</h1>
 	</div>
 	</>);
 }
@@ -330,7 +339,7 @@ function RejectedPage() {
 		</ul>
 	</div>
 	<div className="p-4 grid grid-cols-1 col-span-3">
-	  <h1>Konsultasi Berhasil Ditolak</h1>
+	  <h1>Pesanan Grooming Berhasil Ditolak</h1>
 	</div>
 	</>);
 }
@@ -351,7 +360,7 @@ function CanceledPage() {
 		</ul>
 	</div>
 	<div className="p-4 grid grid-cols-1 col-span-3">
-	  <h1>Konsultasi Berhasil Dibatalkan</h1>
+	  <h1>Pesanan Grooming Berhasil Dibatalkan</h1>
 	</div>
 	</>);
 }
@@ -372,7 +381,7 @@ function PaidPage() {
 		</ul>
 	</div>
 	<div className="p-4 grid grid-cols-1 col-span-3">
-	  <h1>Pembayaran konsultasi berhasil</h1>
+	  <h1>Pembayaran Pesanan Grooming Berhasil</h1>
 	  <h2 className="text-xl">Silahkan bersiap ditempat dan waktu yang telah dijanjikan. Nantikan dokter hewan pilihan anda untuk memeriksa!</h2>
 	</div>
 	</>);
@@ -394,8 +403,8 @@ function CompletedPage() {
 		</ul>
 	</div>
 	<div className="p-4 grid grid-cols-1 col-span-3">
-	  <h1>Konsultasi telah diselesaikan</h1>
-	  <h2 className="text-xl">Selamat konsultasi bersama dokter hewan peliharaan anda telah selesai. Jangan lupa untuk berikan review dan testimoni terhadap dokter hewan peliharaan yang telah membantu anda ya.</h2>
+	  <h1>Pesanan Grooming telah diselesaikan</h1>
+	  <h2 className="text-xl">Selamat pesanan bersama jasa grooming hewan peliharaan anda telah selesai. Jangan lupa untuk berikan review dan testimoni terhadap jasa grooming yang telah membantu anda ya.</h2>
 	</div>
 	</>);
 }
@@ -417,7 +426,7 @@ function ReviewedPage() {
 	</div>
 	<div className="p-4 grid grid-cols-1 col-span-3">
 	  <h1>Review berhasil diteruskan</h1>
-	  <h2 className="text-xl">Terima kasih telah menambahkan review konsultasi bersama dokter hewan peliharaan anda. Sehat selalu ya.</h2>
+	  <h2 className="text-xl">Terima kasih telah menambahkan review grooming bersama jasa grooming hewan peliharaan anda. Sehat selalu ya.</h2>
 	</div>
 	</>);
 }
@@ -570,9 +579,9 @@ export default function HomePage() {
 		<ShouldAuthorized roleSpecific="customer">
 			<section className='bg-white'>
 			  <div className='layout grid grid-cols-1 mt-8 w-100'>
-				<h1 className="text-xl font-semibold mb-2">Informasi Konsultasi</h1>
+				<h1 className="text-xl font-semibold mb-2">Informasi Pesanan Grooming</h1>
 				<div className="px-4 grid grid-cols-1 gap-3">
-					<PageContext.Provider value={ {service, order, customer, groomer, pet} }>
+					<PageContext.Provider value={ {service, order, customer, groomer, pet, refreshOrder} }>
 						{status === 'LOADING' && <LoadingPage />
 						|| status === 'NOTFOUND' && <NotFoundPage />
 						|| status === 'SUCCESS' && <SuccessPage />
