@@ -39,7 +39,7 @@ function getPetRace(petType: PetType | string | number | null) {
 
 function PetLabelComponent({ handlePetFilter, filter, petType, children } : { handlePetFilter: any, filter: PetType | string | number | null, petType: PetType | null, children: any }) {
 	const petFilterClassNames = 'p-2 rounded-lg cursor-pointer';
-	const petFilterActiveClassNames = 'bg-orange-600 text-white';
+	const petFilterActiveClassNames = 'bg-primary-500 text-white';
 
 	return (<li onClick={() => handlePetFilter(petType)} className={`${petFilterClassNames} ${getPetRace(filter) == getPetRace(petType) ? petFilterActiveClassNames : ''}`}>{children}</li>);
 }
@@ -115,7 +115,7 @@ export default function HomePage() {
 														})}
 								</div>
 							</div>
-						<Link href="/dashboard/add-pet"><a className="fixed right-4 bottom-4 bg-orange-600 text-white rounded-xl w-16 h-16 flex flex-col items-center justify-center font-semibold text-xl">+</a></Link>
+						<Link href="/dashboard/add-pet"><a className="fixed right-4 bottom-4 bg-primary-500 text-white rounded-xl w-16 h-16 flex flex-col items-center justify-center font-semibold text-xl">+</a></Link>
 						</div>
 					</section>
 				</ShouldAuthorized>

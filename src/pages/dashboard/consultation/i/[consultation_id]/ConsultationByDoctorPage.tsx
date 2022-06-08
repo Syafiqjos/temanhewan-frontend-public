@@ -157,39 +157,39 @@ function SuccessPage({ myUser, user, consultation, review, setStatus, refreshUse
 				return (
 					<>
 						{!isInputingPrice && (<div className="grid grid-cols-3 gap-3">
-							<button className="bg-white text-orange-600 rounded-xl border-orange-600 p-2 inline border-2" onClick={handleBack}>Kembali</button>
-							<button className="bg-white text-orange-600 rounded-xl border-orange-600 p-2 inline border-2" onClick={handleRejectConsultation}>Tolak Permintaan</button>
-							<button className="bg-orange-600 text-white rounded-xl border-orange-600 p-2 inline border-2" onClick={handleInputPrice}>Ajukan Biaya Konsultasi</button>
+							<button className="bg-white text-primary-500 rounded-xl border-primary-500 p-2 inline border-2" onClick={handleBack}>Kembali</button>
+							<button className="bg-white text-primary-500 rounded-xl border-primary-500 p-2 inline border-2" onClick={handleRejectConsultation}>Tolak Permintaan</button>
+							<button className="bg-primary-500 text-white rounded-xl border-primary-500 p-2 inline border-2" onClick={handleInputPrice}>Ajukan Biaya Konsultasi</button>
 						</div>)}
 						{isInputingPrice && (<div className="grid grid-cols-2 gap-3">
-							<button className="bg-white text-orange-600 rounded-xl border-orange-600 p-2 inline border-2 row-span-2" onClick={handleCloseInputPrice}>Batal</button>
+							<button className="bg-white text-primary-500 rounded-xl border-primary-500 p-2 inline border-2 row-span-2" onClick={handleCloseInputPrice}>Batal</button>
 							<InputText name="input_price" label="Biaya yang diajukan (Rupiah)" type="number" value={fee as any as string} onChange={handleFee} />
-							<button className="bg-orange-600 text-white rounded-xl border-orange-600 p-2 inline border-2" onClick={handleAcceptConsultation}>Ajukan Biaya Konsultasi</button>
+							<button className="bg-primary-500 text-white rounded-xl border-primary-500 p-2 inline border-2" onClick={handleAcceptConsultation}>Ajukan Biaya Konsultasi</button>
 						</div>)}
 					</>
 				);
 			} else if (consultation.status == 'cancelled') {
 				return (
 					<div className="grid grid-cols-2 gap-3">
-						<button className="bg-white text-orange-600 rounded-xl border-orange-600 p-2 inline border-2" onClick={handleBack}>Kembali</button>
+						<button className="bg-white text-primary-500 rounded-xl border-primary-500 p-2 inline border-2" onClick={handleBack}>Kembali</button>
 					</div>
 				);
 			} else if (consultation.status == 'accepted') {
 				return (
 					<div className="grid grid-cols-2 gap-3">
-						<button className="bg-white text-orange-600 rounded-xl border-orange-600 p-2 inline border-2" onClick={handleBack}>Kembali</button>
+						<button className="bg-white text-primary-500 rounded-xl border-primary-500 p-2 inline border-2" onClick={handleBack}>Kembali</button>
 					</div>
 				);
 			} else if (consultation.status == 'paid') {
 				return (
 					<div className="grid grid-cols-2 gap-3">
-						<button className="bg-white text-orange-600 rounded-xl border-orange-600 p-2 inline border-2" onClick={handleBack}>Kembali</button>
+						<button className="bg-white text-primary-500 rounded-xl border-primary-500 p-2 inline border-2" onClick={handleBack}>Kembali</button>
 					</div>
 				);
 			} else if (consultation.status == 'completed') {
 				return (
 					<div className="grid grid-cols-2 gap-3">
-						<button className="bg-white text-orange-600 rounded-xl border-orange-600 p-2 inline border-2" onClick={handleBack}>Kembali</button>
+						<button className="bg-white text-primary-500 rounded-xl border-primary-500 p-2 inline border-2" onClick={handleBack}>Kembali</button>
 					</div>
 				);
 			}

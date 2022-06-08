@@ -198,47 +198,47 @@ function SuccessPage({ myUser, user, consultation, review, setStatus, refreshUse
 			if (consultation.is_reviewed) {
 				return (
 					<div className="grid grid-cols-2 gap-3">
-						<button className="bg-white text-orange-600 rounded-xl border-orange-600 p-2 inline border-2" onClick={handleBack}>Kembali</button>
+						<button className="bg-white text-primary-500 rounded-xl border-primary-500 p-2 inline border-2" onClick={handleBack}>Kembali</button>
 					</div>
 				);
 			}
 			else if (consultation.status == 'pending') {
 				return (
 					<div className="grid grid-cols-2 gap-3">
-						<button className="bg-white text-orange-600 rounded-xl border-orange-600 p-2 inline border-2" onClick={handleBack}>Kembali</button>
-						<button className="bg-orange-600 text-white rounded-xl border-orange-600 p-2 inline border-2" onClick={handleCancelConsultation}>Batalkan Konsultasi</button>
+						<button className="bg-white text-primary-500 rounded-xl border-primary-500 p-2 inline border-2" onClick={handleBack}>Kembali</button>
+						<button className="bg-primary-500 text-white rounded-xl border-primary-500 p-2 inline border-2" onClick={handleCancelConsultation}>Batalkan Konsultasi</button>
 					</div>
 				);
 			} else if (consultation.status == 'cancelled') {
 				return (
 					<div className="grid grid-cols-2 gap-3">
-						<button className="bg-white text-orange-600 rounded-xl border-orange-600 p-2 inline border-2" onClick={handleBack}>Kembali</button>
+						<button className="bg-white text-primary-500 rounded-xl border-primary-500 p-2 inline border-2" onClick={handleBack}>Kembali</button>
 					</div>
 				);
 			} else if (consultation.status == 'accepted') {
 				return (
 					<div className="grid grid-cols-3 gap-3">
-						<button className="bg-white text-orange-600 rounded-xl border-orange-600 p-2 inline border-2" onClick={handleBack}>Kembali</button>
-						<button className="bg-white text-orange-600 rounded-xl border-orange-600 p-2 inline border-2" onClick={handleCancelConsultation}>Batalkan Konsultasi</button>
-						<button className="bg-orange-600 text-white rounded-xl border-orange-600 p-2 inline border-2" onClick={handlePayConsultation}>Bayar Biaya Konsultasi</button>
+						<button className="bg-white text-primary-500 rounded-xl border-primary-500 p-2 inline border-2" onClick={handleBack}>Kembali</button>
+						<button className="bg-white text-primary-500 rounded-xl border-primary-500 p-2 inline border-2" onClick={handleCancelConsultation}>Batalkan Konsultasi</button>
+						<button className="bg-primary-500 text-white rounded-xl border-primary-500 p-2 inline border-2" onClick={handlePayConsultation}>Bayar Biaya Konsultasi</button>
 					</div>
 				);
 			} else if (consultation.status == 'paid') {
 				return (
 					<div className="grid grid-cols-2 gap-3">
-						<button className="bg-white text-orange-600 rounded-xl border-orange-600 p-2 inline border-2" onClick={handleBack}>Kembali</button>
-						<button className="bg-orange-600 text-white rounded-xl border-orange-600 p-2 inline border-2" onClick={handleCompleteConsultation}>Selesaikan Konsultasi</button>
+						<button className="bg-white text-primary-500 rounded-xl border-primary-500 p-2 inline border-2" onClick={handleBack}>Kembali</button>
+						<button className="bg-primary-500 text-white rounded-xl border-primary-500 p-2 inline border-2" onClick={handleCompleteConsultation}>Selesaikan Konsultasi</button>
 					</div>
 				);
 			} else if (consultation.status == 'completed') {
 				return (
 					<>
 						{(!isInputingReview && <div className="grid grid-cols-2 gap-3">
-							<button className="bg-white text-orange-600 rounded-xl border-orange-600 p-2 inline border-2" onClick={handleBack}>Kembali</button>
-							<button className="bg-orange-600 text-white rounded-xl border-orange-600 p-2 inline border-2" onClick={handleInputReviewConsultation}>Tambahkan Review Konsultasi</button>
+							<button className="bg-white text-primary-500 rounded-xl border-primary-500 p-2 inline border-2" onClick={handleBack}>Kembali</button>
+							<button className="bg-primary-500 text-white rounded-xl border-primary-500 p-2 inline border-2" onClick={handleInputReviewConsultation}>Tambahkan Review Konsultasi</button>
 						</div>)}
 						{(isInputingReview && <div className="grid grid-cols-3 gap-3">
-							<button className="bg-white text-orange-600 rounded-xl border-orange-600 p-2 inline border-2 row-span-3" onClick={handleCloseInputReviewConsultation}>Batal</button>
+							<button className="bg-white text-primary-500 rounded-xl border-primary-500 p-2 inline border-2 row-span-3" onClick={handleCloseInputReviewConsultation}>Batal</button>
 							<form className="w-full col-span-2">
 								<span className="font-semibold">Rating</span>
 								<ul className="grid grid-cols-5">
@@ -249,12 +249,12 @@ function SuccessPage({ myUser, user, consultation, review, setStatus, refreshUse
 									<li><input ref={el => ratingReviewRef.current[4] = (el as never)} className="p-1" type="radio" name="review_rating" value="5" /> 5 Stars</li>
 								</ul>
 							</form>
-							<textarea ref={inputReviewRef} className="bg-white text-orange-600 rounded-xl border-orange-600 p-4 inline border-2 col-span-2" placeholder="Review anda"></textarea>
+							<textarea ref={inputReviewRef} className="bg-white text-primary-500 rounded-xl border-primary-500 p-4 inline border-2 col-span-2" placeholder="Review anda"></textarea>
 							<form className="p-4">
 								<input className="mr-2" ref={privateReviewRef} id="review_public" name="review_public" type="checkbox" />
 								<label htmlFor="review_public">Review secara privasi?</label>
 							</form>
-							<button className="bg-orange-600 text-white rounded-xl border-orange-600 p-2 inline border-2 col-span-1" onClick={handleReviewConsultation}>Tambahkan Review Konsultasi</button>
+							<button className="bg-primary-500 text-white rounded-xl border-primary-500 p-2 inline border-2 col-span-1" onClick={handleReviewConsultation}>Tambahkan Review Konsultasi</button>
 						</div>)}
 					</>
 				);

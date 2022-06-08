@@ -154,7 +154,7 @@ function InitialPage({ router, setMyPet, setErrorMessage, setStatus }: { router:
           <textarea className="w-full" name="description"onChange={handleSetDescription} value={description} />
         </div>
 
-        <input className="bg-orange-600 text-white font-semibold rounded-xl p-3" type="submit" value="Tambah +" />
+        <input className="bg-primary-500 text-white font-semibold rounded-xl p-3" type="submit" value="Tambah +" />
       </form>
 	</>);
 }

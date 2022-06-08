@@ -41,7 +41,7 @@ import Vercel from '~/svg/Vercel.svg';
 
 function LabelComponent({ handleFilter, filter, role, children } : { handleFilter: any, filter: string | number | null, role: string | null, children: any }) {
 	const filterClassNames = 'p-2 rounded-lg cursor-pointer';
-	const filterActiveClassNames = 'bg-orange-600 text-white';
+	const filterActiveClassNames = 'bg-primary-500 text-white';
 
 	return (<li onClick={() => handleFilter(role)} className={`${filterClassNames} ${filter == role ? filterActiveClassNames : ''}`}>{children}</li>);
 }

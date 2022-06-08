@@ -127,7 +127,7 @@ function RegisterForm() {
 			  <InputText label="No. HP" name="phone" type="text" placeholder="No. HP anda" onChange={handlePhone} />
 			  <InputText label="Alamat" name="address" type="text" placeholder="Alamat anda" onChange={handleAddress} />
               <div>
-                <span>Sudah pernah mendaftar? <UnstyledLink href="/login" className="text-orange-600">Klik disini</UnstyledLink></span>
+                <span>Sudah pernah mendaftar? <UnstyledLink href="/login" className="text-primary-500">Klik disini</UnstyledLink></span>
               </div>
               <InputButton text="Daftar" />
             </form>);

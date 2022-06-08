@@ -38,7 +38,7 @@ import Vercel from '~/svg/Vercel.svg';
 
 function CustomButton({ onClick, children, active } : { onClick: any, children: any, active?: boolean }) {
 	const classNames = 'p-2 rounded-lg cursor-pointer';
-	const activeClassNames = 'bg-orange-600 text-white';
+	const activeClassNames = 'bg-primary-500 text-white';
 
 	return (<li onClick={onClick} className={`${classNames} ${active ? activeClassNames : ''}`}>{children}</li>);
 }

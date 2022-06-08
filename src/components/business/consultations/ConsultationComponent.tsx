@@ -1,13 +1,12 @@
 import * as React from 'react';
-import InputText from '@/components/forms/InputText';
-import ButtonLink from '@/components/links/ButtonLink';
 
 import ConsultationStatusComponent from '@/components/business/consultations/ConsultationStatusComponent';
+import ButtonLink from '@/components/links/ButtonLink';
 
 function ConsultationComponent({ consultation }: { consultation: any }) {
 	return (
 		<li className="mb-2">
-			<div className="p-4 border rounded rounded-lg border-orange-600 flex flex-row justify-between">
+			<div className="p-4 border rounded rounded-lg border-primary-500 flex flex-row justify-between">
 				<div className="flex flex-col">
 					<div className="font-semibold">{consultation.complaint}</div>
 					<div className="mb-2">{consultation.address}</div>

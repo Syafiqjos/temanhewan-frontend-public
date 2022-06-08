@@ -8,7 +8,7 @@ export default function InputButton(
 }) {
 	return (
 		<div>
-			<input className="bg-orange-600 text-white p-4 px-8 cursor-pointer rounded-xl" type="submit" value={text} />
+			<input className="bg-primary-500 text-white p-4 px-8 cursor-pointer rounded-xl" type="submit" value={text} />
 		</div>
 	);
 }

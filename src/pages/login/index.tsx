@@ -55,10 +55,10 @@ function LoginForm() {
 		  <InputText label="Email" name="email" type="text" placeholder="Email anda" onChange={handleEmail} />
 		  <InputText label="Password" name="password" type="password" placeholder="Password anda" onChange={handlePassword} />
 		  <div>
-			<span>Lupa password? <UnstyledLink href="/reset-password" className="text-orange-600">Klik disini</UnstyledLink></span>
+			<span>Lupa password? <UnstyledLink href="/reset-password" className="text-primary-500">Klik disini</UnstyledLink></span>
 		  </div>
 		  <div>
-			<span>Belum pernah mendaftar? <UnstyledLink href="/sign-up" className="text-orange-600">Klik disini</UnstyledLink></span>
+			<span>Belum pernah mendaftar? <UnstyledLink href="/sign-up" className="text-primary-500">Klik disini</UnstyledLink></span>
 		  </div>
 		  <InputButton text="Masuk" />
 		</form>

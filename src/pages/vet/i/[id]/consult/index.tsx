@@ -218,8 +218,8 @@ function MatchedPage({ user, setStatus }: { user: User, setStatus: any }) {
 			<InputText label="Tanggal konsultasi" name="date" type="date" placeholder="Tanggal konsultasi anda" value={req.date} onChange={handleDate} />
 			<InputText label="Waktu konsultasi" name="time" type="time" placeholder="Waktu konsultasi anda" value={req.time} onChange={handleTime} />
 			<div className="grid grid-cols-2 gap-3">
-				<button className="bg-white text-orange-600 rounded-xl border-orange-600 p-2 inline border-2" onClick={handleCancel}>Batal</button>
-				<button className="bg-orange-600 text-white rounded-xl border-orange-600 p-2 inline border-2" onClick={handleSubmit}>Pasang Konsultasi</button>
+				<button className="bg-white text-primary-500 rounded-xl border-primary-500 p-2 inline border-2" onClick={handleCancel}>Batal</button>
+				<button className="bg-primary-500 text-white rounded-xl border-primary-500 p-2 inline border-2" onClick={handleSubmit}>Pasang Konsultasi</button>
 			</div>
 		</form>
 	</div>

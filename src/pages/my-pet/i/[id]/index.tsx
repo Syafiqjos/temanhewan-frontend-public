@@ -125,8 +125,8 @@ function SuccessPage({ myPet }: { myPet: Pet }) {
 	  <InputText label="Jenis Peliharaan" type="text" name="petType" disabled value={getPetType(myPet.race)} />
 	  <InputText label="Jenis Kelamin" type="text" name="gender" disabled value={getGender(myPet.gender)} />
 	  <div className="grid grid-cols-2 gap-3">
-		<button className="bg-white text-orange-600 rounded-xl border-orange-600 p-2 inline border-2" onClick={handleDeletePet}>Hapus Peliharaan</button>
-		<button className="bg-orange-600 text-white rounded-xl border-orange-600 p-2 inline border-2" onClick={handleUpdatePet}>Update Peliharaan</button>
+		<button className="bg-white text-primary-500 rounded-xl border-primary-500 p-2 inline border-2" onClick={handleDeletePet}>Hapus Peliharaan</button>
+		<button className="bg-primary-500 text-white rounded-xl border-primary-500 p-2 inline border-2" onClick={handleUpdatePet}>Update Peliharaan</button>
 	  </div>
 	</div>
 	</>);

@@ -43,7 +43,7 @@ function NotFoundPage() {
                 Silahkan periksa ulang link yang telah dikirim pada email anda.
               </p>
               <div>
-                <span><UnstyledLink href="/login" className="text-orange-600">Klik disini</UnstyledLink> untuk kembali login.</span>
+                <span><UnstyledLink href="/login" className="text-primary-500">Klik disini</UnstyledLink> untuk kembali login.</span>
               </div>
             </form>);
 }
@@ -55,7 +55,7 @@ function SuccessPage({ userDetails }: { userDetails: UserDetails }) {
                 Reset password email {userDetails.email} telah berhasil!
               </p>
               <div>
-                <span><UnstyledLink href="/login" className="text-orange-600">Klik disini</UnstyledLink> untuk login dengan password baru anda.</span>
+                <span><UnstyledLink href="/login" className="text-primary-500">Klik disini</UnstyledLink> untuk login dengan password baru anda.</span>
               </div>
             </form>);
 }
