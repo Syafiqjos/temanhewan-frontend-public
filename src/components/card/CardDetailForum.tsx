@@ -17,7 +17,7 @@ export default function CardDetailForum(props: any) {
             <div className = "flex">
                 {props.image.map ((image: any) => {
                   return (
-                    <img key={image} className="rounded-xl w-80 h-80 flex-auto p-5" src={image} alt="Sunset in the mountains" />
+                    <img key={image} className="rounded-xl w-80 h-80 flex-auto p-5" src={image[0]} alt="Sunset in the mountains" />
                   )
                 })}
             </div>
