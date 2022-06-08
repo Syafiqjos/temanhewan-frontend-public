@@ -1,20 +1,28 @@
 import * as React from 'react';
 
 import ShouldAuthorized from '@/components/auths/ShouldAuthorized';
-import Sidebar from '@/components/layout/Sidebar';
 import Seo from '@/components/Seo';
+
+import DashboardCustomer from './dashboardCustomer';
+import DashboardDoctor from './DashboardDoctor';
 
 export default function Dashboard() {
   return (
     <>
-      <Seo title='Dashboard' />
-      <Sidebar>
-        <main>
-          <ShouldAuthorized roleSpecific='customer'>
-            <h1 className="text-xl font-semibold">Dashboard</h1>
+      <Seo title="Dashboard"/>
+
+      <main>
+        <ShouldAuthorized>
+          <ShouldAuthorized roleSpecific='customer' dontRedirect={true}>
+            <DashboardCustomer />
           </ShouldAuthorized>
-        </main>
-      </Sidebar>
+          
+          <ShouldAuthorized roleSpecific='doctor' dontRedirect={true}>
+            <DashboardDoctor />
+          </ShouldAuthorized>
+        </ShouldAuthorized>
+      </main>
+      
     </>
   );
 }
