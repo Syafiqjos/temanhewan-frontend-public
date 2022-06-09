@@ -5,6 +5,7 @@ import AuthAPI from '@/api/AuthAPI';
 import AuthService from '@/services/AuthService';
 
 import GetGroomingOrderAPI from '@/api/GetGroomingOrderAPI';
+import GetGroomingOrderReviewAPI from '@/api/GetGroomingOrderReviewAPI';
 import GetGroomingServiceAPI from '@/api/GetGroomingServiceAPI';
 import RetrievePetAPI from '@/api/RetrievePetAPI';
 
@@ -29,7 +30,7 @@ import GroomingOrderFormComponent from '@/components/business/groomings/Grooming
 import CustomerFormComponent from '@/components/business/groomings/CustomerFormComponent';
 import GroomingFormComponent from '@/components/business/groomings/GroomingFormComponent';
 import PetFormComponent from '@/components/business/groomings/PetFormComponent';
-import ReviewFormComponent from '@/components/business/consultations/ReviewFormComponent';
+import ReviewFormComponent from '@/components/business/groomings/ReviewFormComponent';
 
 import Layout from '@/components/layout/Layout';
 import ArrowLink from '@/components/links/ArrowLink';
@@ -121,6 +122,7 @@ function SuccessPage() {
 		customer,
 		groomer,
 		pet,
+		review,
 		setStatus,
 		refreshOrder
 	} = React.useContext(PageContext);
@@ -514,6 +516,21 @@ export default function HomePage() {
 		}
   };
 
+  const refreshReview = async () => {
+		const reviewRes = await GetGroomingOrderReviewAPI({ id: order.id });
+		const reviewSuccess = reviewRes.success;
+		const reviewData = reviewRes.data;
+
+		console.log('review res');
+		console.log(reviewRes);
+
+		if (reviewSuccess) {
+			setReview(reviewData);
+		} else {
+			setStatus('NOTFOUND');
+		}
+  };
+
   React.useEffect(() => {
 	refreshOrder();
   }, [ router.isReady ]);
@@ -524,11 +541,13 @@ export default function HomePage() {
 		setCustomer(null);
 		setGroomer(null);
 		setPet(null);
+		setReview(null);
 
 		refreshService();
 		refreshCustomer();
 		refreshGroomer();
 		refreshPet();
+		refreshReview();
 	}
   }, [order]);
 
@@ -549,7 +568,7 @@ export default function HomePage() {
 			  <div className='layout grid grid-cols-1 mt-8 w-100'>
 				<h1 className="text-xl font-semibold mb-2">Informasi Pesanan Grooming</h1>
 				<div className="px-4 grid grid-cols-1 gap-3">
-					<PageContext.Provider value={ {service, order, customer, groomer, pet, refreshOrder, setStatus} }>
+					<PageContext.Provider value={ {service, order, customer, groomer, pet, review, refreshOrder, setStatus} }>
 						{status === 'LOADING' && <LoadingPage />
 						|| status === 'NOTFOUND' && <NotFoundPage />
 						|| status === 'SUCCESS' && <SuccessPage />
