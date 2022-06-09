@@ -1,45 +1,27 @@
-import * as React from 'react';
 import { useRouter } from 'next/router'
+import * as React from 'react';
+
+import ShouldAuthorized from '@/components/auths/ShouldAuthorized';
+import CustomerFormComponent from '@/components/business/groomings/CustomerFormComponent';
+import GroomingFormComponent from '@/components/business/groomings/GroomingFormComponent';
+import GroomingOrderFormComponent from '@/components/business/groomings/GroomingOrderFormComponent';
+import GroomingOrderStatusFormComponent from '@/components/business/groomings/GroomingOrderStatusFormComponent';
+import GroomingServiceFormComponent from '@/components/business/groomings/GroomingServiceFormComponent';
+import PetFormComponent from '@/components/business/groomings/PetFormComponent';
+import ReviewFormComponent from '@/components/business/groomings/ReviewFormComponent';
+import SidebarGroomer from '@/components/layout/SidebarGroomer';
+import Seo from '@/components/Seo';
 
 import AuthAPI from '@/api/AuthAPI';
-import AuthService from '@/services/AuthService';
-
+import ConfirmGroomingOrderAPI from '@/api/ConfirmGroomingOrderAPI';
+import DeliverGroomingOrderAPI from '@/api/DeliverGroomingOrderAPI';
 import GetGroomingOrderAPI from '@/api/GetGroomingOrderAPI';
 import GetGroomingOrderReviewAPI from '@/api/GetGroomingOrderReviewAPI';
 import GetGroomingServiceAPI from '@/api/GetGroomingServiceAPI';
-import RetrievePetAPI from '@/api/RetrievePetAPI';
-
-import RejectGroomingOrderAPI from '@/api/RejectGroomingOrderAPI';
-import PaidGroomingOrderAPI from '@/api/PaidGroomingOrderAPI';
-import ConfirmGroomingOrderAPI from '@/api/ConfirmGroomingOrderAPI';
-import DeliverGroomingOrderAPI from '@/api/DeliverGroomingOrderAPI';
-import CompleteGroomingOrderAPI from '@/api/CompleteGroomingOrderAPI';
-import CreateGroomingOrderReviewAPI from '@/api/CreateGroomingOrderReviewAPI';
 import GetPublicUserAPI from '@/api/GetPublicUserAPI';
-
-import ShouldAuthorized from '@/components/auths/ShouldAuthorized';
-
-import InputText from '@/components/forms/InputText';
-import GroomingServiceComponent from '@/components/business/groomings/GroomingServiceComponent';
-import GroomingOrderComponent from '@/components/business/groomings/GroomingOrderComponent';
-import GroomingOrderStatusComponent from '@/components/business/groomings/GroomingOrderStatusComponent';
-import GroomingOrderStatusFormComponent from '@/components/business/groomings/GroomingOrderStatusFormComponent';
-
-import GroomingServiceFormComponent from '@/components/business/groomings/GroomingServiceFormComponent';
-import GroomingOrderFormComponent from '@/components/business/groomings/GroomingOrderFormComponent';
-import CustomerFormComponent from '@/components/business/groomings/CustomerFormComponent';
-import GroomingFormComponent from '@/components/business/groomings/GroomingFormComponent';
-import PetFormComponent from '@/components/business/groomings/PetFormComponent';
-import ReviewFormComponent from '@/components/business/groomings/ReviewFormComponent';
-
-import Layout from '@/components/layout/Layout';
-import ArrowLink from '@/components/links/ArrowLink';
-import ButtonLink from '@/components/links/ButtonLink';
-import UnderlineLink from '@/components/links/UnderlineLink';
-import UnstyledLink from '@/components/links/UnstyledLink';
-import Seo from '@/components/Seo';
-
-import Link from 'next/link';
+import RejectGroomingOrderAPI from '@/api/RejectGroomingOrderAPI';
+import RetrievePetAPI from '@/api/RetrievePetAPI';
+import AuthService from '@/services/AuthService';
 
 /**
  * SVGR Support
@@ -48,7 +30,6 @@ import Link from 'next/link';
  * You can override the next-env if the type is important to you
  * @see https://stackoverflow.com/questions/68103844/how-to-override-next-js-svg-module-declaration
  */
-import Vercel from '~/svg/Vercel.svg';
 
 // !STARTERCONF -> Select !STARTERCONF and CMD + SHIFT + F
 // Before you begin editing, follow all comments with `STARTERCONF`,
@@ -545,6 +526,7 @@ export default function HomePage() {
       {/* <Seo templateTitle='Home' /> */}
       <Seo />
 
+			<SidebarGroomer>
       <main>
 		<ShouldAuthorized roleSpecific="grooming">
 			<section className='bg-white'>
@@ -567,6 +549,7 @@ export default function HomePage() {
 			</section>
 		</ShouldAuthorized>
       </main>
+			</SidebarGroomer>
     </>
   );
 }

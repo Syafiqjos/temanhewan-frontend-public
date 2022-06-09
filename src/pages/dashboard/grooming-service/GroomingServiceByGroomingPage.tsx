@@ -1,23 +1,15 @@
+import Link from 'next/link';
 import * as React from 'react';
-import { useRouter } from 'next/router'
-
-import AuthAPI from '@/api/AuthAPI';
-import AuthService from '@/services/AuthService';
-import GetGroomingServiceListAPI from '@/api/GetGroomingServiceListAPI';
 
 import ShouldAuthorized from '@/components/auths/ShouldAuthorized';
-
-import InputText from '@/components/forms/InputText';
 import GroomingServiceComponent from '@/components/business/groomings/GroomingServiceComponent';
-
-import Layout from '@/components/layout/Layout';
-import ArrowLink from '@/components/links/ArrowLink';
+import InputText from '@/components/forms/InputText';
 import ButtonLink from '@/components/links/ButtonLink';
-import UnderlineLink from '@/components/links/UnderlineLink';
-import UnstyledLink from '@/components/links/UnstyledLink';
 import Seo from '@/components/Seo';
 
-import Link from 'next/link';
+import AuthAPI from '@/api/AuthAPI';
+import GetGroomingServiceListAPI from '@/api/GetGroomingServiceListAPI';
+import AuthService from '@/services/AuthService';
 
 /**
  * SVGR Support
@@ -26,7 +18,6 @@ import Link from 'next/link';
  * You can override the next-env if the type is important to you
  * @see https://stackoverflow.com/questions/68103844/how-to-override-next-js-svg-module-declaration
  */
-import Vercel from '~/svg/Vercel.svg';
 
 // !STARTERCONF -> Select !STARTERCONF and CMD + SHIFT + F
 // Before you begin editing, follow all comments with `STARTERCONF`,
@@ -89,31 +80,31 @@ export default function GroomingServiceByGroomingPage() {
       <Seo />
 
       <main>
-		<ShouldAuthorized roleSpecific="grooming">
-			<section className='bg-white'>
-				<div className="p-4">
-					<h1 className="text-xl">Daftar Layanan Grooming</h1>
-					<div className="grid grid-cols-4 p-4">
-						<div className="col-span-1 p-2">
-							<InputText label="Cari" name="search" type="text" onChange={handleSearch} />
+				<ShouldAuthorized roleSpecific="grooming">
+					<section className='bg-white'>
+						<div className="p-4">
+							<h1 className="text-xl">Daftar Layanan Grooming</h1>
+							<div className="grid grid-cols-4 p-4">
+								<div className="col-span-1 p-2">
+									<InputText label="Cari" name="search" type="text" onChange={handleSearch} />
+								</div>
+								<div className="col-span-3 p-4">
+									<ul className="pb-4">
+										{services.map((service: any) => {
+											return (
+												<GroomingServiceComponent service={service} key={`service-${service.id}`}>
+													<ButtonLink variant="primary" href={`/dashboard/grooming-service/i/${service.id}`}>Lihat</ButtonLink>
+												</GroomingServiceComponent>
+											);
+										})}
+									</ul>
+								</div>
+							</div>
 						</div>
-						<div className="col-span-3 p-4">
-							<ul className="pb-4">
-								{services.map((service: any) => {
-									return (
-										<GroomingServiceComponent service={service} key={`service-${service.id}`}>
-											<ButtonLink variant="primary" href={`/dashboard/grooming-service/i/${service.id}`}>Lihat</ButtonLink>
-										</GroomingServiceComponent>
-									);
-								})}
-							</ul>
-						</div>
-					</div>
-				</div>
-				<Link href="/dashboard/grooming-service/new"><a className="fixed right-4 bottom-4 bg-orange-600 text-white rounded-xl w-16 h-16 flex flex-col items-center justify-center font-semibold text-xl">+</a></Link>
-			</section>
-		</ShouldAuthorized>
-      </main>
+						<Link href="/dashboard/grooming-service/new"><a className="fixed right-4 bottom-4 bg-orange-600 text-white rounded-xl w-16 h-16 flex flex-col items-center justify-center font-semibold text-xl">+</a></Link>
+					</section>
+				</ShouldAuthorized>
+					</main>
     </>
   );
 }

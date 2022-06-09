@@ -1,24 +1,11 @@
-import * as React from 'react';
 import { useRouter } from 'next/router'
-
-import AuthAPI from '@/api/AuthAPI';
-import AuthService from '@/services/AuthService';
-import GetGroomingServiceAPI from '@/api/GetGroomingServiceAPI';
+import * as React from 'react';
 
 import ShouldAuthorized from '@/components/auths/ShouldAuthorized';
-
 import InputText from '@/components/forms/InputText';
-import InputButton from '@/components/forms/InputButton';
-import GroomingServiceComponent from '@/components/business/groomings/GroomingServiceComponent';
-
-import Layout from '@/components/layout/Layout';
-import ArrowLink from '@/components/links/ArrowLink';
-import ButtonLink from '@/components/links/ButtonLink';
-import UnderlineLink from '@/components/links/UnderlineLink';
-import UnstyledLink from '@/components/links/UnstyledLink';
 import Seo from '@/components/Seo';
 
-import Link from 'next/link';
+import GetGroomingServiceAPI from '@/api/GetGroomingServiceAPI';
 
 /**
  * SVGR Support
@@ -27,7 +14,6 @@ import Link from 'next/link';
  * You can override the next-env if the type is important to you
  * @see https://stackoverflow.com/questions/68103844/how-to-override-next-js-svg-module-declaration
  */
-import Vercel from '~/svg/Vercel.svg';
 
 // !STARTERCONF -> Select !STARTERCONF and CMD + SHIFT + F
 // Before you begin editing, follow all comments with `STARTERCONF`,
@@ -133,17 +119,18 @@ export default function GroomingServiceByGroomingPage() {
       <Seo />
 
       <main>
-		<ShouldAuthorized roleSpecific="grooming">
-			<section className='bg-white'>
-				<div className="p-4">
-					<h1 className="text-xl">Rincian Layanan Grooming</h1>
-					{status == 'SUCCESS' && <SuccessPage service={service} />
-					|| status == 'LOADING' && <LoadingPage />
-					|| status == 'FAILED' && <FailedPage />}
-				</div>
-			</section>
-		</ShouldAuthorized>
+				<ShouldAuthorized roleSpecific="grooming">
+					<section className='bg-white'>
+						<div className="p-4">
+							<h1 className="text-xl">Rincian Layanan Grooming</h1>
+							{status == 'SUCCESS' && <SuccessPage service={service} />
+							|| status == 'LOADING' && <LoadingPage />
+							|| status == 'FAILED' && <FailedPage />}
+						</div>
+					</section>
+				</ShouldAuthorized>
       </main>
+
     </>
   );
 }

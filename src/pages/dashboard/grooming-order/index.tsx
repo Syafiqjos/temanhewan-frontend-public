@@ -2,7 +2,6 @@ import { useRouter } from 'next/router'
 import * as React from 'react';
 
 import ShouldAuthorized from '@/components/auths/ShouldAuthorized';
-import Sidebar from '@/components/layout/Sidebar';
 
 import GroomingOrderByCustomerPage from './GroomingOrderByCustomerPage';
 import GroomingOrderByGroomingPage from './GroomingOrderByGroomingPage';
@@ -12,7 +11,6 @@ export default function HomePage() {
 
   return (
     <>
-		<Sidebar>
 		<ShouldAuthorized>
 			<ShouldAuthorized roleSpecific="customer" dontRedirect={true}>
 				<GroomingOrderByCustomerPage />
@@ -21,7 +19,6 @@ export default function HomePage() {
 				<GroomingOrderByGroomingPage />
 			</ShouldAuthorized>
 		</ShouldAuthorized>
-		</Sidebar>
     </>
   );
 }

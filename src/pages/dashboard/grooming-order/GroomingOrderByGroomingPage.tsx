@@ -1,23 +1,13 @@
 import * as React from 'react';
-import { useRouter } from 'next/router'
-
-import AuthAPI from '@/api/AuthAPI';
-import AuthService from '@/services/AuthService';
-import GetGroomingOrderGroomingAPI from '@/api/GetGroomingOrderGroomingAPI';
 
 import ShouldAuthorized from '@/components/auths/ShouldAuthorized';
-
-import InputText from '@/components/forms/InputText';
 import GroomingOrderComponent from '@/components/business/groomings/GroomingOrderComponent';
-
-import Layout from '@/components/layout/Layout';
-import ArrowLink from '@/components/links/ArrowLink';
-import ButtonLink from '@/components/links/ButtonLink';
-import UnderlineLink from '@/components/links/UnderlineLink';
-import UnstyledLink from '@/components/links/UnstyledLink';
+import SidebarGroomer from '@/components/layout/SidebarGroomer';
 import Seo from '@/components/Seo';
 
-import Link from 'next/link';
+import AuthAPI from '@/api/AuthAPI';
+import GetGroomingOrderGroomingAPI from '@/api/GetGroomingOrderGroomingAPI';
+import AuthService from '@/services/AuthService';
 
 /**
  * SVGR Support
@@ -26,7 +16,6 @@ import Link from 'next/link';
  * You can override the next-env if the type is important to you
  * @see https://stackoverflow.com/questions/68103844/how-to-override-next-js-svg-module-declaration
  */
-import Vercel from '~/svg/Vercel.svg';
 
 // !STARTERCONF -> Select !STARTERCONF and CMD + SHIFT + F
 // Before you begin editing, follow all comments with `STARTERCONF`,
@@ -101,49 +90,51 @@ export default function GroomingOrderByGroomingPage() {
       {/* <Seo templateTitle='Home' /> */}
       <Seo />
 
-      <main>
-		<ShouldAuthorized roleSpecific="grooming">
-			<section className='bg-white'>
-				<div className="p-4">
-					<h1 className="text-xl">Daftar Pesanan Grooming</h1>
-					<div className="grid grid-cols-4 p-4">
-						<div className="col-span-1 p-2">
-							<div className="flex flex-col items-start w-full mb-2">
-								<label>Filter Status</label>
-								<select ref={filterRef} className="w-full" onChange={handleFilter}>
-									<option value="all">Semua</option>
-									<option value="pending">Menunggu Konfirmasi</option>
-									<option value="rejected">Ditolak</option>
-									<option value="accepted">Menunggu Pembayaran</option>
-									<option value="cancelled">Dibatalkan</option>
-									<option value="paid">Dibayar dan Menunggu Konsultasi</option>
-									<option value="completed">Selesai</option>
-								</select>
-							</div>
-							<div className="flex flex-col items-start w-full mb-2">
-								<label>Sortir</label>
-								<select ref={sortRef} className="w-full" onChange={handleFilter}>
-									<option value="newest">Terbaru</option>
-									<option value="oldest">Terlama</option>
-									<option value="highest_fee">Termahal</option>
-									<option value="lowest_fee">Termurah</option>
-								</select>
+			<SidebarGroomer>
+				<main>
+				<ShouldAuthorized roleSpecific="grooming">
+					<section className='bg-white'>
+						<div className="p-4">
+							<h1 className="text-xl">Daftar Pesanan Grooming</h1>
+							<div className="grid grid-cols-4 p-4">
+								<div className="col-span-1 p-2">
+									<div className="flex flex-col items-start w-full mb-2">
+										<label>Filter Status</label>
+										<select ref={filterRef} className="w-full" onChange={handleFilter}>
+											<option value="all">Semua</option>
+											<option value="pending">Menunggu Konfirmasi</option>
+											<option value="rejected">Ditolak</option>
+											<option value="accepted">Menunggu Pembayaran</option>
+											<option value="cancelled">Dibatalkan</option>
+											<option value="paid">Dibayar dan Menunggu Konsultasi</option>
+											<option value="completed">Selesai</option>
+										</select>
+									</div>
+									<div className="flex flex-col items-start w-full mb-2">
+										<label>Sortir</label>
+										<select ref={sortRef} className="w-full" onChange={handleFilter}>
+											<option value="newest">Terbaru</option>
+											<option value="oldest">Terlama</option>
+											<option value="highest_fee">Termahal</option>
+											<option value="lowest_fee">Termurah</option>
+										</select>
+									</div>
+								</div>
+								<div className="col-span-3 p-4">
+									<ul className="pb-4">
+										{orders.map((order: any) => {
+											return (
+												<GroomingOrderComponent order={order} key={`order-${order.id}`} />
+											);
+										})}
+									</ul>
+								</div>
 							</div>
 						</div>
-						<div className="col-span-3 p-4">
-							<ul className="pb-4">
-								{orders.map((order: any) => {
-									return (
-										<GroomingOrderComponent order={order} key={`order-${order.id}`} />
-									);
-								})}
-							</ul>
-						</div>
-					</div>
-				</div>
-			</section>
-		</ShouldAuthorized>
-      </main>
+					</section>
+				</ShouldAuthorized>
+					</main>
+			</SidebarGroomer>
     </>
   );
 }
