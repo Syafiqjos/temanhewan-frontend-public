@@ -49,7 +49,7 @@ export default function MyProfile() {
 
 		<Sidebar>
 			<main>
-				<ShouldAuthorized roleSpecific='customer'>
+				<ShouldAuthorized>
 					<form className='flex flex-col items-start justify-start p-4 text-left gap-3'>
 							<h1 className="text-xl font-semibold">Profil Saya</h1>
 							<img src={profileImage} alt="profile image" className="w-40 h-40" />
