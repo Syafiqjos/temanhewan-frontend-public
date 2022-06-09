@@ -149,7 +149,7 @@ export default function HomePage() {
   const [ status, setStatus ] = React.useState<'LOADING' | 'NOTFOUND' | 'SUCCESS'>('LOADING');
   const [ user, setUser ] = React.useState<User>({ id: '', name: '', email: '', role: '' });
   const [ services, setServices ] = React.useState<any>([]);
-  const [ reviews, setReviews ] = React.useState<any>([]);
+  const [ reviews, setReviews ] = React.useState<any>(null);
 
   React.useEffect(() => {
 	(async () => {
