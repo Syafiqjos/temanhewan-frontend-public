@@ -15,6 +15,8 @@ const linksNotLogined = [
 ];
 
 const linksLogined = [
+  { href: '/vet', label: 'Vet', type: ''},
+  { href: '/grooming', label: 'Grooming', type:''},
   { href: '/forum', label: 'Forum', type: '' },
   { href: '/faq', label: 'FAQ', type: '' },
   { href: '/about', label: 'About', type: '' },
