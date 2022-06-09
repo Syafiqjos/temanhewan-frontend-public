@@ -3,8 +3,10 @@ import { useRouter } from 'next/router'
 
 import GetPublicUserAPI from '@/api/GetPublicUserAPI';
 import GetGroomingServiceListAPI from '@/api/GetGroomingServiceListAPI';
+import GetGroomingReviewsAPI from '@/api/GetGroomingReviewsAPI';
 
 import GroomingServiceComponent from '@/components/business/groomings/GroomingServiceComponent';
+import ReviewFormComponent from '@/components/business/groomings/ReviewFormComponent';
 
 import InputText from '@/components/forms/InputText';
 
@@ -69,7 +71,7 @@ function LoadingPage() {
 	</>);
 }
 
-function SuccessPage({ user, services }: { user: User, services: any }) {
+function SuccessPage({ user, services, reviews }: { user: User, services: any, reviews: any }) {
 	const router = useRouter();
 
 	function handleBack(e: any) {
@@ -110,6 +112,7 @@ function SuccessPage({ user, services }: { user: User, services: any }) {
 					  */}
 					  <InputText label="No. HP" name="phone" type="text" placeholder="No. HP anda" disabled value={user.phone} />
 					  <InputText label="Alamat" name="address" type="text" placeholder="Alamat anda" disabled value={user.address} />
+
 	<div className="grid grid-cols-2 gap-3">
 		<button className="bg-white text-orange-600 rounded-xl border-orange-600 p-2 inline border-2" onClick={handleBack}>Kembali</button>
 		<button className="bg-orange-600 text-white rounded-xl border-orange-600 p-2 inline border-2" onClick={handleService}>Lihat Layanan</button>
@@ -128,6 +131,15 @@ function SuccessPage({ user, services }: { user: User, services: any }) {
 		</div>
 */}
 
+	<div className='flex flex-col items-start justify-start gap-3 w-full mt-3'>
+			<span className="font-semibold text-lg">Review Jasa Grooming</span>
+			{reviews.map((review: any) => {
+				return (
+					<ReviewFormComponent review={review} config={{showPublication: false, showTitle: false}} />
+				);
+			})}
+		</div>
+
 																					</form>
 	</>);
 }
@@ -137,6 +149,7 @@ export default function HomePage() {
   const [ status, setStatus ] = React.useState<'LOADING' | 'NOTFOUND' | 'SUCCESS'>('LOADING');
   const [ user, setUser ] = React.useState<User>({ id: '', name: '', email: '', role: '' });
   const [ services, setServices ] = React.useState<any>([]);
+  const [ reviews, setReviews ] = React.useState<any>([]);
 
   React.useEffect(() => {
 	(async () => {
@@ -159,6 +172,12 @@ export default function HomePage() {
 				setServices(resServices.data);
 			}
 
+			// get grooming reviews from server
+			const resReviews = await GetGroomingReviewsAPI({ id: id, all: true });
+			if (resReviews.success) {
+				setReviews(resReviews.data);
+			}
+
 			setStatus('SUCCESS');
 		} else {
 			setStatus('NOTFOUND');
@@ -178,7 +197,7 @@ export default function HomePage() {
             <div className="px-4 grid grid-cols-4 gap-3">
 				{status === 'LOADING' && <LoadingPage />
 				|| status === 'NOTFOUND' && <NotFoundPage />
-				|| status === 'SUCCESS' && <SuccessPage user={user} services={services} />
+				|| status === 'SUCCESS' && <SuccessPage user={user} services={services} reviews={reviews} />
 				}
             </div>
 		  </div>
