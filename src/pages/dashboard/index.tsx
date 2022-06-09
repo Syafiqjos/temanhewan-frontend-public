@@ -5,6 +5,7 @@ import Seo from '@/components/Seo';
 
 import DashboardCustomer from './DashboardCustomer';
 import DashboardDoctor from './DashboardDoctor';
+import DashboardGrooming from './DashboardGrooming';
 
 export default function Dashboard() {
   return (
@@ -19,6 +20,10 @@ export default function Dashboard() {
           
           <ShouldAuthorized roleSpecific='doctor' dontRedirect={true}>
             <DashboardDoctor />
+          </ShouldAuthorized>
+
+          <ShouldAuthorized roleSpecific='grooming' dontRedirect={true}>
+            <DashboardGrooming />
           </ShouldAuthorized>
         </ShouldAuthorized>
       </main>
