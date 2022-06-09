@@ -1,16 +1,14 @@
 import { useRouter } from 'next/router';
 import * as React from 'react';
 
-import ShouldAuthorized from '@/components/auths/ShouldAuthorized';
+import InputButton from '@/components/forms/InputButton';
+import InputText from '@/components/forms/InputText';
+import SidebarGroomer from '@/components/layout/SidebarGroomer';
 import Seo from '@/components/Seo';
 
 import ChangeUserPasswordAPI from '@/api/ChangeUserPasswordAPI';
 
-import ChangePasswordCustomer from './ChangePasswordCustomer';
-import ChangePasswordDoctor from './ChangePasswordDoctor';
-import ChangePasswordGroomer from './ChangePasswordGroomer';
-
-export default function ChangePassword({ onSubmit }: { onSubmit?: any }) {
+export default function ChangePasswordGroomer({ onSubmit }: { onSubmit?: any }) {
   const [oldPassword, setOldPassword] = React.useState('');
 	const [password, setPassword] = React.useState('');
 	const [passwordConf, setPasswordConf] = React.useState('');
@@ -51,18 +49,16 @@ export default function ChangePassword({ onSubmit }: { onSubmit?: any }) {
 	return <>
     <Seo title="Change Password"/>
 
+    <SidebarGroomer>
 			<main>
-				<ShouldAuthorized>
-					<ShouldAuthorized roleSpecific='customer' dontRedirect={true}>
-						<ChangePasswordCustomer />
-					</ShouldAuthorized>
-					<ShouldAuthorized roleSpecific='doctor' dontRedirect={true}>
-						<ChangePasswordDoctor />
-					</ShouldAuthorized>
-					<ShouldAuthorized roleSpecific='grooming' dontRedirect={true}>
-						<ChangePasswordGroomer />
-					</ShouldAuthorized>
-				</ShouldAuthorized>
+					<form className='flex flex-col items-start justify-start p-4 text-left gap-3' onSubmit={handleSubmit}>
+						<h1 className="text-xl font-semibold">Ubah Password</h1>
+						<InputText label="Password lama" name="old_password" type="password" placeholder="Password lama anda" value={oldPassword} onChange={handleOldPassword} />
+						<InputText label="Password baru" name="password" type="password" placeholder="Password baru anda" value={password} onChange={handlePassword} />
+						<InputText label="Ketik ulang password baru anda" name="password_confirmation" type="password" placeholder="Password baru anda" value={passwordConf} onChange={handlePasswordConf} />
+						<InputButton text="Ubah password" />
+					</form>
 			</main>
+		</SidebarGroomer>
   </>
 }
