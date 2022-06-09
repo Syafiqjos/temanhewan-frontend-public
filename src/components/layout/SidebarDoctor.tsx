@@ -5,6 +5,7 @@ import UnstyledLink from '../links/UnstyledLink';
 
 const linksComment = [
   { href: '/dashboard/my-comment', label: 'Komentar Saya' },
+  { href: '/dashboard/add-comment', label: 'Tambah Komentar' },
 ];
 
 const linksProfile = [
