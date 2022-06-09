@@ -85,7 +85,7 @@ export default function HomePage() {
                   terbaik dari TemanHewan.
                 </h2>
                 <div className='inline-block'>
-                  <ButtonLink variant='primary' href='/'>
+                  <ButtonLink variant='primary' href='/login'>
                     Mulai
                   </ButtonLink>
                 </div>
@@ -188,12 +188,12 @@ export default function HomePage() {
                 </h2>
                 <div className='mt-8 flex lg:mt-0 lg:flex-shrink-0'>
                   <div className='inline-flex rounded-md shadow'>
-                    <ButtonLink variant='primary' href='/'>
+                    <ButtonLink variant='primary' href='/login'>
                       Mulai
                     </ButtonLink>
                   </div>
                   <div className='ml-3 inline-flex rounded-md shadow'>
-                    <ButtonLink variant='outline' href='/'>
+                    <ButtonLink variant='outline' href='/about'>
                       Pelajari Lebih Lanjut
                     </ButtonLink>
                   </div>
