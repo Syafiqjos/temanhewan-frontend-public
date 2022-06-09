@@ -14,6 +14,11 @@ const linksProfile = [
   { href: '/dashboard/change-password', label: 'Ubah Password' },
 ];
 
+const linksGrooming = [
+  { href: '/dashboard/grooming-order', label: 'Grooming Order' },
+  { href: '/dashboard/grooming-service', label: 'Service Grooming' },
+];
+
 const linksConsultation = [
   { href: '/dashboard/consultation', label: 'Konsultasi Saya' },
 ];
@@ -95,6 +100,22 @@ export default function Sidebar({ children }: { children: React.ReactNode }) {
               </ul>
               <ul className='mt-4 space-y-2 border-t border-gray-200 pt-4 dark:border-gray-700'>
                 {linksConsultation.map((feature) => (
+                  <li key={feature.href}>
+                    <UnstyledLink
+                      href={feature.href}
+                      className={
+                        router.pathname === `${feature.href}`
+                          ? activeClassNames
+                          : classNames
+                      }
+                    >
+                      {feature.label}
+                    </UnstyledLink>
+                  </li>
+                ))}
+              </ul>
+              <ul className='mt-4 space-y-2 border-t border-gray-200 pt-4 dark:border-gray-700'>
+                {linksGrooming.map((feature) => (
                   <li key={feature.href}>
                     <UnstyledLink
                       href={feature.href}
