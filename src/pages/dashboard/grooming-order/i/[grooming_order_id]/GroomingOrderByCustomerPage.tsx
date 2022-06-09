@@ -52,7 +52,7 @@ import Vercel from '~/svg/Vercel.svg';
 // Before you begin editing, follow all comments with `STARTERCONF`,
 // to customize the default configuration.
 
-const PageContext = React.createContext({ service: null, order: null, customer: null, groomer: null, pet: null });
+const PageContext = React.createContext<any>({ service: null, order: null, customer: null, groomer: null, pet: null, review: null, refreshOrder: null, setStatus: null });
 
 interface User {
 	id: string,
@@ -121,6 +121,15 @@ function SuccessPage() {
 		review,
 		refreshOrder,
 		setStatus
+	}: {
+		service: any,
+		order: any,
+		customer: any,
+		groomer: any,
+		pet: any,
+		review: any,
+		refreshOrder: any,
+		setStatus: any
 	} = React.useContext(PageContext);
 
 	const router = useRouter();
@@ -141,7 +150,7 @@ function SuccessPage() {
 	async function handleCancelGroomingOrder(e: any) {
 		e.preventDefault();
 
-		const res = await CancelGroomingOrderAPI({ id: order.id });
+		const res = await CancelGroomingOrderAPI({ id: (order as any).id! });
 		const success = res.success;
 
 		if (success) {
@@ -158,7 +167,7 @@ function SuccessPage() {
 	async function handlePayGroomingOrder(e: any) {
 		e.preventDefault();
 
-		const res = await PaidGroomingOrderAPI({ id: order.id });
+		const res = await PaidGroomingOrderAPI({ id: (order as any).id! });
 		const success = res.success;
 
 		if (success) {
@@ -175,7 +184,7 @@ function SuccessPage() {
 	async function handleCompleteGroomingOrder(e: any) {
 		e.preventDefault();
 
-		const res = await CompleteGroomingOrderAPI({ id: order.id });
+		const res = await CompleteGroomingOrderAPI({ id: (order as any).id! });
 		const success = res.success;
 
 		console.log(res);
@@ -210,7 +219,7 @@ function SuccessPage() {
 			const rating = (ratingReviewRef.current.find(el => (el as any).checked) as any).value;
 
 			const res = await CreateGroomingOrderReviewAPI({
-				id: order.id,
+				id: (order as any).id!,
 				rating: rating,
 				review: (inputReviewRef.current as any).value,
 				is_public: !(privateReviewRef.current as any).checked
@@ -588,7 +597,7 @@ export default function HomePage() {
   };
 
   const refreshReview = async () => {
-		const reviewRes = await GetGroomingOrderReviewAPI({ id: order.id });
+		const reviewRes = await GetGroomingOrderReviewAPI({ id: order!.id! });
 		const reviewSuccess = reviewRes.success;
 		const reviewData = reviewRes.data;
 

@@ -2,7 +2,7 @@ import * as React from 'react';
 import InputText from '@/components/forms/InputText';
 import ButtonLink from '@/components/links/ButtonLink';
 
-function ReviewFormComponent({ review, config = { showTitle: true, showPublication: true } }: { review: any, config: any }) {
+function ReviewFormComponent({ review, config = { showTitle: true, showPublication: true } }: { review: any, config?: any }) {
 	return <div className="border rounded-lg border-orange-600 p-8 mb-4 w-full">
 			{config.showTitle && <h1 className="text-lg mb-4">Review Pelanggan</h1>}
 			<InputText label="Rating" name="review_rating" value={review.rating + " Star(s)"} disabled></InputText>

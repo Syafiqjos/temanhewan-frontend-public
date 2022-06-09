@@ -54,7 +54,7 @@ import Vercel from '~/svg/Vercel.svg';
 // Before you begin editing, follow all comments with `STARTERCONF`,
 // to customize the default configuration.
 
-const PageContext = React.createContext({ service: null, order: null, customer: null, groomer: null, pet: null });
+const PageContext = React.createContext<any>({ service: null, order: null, customer: null, groomer: null, pet: null, review: null, refreshOrder: null, setStatus: null });
 
 interface User {
 	id: string,
@@ -140,7 +140,7 @@ function SuccessPage() {
 	async function handleRejectGroomingOrder(e: any) {
 		e.preventDefault();
 
-		const res = await RejectGroomingOrderAPI({ id: order.id });
+		const res = await RejectGroomingOrderAPI({ id: order!.id! });
 		console.log(res);
 		const success = res.success;
 
@@ -158,7 +158,7 @@ function SuccessPage() {
 	async function handleDeliverGroomingOrder(e: any) {
 		e.preventDefault();
 
-		const res = await DeliverGroomingOrderAPI({ id: order.id });
+		const res = await DeliverGroomingOrderAPI({ id: order!.id! });
 		const success = res.success;
 
 		console.log(res);
@@ -177,27 +177,10 @@ function SuccessPage() {
 	async function handleConfirmGroomingOrder(e: any) {
 		e.preventDefault();
 
-		const res = await ConfirmGroomingOrderAPI({ id: order.id });
+		const res = await ConfirmGroomingOrderAPI({ id: order!.id! });
 		const success = res.success;
 
 		console.log(res);
-
-		if (success) {
-			setStatus('ACCEPTED');
-
-			setTimeout(() => {
-				refreshOrder();
-			}, 1000);
-		} else {
-			setStatus('FAILED');
-		}
-	}
-
-	async function handleAcceptGroomingOrder(e: any) {
-		e.preventDefault();
-
-		const res = await AcceptGroomingOrderAPI({ id: order.id });
-		const success = res.success;
 
 		if (success) {
 			setStatus('ACCEPTED');
@@ -517,7 +500,7 @@ export default function HomePage() {
   };
 
   const refreshReview = async () => {
-		const reviewRes = await GetGroomingOrderReviewAPI({ id: order.id });
+		const reviewRes = await GetGroomingOrderReviewAPI({ id: order!.id! });
 		const reviewSuccess = reviewRes.success;
 		const reviewData = reviewRes.data;
 

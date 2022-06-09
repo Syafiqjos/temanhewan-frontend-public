@@ -71,7 +71,7 @@ function PetsBlockList({ pets, selectedPet, setSelectedPet }: { pets: any, selec
 					</ul>
 				</div>
 				<div className="p-4 grid grid-cols-3 col-span-3">
-				  {pets && pets.map((pet) => {
+				  {pets && pets.map((pet: any) => {
 						return (
 								<button key={pet.id} className={selectedPet == pet.id ? 'border border-orange-600 border-2 rounded-xl'  : 'border border-white border-2'} onClick={(e: any) => { e.preventDefault(); handleSelectPet(pet.id); }} >
 									<div className="p-2">
@@ -187,7 +187,7 @@ function SuccessPage({ user, service, pets, groomer, setStatus, setOrder }: { us
 
 	return (<>
 	<div className="p-4 grid grid-cols-1 col-span-3">
-	  {service && <GroomingServiceComponent service={service} />}
+	  {service && <GroomingServiceComponent service={service}> </GroomingServiceComponent>}
 	  {pets && <PetsBlockList pets={pets} selectedPet={selectedPet} setSelectedPet={setSelectedPet} />}
 		<div className="px-4">
 			<div className="p-4">
@@ -306,7 +306,7 @@ export default function HomePage() {
 					|| status === 'NOTFOUND' && <NotFoundPage />
 					|| status === 'SUCCESS' && <SuccessPage setStatus={setStatus} user={user} pets={pets} groomer={groomer} service={service} setOrder={setOrder} />
 					|| status === 'ORDERED' && <OrderedPage order={order} />
-					|| status === 'FAILED' && <FailedPage />
+					|| status === 'FAILED' && <FailedPage groomer={groomer} service={service} />
 					}
 				</div>
 			  </div>

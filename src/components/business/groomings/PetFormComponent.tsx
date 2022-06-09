@@ -3,14 +3,14 @@ import InputText from '@/components/forms/InputText';
 import ButtonLink from '@/components/links/ButtonLink';
 
 function PetFormComponent({ pet }: { pet: any }) {
-	function getPetRace(race) {
+	function getPetRace(race: any) {
 		if (race == 'cat') return 'Kucing';
 		else if (race == 'dog') return 'Anjing';
 	}
 
-	function getPetGender(gender) {
+	function getPetGender(gender: any) {
 		if (gender == 'f') return 'Betina';
-		else if (race == 'm') return 'Jantan';
+		else if (gender == 'm') return 'Jantan';
 	}
 
 	return <form className="border rounded-lg border-orange-600 p-8 mb-4">

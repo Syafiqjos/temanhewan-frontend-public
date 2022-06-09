@@ -107,7 +107,7 @@ export default function GroomingServiceByGroomingPage() {
   const refreshService = async () => {
 		if (!router.isReady) return;
 
-		const serviceId = router.query.grooming_service_id;
+		const serviceId = router.query.grooming_service_id as string;
 
 		// get grooming service
 		const res = await GetGroomingServiceAPI({ id: serviceId });

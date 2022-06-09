@@ -6,7 +6,7 @@ export default async function GetGroomingReviewsAPI(
 	id,
 	all
 }: {
-	id: number,
+	id: string,
 	all?: boolean
 }) {
 	API.GetCSRFToken();
