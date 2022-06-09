@@ -44,9 +44,9 @@ function SuccessPage({ myForum }: { myForum: Forum }) {
   const router = useRouter();
 
   const forumImageInput = React.useRef(null);
-  const [title, setTitle] = React.useState('');
-  const [subtitle, setSubtitle] = React.useState('');
-  const [content, setContent] = React.useState('');
+  const [title, setTitle] = React.useState(myForum.title);
+  const [subtitle, setSubtitle] = React.useState(myForum.subtitle);
+  const [content, setContent] = React.useState(myForum.content);
 
   function getForumImage(){
     const input: any = forumImageInput.current!;
@@ -94,8 +94,8 @@ function SuccessPage({ myForum }: { myForum: Forum }) {
           <label htmlFor='forum_images'>Foto Pertanyaan</label>
           <input ref={forumImageInput} name="forum_images[]" type="file" accept="image/*" multiple />
         </div>
-        <InputText label="Judul Pertanyaan" name="title" type="text" value="" onChange={handleSetTitle} />
-        <InputText label="Sub Judul" name="subtitle" type="text" value="" onChange={handleSetSubtitle} />
+        <InputText label="Judul Pertanyaan" name="title" type="text" value={title} onChange={handleSetTitle} />
+        <InputText label="Sub Judul" name="subtitle" type="text" value={subtitle} onChange={handleSetSubtitle} />
         <div className="flex flex-col items-start w-full">
           <label htmlFor='content'>Detail Pertanyaan</label>
           <textarea className="w-full" name="content" value={content} onChange={handleSetContent} />
