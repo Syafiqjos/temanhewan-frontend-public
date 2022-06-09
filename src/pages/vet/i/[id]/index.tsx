@@ -2,6 +2,9 @@ import * as React from 'react';
 import { useRouter } from 'next/router'
 
 import GetPublicUserAPI from '@/api/GetPublicUserAPI';
+import GetDoctorReviewsAPI from '@/api/GetDoctorReviewsAPI';
+
+import ReviewFormComponent from '@/components/business/groomings/ReviewFormComponent';
 
 import InputText from '@/components/forms/InputText';
 
@@ -66,7 +69,7 @@ function LoadingPage() {
 	</>);
 }
 
-function SuccessPage({ user }: { user: User }) {
+function SuccessPage({ user, reviews }: { user: User, reviews: any }) {
 	const router = useRouter();
 
 	function handleAskVet(e: any) {
@@ -105,6 +108,16 @@ function SuccessPage({ user }: { user: User }) {
 																																																																																												<button className="bg-white text-orange-600 rounded-xl border-orange-600 p-2 inline border-2" onClick={handleAskVet}>Bertanya</button>
 																																																																																												<button className="bg-orange-600 text-white rounded-xl border-orange-600 p-2 inline border-2" onClick={handleConsultVet}>Pesan Konsultasi</button>
 </div>
+
+{reviews && <div className='flex flex-col items-start justify-start gap-3 w-full mt-3'>
+			<span className="font-semibold text-lg">Review Dokter Peliharaan</span>
+			{reviews.map((review: any) => {
+				return (
+					<ReviewFormComponent key={`review-${review.id}`} review={review} config={{showPublication: false, showTitle: false}} />
+				);
+			})}
+		</div>}
+
 																					</form>
 	</>);
 }
@@ -113,6 +126,7 @@ export default function HomePage() {
   const router = useRouter();
   const [ status, setStatus ] = React.useState<'LOADING' | 'NOTFOUND' | 'SUCCESS'>('LOADING');
   const [ user, setUser ] = React.useState<User>({ id: '', name: '', email: '', role: '' });
+  const [ reviews, setReviews ] = React.useState<any>(null);
 
   React.useEffect(() => {
 	(async () => {
@@ -128,6 +142,13 @@ export default function HomePage() {
 
 		if (user && user.id != '') {
 			setUser(user);
+
+			// get grooming reviews from server
+			const resReviews = await GetDoctorReviewsAPI({ doctor_id: id, all: true });
+			if (resReviews.success) {
+				setReviews(resReviews.data);
+			}
+
 			setStatus('SUCCESS');
 		} else {
 			setStatus('NOTFOUND');
@@ -147,7 +168,7 @@ export default function HomePage() {
             <div className="px-4 grid grid-cols-4 gap-3">
 				{status === 'LOADING' && <LoadingPage />
 				|| status === 'NOTFOUND' && <NotFoundPage />
-				|| status === 'SUCCESS' && <SuccessPage user={user} />
+				|| status === 'SUCCESS' && <SuccessPage user={user} reviews={reviews} />
 				}
             </div>
 		  </div>
