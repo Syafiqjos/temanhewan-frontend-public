@@ -176,6 +176,8 @@ function SuccessPage() {
 		const res = await CompleteGroomingOrderAPI({ id: order.id });
 		const success = res.success;
 
+		console.log(res);
+
 		if (success) {
 			setStatus('COMPLETED');
 
@@ -233,7 +235,7 @@ function SuccessPage() {
 		<CustomerFormComponent user={customer} />
 		<PetFormComponent pet={pet} />
 		{order.is_reviewed && <ReviewFormComponent review={review} />}
-		<GroomingOrderStatusFormComponent order={order} />
+		<GroomingOrderStatusFormComponent order={order} service={service} />
 		
 		{(()=>{
 			if (order.is_reviewed) {
@@ -245,12 +247,19 @@ function SuccessPage() {
 			}
 			else if (order.status == 'pending') {
 				return (
-					<div className="grid grid-cols-2 gap-3">
+					<div className="grid grid-cols-3 gap-3">
 						<button className="bg-white text-orange-600 rounded-xl border-orange-600 p-2 inline border-2" onClick={handleBack}>Kembali</button>
-						<button className="bg-orange-600 text-white rounded-xl border-orange-600 p-2 inline border-2" onClick={handleCancelGroomingOrder}>Batalkan Pesanan</button>
+						<button className="bg-white text-orange-600 rounded-xl border-orange-600 p-2 inline border-2" onClick={handleCancelGroomingOrder}>Batalkan Pesanan</button>
+						<button className="bg-orange-600 text-white rounded-xl border-orange-600 p-2 inline border-2" onClick={handlePayGroomingOrder}>Bayar Biaya Pesanan</button>
 					</div>
 				);
 			} else if (order.status == 'cancelled') {
+				return (
+					<div className="grid grid-cols-2 gap-3">
+						<button className="bg-white text-orange-600 rounded-xl border-orange-600 p-2 inline border-2" onClick={handleBack}>Kembali</button>
+					</div>
+				);
+			} else if (order.status == 'rejected') {
 				return (
 					<div className="grid grid-cols-2 gap-3">
 						<button className="bg-white text-orange-600 rounded-xl border-orange-600 p-2 inline border-2" onClick={handleBack}>Kembali</button>
@@ -265,6 +274,18 @@ function SuccessPage() {
 					</div>
 				);
 			} else if (order.status == 'paid') {
+				return (
+					<div className="grid grid-cols-2 gap-3">
+						<button className="bg-white text-orange-600 rounded-xl border-orange-600 p-2 inline border-2" onClick={handleBack}>Kembali</button>
+					</div>
+				);
+			} else if (order.status == 'confirmed') {
+				return (
+					<div className="grid grid-cols-2 gap-3">
+						<button className="bg-white text-orange-600 rounded-xl border-orange-600 p-2 inline border-2" onClick={handleBack}>Kembali</button>
+					</div>
+				);
+			} else if (order.status == 'delivered') {
 				return (
 					<div className="grid grid-cols-2 gap-3">
 						<button className="bg-white text-orange-600 rounded-xl border-orange-600 p-2 inline border-2" onClick={handleBack}>Kembali</button>
@@ -393,7 +414,7 @@ function PaidPage() {
 	</div>
 	<div className="p-4 grid grid-cols-1 col-span-3">
 	  <h1>Pembayaran Pesanan Grooming Berhasil</h1>
-	  <h2 className="text-xl">Silahkan bersiap ditempat dan waktu yang telah dijanjikan. Nantikan dokter hewan pilihan anda untuk memeriksa!</h2>
+	  <h2 className="text-xl">Silahkan bersiap ditempat dan waktu yang telah dijanjikan. Nantikan jasa grooming anda untuk memeriksa!</h2>
 	</div>
 	</>);
 }
