@@ -2,12 +2,14 @@ import { useRouter } from 'next/router';
 import * as React from 'react';
 
 import ShouldAuthorized from '@/components/auths/ShouldAuthorized';
-import InputButton from '@/components/forms/InputButton';
-import Sidebar from '@/components/layout/Sidebar';
 import Seo from '@/components/Seo';
 
 import LogoutAPI from '@/api/LogoutAPI';
 import { useAuthDispatch } from '@/providers/AuthContextProvider';
+
+import LogoutCustomer from './LogoutCustomer';
+import LogoutDoctor from './LogoutDoctor';
+import LogoutGroomer from './LogoutGroomer';
 
 
 export default function Logout() {
@@ -28,16 +30,18 @@ export default function Logout() {
 	return <>
     <Seo title="Logout"/>
 
-    <Sidebar>
 			<main>
 				<ShouldAuthorized>
-				<form className='flex flex-col items-start justify-start p-4 text-left gap-3' onSubmit={handleSubmit}>
-					<h1 className="text-xl font-semibold">Logout Akun</h1>
-					<h2 className="text-base font-normal">Silahkan klik tombol dibawah untuk logout dari akun anda.</h2>
-					<InputButton text="Logout" />
-				</form>
+					<ShouldAuthorized roleSpecific='customer' dontRedirect={true}>
+						<LogoutCustomer />
+					</ShouldAuthorized>
+					<ShouldAuthorized roleSpecific='doctor' dontRedirect={true}>
+						<LogoutDoctor />
+					</ShouldAuthorized>
+					<ShouldAuthorized roleSpecific='grooming' dontRedirect={true}>
+						<LogoutGroomer />
+					</ShouldAuthorized>
 				</ShouldAuthorized>
 			</main>
-    </Sidebar>
   </>
 }
