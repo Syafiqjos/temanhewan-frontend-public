@@ -2,8 +2,10 @@ import * as React from 'react';
 import { useRouter } from 'next/router'
 
 import GetPublicUserAPI from '@/api/GetPublicUserAPI';
-import GetDoctorReviewsAPI from '@/api/GetDoctorReviewsAPI';
+import GetGroomingServiceListAPI from '@/api/GetGroomingServiceListAPI';
+import GetGroomingReviewsAPI from '@/api/GetGroomingReviewsAPI';
 
+import GroomingServiceComponent from '@/components/business/groomings/GroomingServiceComponent';
 import ReviewFormComponent from '@/components/business/groomings/ReviewFormComponent';
 
 import InputText from '@/components/forms/InputText';
@@ -51,7 +53,7 @@ function NotFoundPage() {
 		</ul>
 	</div>
 	<div className="p-4 grid grid-cols-1 col-span-3">
-	  <h1>Dokter hewan tidak ditemukan</h1>
+	  <h1>Grooming Peliharaan tidak ditemukan</h1>
 	</div>
 	</>);
 }
@@ -69,18 +71,22 @@ function LoadingPage() {
 	</>);
 }
 
-function SuccessPage({ user, reviews }: { user: User, reviews: any }) {
+function SuccessPage({ user, services, reviews }: { user: User, services: any, reviews: any }) {
 	const router = useRouter();
 
-	function handleAskVet(e: any) {
-		e.preventDefault();
-	}
-
-	function handleConsultVet(e: any) {
+	function handleBack(e: any) {
 		e.preventDefault();
 
 		if (router.isReady) {
-			router.push(`/vet/i/${user.id}/consult`);
+			router.push(`/grooming/i/${user.id}`);
+		}
+	}
+
+	function handleService(e: any) {
+		e.preventDefault();
+
+		if (router.isReady) {
+			router.push(`/grooming/i/${user.id}/service`);
 		}
 	}
 
@@ -91,9 +97,10 @@ function SuccessPage({ user, reviews }: { user: User, reviews: any }) {
 		</ul>
 	</div>
 	<form className='flex flex-col items-start justify-start p-4 text-left gap-3 col-span-3'>
+						<span className="font-semibold text-lg">Informasi Grooming</span>
 					  <InputText label="Email" name="email" type="text" placeholder="Email anda" disabled value={user.email} />
 					  <InputText label="Nama" name="name" type="text" placeholder="Nama anda" disabled value={user.name} />
-					  <InputText label="Tanggal lahir" name="birthdate" type="date" placeholder="Tanggal lahir anda" disabled value={user.birthdate} />
+					  {/*<InputText label="Tanggal lahir" name="birthdate" type="date" placeholder="Tanggal lahir anda" disabled value={user.birthdate} />
 					  <div className="flex flex-col items-start w-full">
 						<label htmlFor="gender">Jenis kelamin</label>
 						<select name="gender" id="gender" className="border-0 rounded-l w-full p-4 bg-gray-100" disabled value={user.gender}>
@@ -102,15 +109,30 @@ function SuccessPage({ user, reviews }: { user: User, reviews: any }) {
 							<option value="f">Perempuan</option>
 						</select>
 					  </div>
+					  */}
 					  <InputText label="No. HP" name="phone" type="text" placeholder="No. HP anda" disabled value={user.phone} />
 					  <InputText label="Alamat" name="address" type="text" placeholder="Alamat anda" disabled value={user.address} />
-					<div className="grid grid-cols-2 gap-3">
-																																																																																												<button className="bg-white text-primary-500 rounded-xl border-primary-500 p-2 inline border-2" onClick={handleAskVet}>Bertanya</button>
-																																																																																												<button className="bg-primary-500 text-white rounded-xl border-primary-500 p-2 inline border-2" onClick={handleConsultVet}>Pesan Konsultasi</button>
-</div>
 
-{reviews && <div className='flex flex-col items-start justify-start gap-3 w-full mt-3'>
-			<span className="font-semibold text-lg">Review Dokter Peliharaan</span>
+	<div className="grid grid-cols-2 gap-3">
+		<button className="bg-white text-orange-600 rounded-xl border-orange-600 p-2 inline border-2" onClick={handleBack}>Kembali</button>
+		<button className="bg-orange-600 text-white rounded-xl border-orange-600 p-2 inline border-2" onClick={handleService}>Lihat Layanan</button>
+	</div>
+
+	{/*
+	<div className='flex flex-col items-start justify-start gap-3'>
+			<span className="font-semibold text-lg">Layanan Grooming</span>
+			{services.map((service: any) => {
+				return (
+					<GroomingServiceComponent service={service}>
+						<ButtonLink variant="primary" href={`/grooming/i/${user.id}/service/${service.id}`}>Pesan</ButtonLink>
+					</GroomingServiceComponent>
+				);
+			})}
+		</div>
+*/}
+
+	{reviews && <div className='flex flex-col items-start justify-start gap-3 w-full mt-3'>
+			<span className="font-semibold text-lg">Review Jasa Grooming</span>
 			{reviews.map((review: any) => {
 				return (
 					<ReviewFormComponent key={`review-${review.id}`} review={review} config={{showPublication: false, showTitle: false}} />
@@ -126,6 +148,7 @@ export default function HomePage() {
   const router = useRouter();
   const [ status, setStatus ] = React.useState<'LOADING' | 'NOTFOUND' | 'SUCCESS'>('LOADING');
   const [ user, setUser ] = React.useState<User>({ id: '', name: '', email: '', role: '' });
+  const [ services, setServices ] = React.useState<any>([]);
   const [ reviews, setReviews ] = React.useState<any>(null);
 
   React.useEffect(() => {
@@ -143,8 +166,14 @@ export default function HomePage() {
 		if (user && user.id != '') {
 			setUser(user);
 
+			// get grooming services from server
+			const resServices = await GetGroomingServiceListAPI({ grooming_id: id, offset: 0, limit: 100 });
+			if (resServices.success) {
+				setServices(resServices.data);
+			}
+
 			// get grooming reviews from server
-			const resReviews = await GetDoctorReviewsAPI({ doctor_id: id, all: true });
+			const resReviews = await GetGroomingReviewsAPI({ id: id, all: true });
 			if (resReviews.success) {
 				setReviews(resReviews.data);
 			}
@@ -164,11 +193,11 @@ export default function HomePage() {
       <main>
         <section className='bg-white'>
           <div className='layout grid grid-cols-1 mt-8 w-100'>
-			<h1 className="text-xl font-semibold mb-2">Profile Dokter Hewan</h1>
+			<h1 className="text-xl font-semibold mb-2">Profile Grooming Peliharaan</h1>
             <div className="px-4 grid grid-cols-4 gap-3">
 				{status === 'LOADING' && <LoadingPage />
 				|| status === 'NOTFOUND' && <NotFoundPage />
-				|| status === 'SUCCESS' && <SuccessPage user={user} reviews={reviews} />
+				|| status === 'SUCCESS' && <SuccessPage user={user} services={services} reviews={reviews} />
 				}
             </div>
 		  </div>
