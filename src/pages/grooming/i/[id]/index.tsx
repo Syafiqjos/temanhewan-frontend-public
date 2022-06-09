@@ -135,7 +135,7 @@ function SuccessPage({ user, services, reviews }: { user: User, services: any, r
 			<span className="font-semibold text-lg">Review Jasa Grooming</span>
 			{reviews.map((review: any) => {
 				return (
-					<ReviewFormComponent review={review} config={{showPublication: false, showTitle: false}} />
+					<ReviewFormComponent key={`review-${review.id}`} review={review} config={{showPublication: false, showTitle: false}} />
 				);
 			})}
 		</div>}
