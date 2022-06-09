@@ -14,7 +14,7 @@ function GroomingServicePriceComponent({ service }: { service: any }) {
 	const [price, setPrice] = React.useState('');
 
 	React.useEffect(() => {
-		const className = "p-2 mr-2 font-semibold text-teal-600";
+		const _className = "p-2 mr-2 font-semibold text-teal-600";
 
 		setPrice(`${formatCurrency(service.price as number)}`);
 		setClassName(_className);
