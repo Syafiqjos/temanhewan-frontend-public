@@ -3,7 +3,7 @@ import * as React from 'react';
 import ShouldAuthorized from '@/components/auths/ShouldAuthorized';
 import Seo from '@/components/Seo';
 
-import DashboardCustomer from './dashboardCustomer';
+import DashboardCustomer from './DashboardCustomer';
 import DashboardDoctor from './DashboardDoctor';
 
 export default function Dashboard() {
