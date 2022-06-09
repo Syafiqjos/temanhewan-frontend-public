@@ -8,8 +8,10 @@ import GetGroomingOrderAPI from '@/api/GetGroomingOrderAPI';
 import GetGroomingServiceAPI from '@/api/GetGroomingServiceAPI';
 import RetrievePetAPI from '@/api/RetrievePetAPI';
 
-import CancelGroomingOrderAPI from '@/api/CancelGroomingOrderAPI';
+import RejectGroomingOrderAPI from '@/api/RejectGroomingOrderAPI';
 import PaidGroomingOrderAPI from '@/api/PaidGroomingOrderAPI';
+import ConfirmGroomingOrderAPI from '@/api/ConfirmGroomingOrderAPI';
+import DeliverGroomingOrderAPI from '@/api/DeliverGroomingOrderAPI';
 import CompleteGroomingOrderAPI from '@/api/CompleteGroomingOrderAPI';
 import CreateGroomingOrderReviewAPI from '@/api/CreateGroomingOrderReviewAPI';
 import GetPublicUserAPI from '@/api/GetPublicUserAPI';
@@ -72,7 +74,9 @@ function NotFoundPage() {
 		order,
 		customer,
 		groomer,
-		pet
+		pet,
+		setStatus,
+		refreshOrder
 	} = React.useContext(PageContext);
 
 	return (<>
@@ -93,7 +97,9 @@ function LoadingPage() {
 		order,
 		customer,
 		groomer,
-		pet
+		pet,
+		setStatus,
+		refreshOrder
 	} = React.useContext(PageContext);
 
 	return (<>
@@ -114,7 +120,9 @@ function SuccessPage() {
 		order,
 		customer,
 		groomer,
-		pet
+		pet,
+		setStatus,
+		refreshOrder
 	} = React.useContext(PageContext);
 
 	const router = useRouter();
@@ -131,13 +139,52 @@ function SuccessPage() {
 		e.preventDefault();
 
 		const res = await RejectGroomingOrderAPI({ id: order.id });
+		console.log(res);
 		const success = res.success;
 
 		if (success) {
 			setStatus('REJECTED');
 
 			setTimeout(() => {
-				refreshUser();
+				refreshOrder();
+			}, 1000);
+		} else {
+			setStatus('FAILED');
+		}
+	}
+
+	async function handleDeliverGroomingOrder(e: any) {
+		e.preventDefault();
+
+		const res = await DeliverGroomingOrderAPI({ id: order.id });
+		const success = res.success;
+
+		console.log(res);
+
+		if (success) {
+			setStatus('DELIVERED');
+
+			setTimeout(() => {
+				refreshOrder();
+			}, 1000);
+		} else {
+			setStatus('FAILED');
+		}
+	}
+
+	async function handleConfirmGroomingOrder(e: any) {
+		e.preventDefault();
+
+		const res = await ConfirmGroomingOrderAPI({ id: order.id });
+		const success = res.success;
+
+		console.log(res);
+
+		if (success) {
+			setStatus('ACCEPTED');
+
+			setTimeout(() => {
+				refreshOrder();
 			}, 1000);
 		} else {
 			setStatus('FAILED');
@@ -154,7 +201,7 @@ function SuccessPage() {
 			setStatus('ACCEPTED');
 
 			setTimeout(() => {
-				refreshUser();
+				refreshOrder();
 			}, 1000);
 		} else {
 			setStatus('FAILED');
@@ -169,17 +216,22 @@ function SuccessPage() {
 		<CustomerFormComponent user={customer} />
 		<PetFormComponent pet={pet} />
 		{order.is_reviewed && <ReviewFormComponent review={review} />}
-		<GroomingOrderStatusFormComponent order={order} />
+		<GroomingOrderStatusFormComponent order={order} service={service} />
 		
 		{(()=>{
 			if (order.status == 'pending') {
 				return (
-					<div className="grid grid-cols-3 gap-3">
+					<div className="grid grid-cols-2 gap-3">
 						<button className="bg-white text-orange-600 rounded-xl border-orange-600 p-2 inline border-2" onClick={handleBack}>Kembali</button>
-						<button className="bg-white text-orange-600 rounded-xl border-orange-600 p-2 inline border-2" onClick={handleRejectGroomingOrder}>Tolak Permintaan</button>
 					</div>
 				);
 			} else if (order.status == 'cancelled') {
+				return (
+					<div className="grid grid-cols-2 gap-3">
+						<button className="bg-white text-orange-600 rounded-xl border-orange-600 p-2 inline border-2" onClick={handleBack}>Kembali</button>
+					</div>
+				);
+			} else if (order.status == 'rejected') {
 				return (
 					<div className="grid grid-cols-2 gap-3">
 						<button className="bg-white text-orange-600 rounded-xl border-orange-600 p-2 inline border-2" onClick={handleBack}>Kembali</button>
@@ -193,11 +245,26 @@ function SuccessPage() {
 				);
 			} else if (order.status == 'paid') {
 				return (
+					<div className="grid grid-cols-3 gap-3">
+						<button className="bg-white text-orange-600 rounded-xl border-orange-600 p-2 inline border-2" onClick={handleBack}>Kembali</button>
+						<button className="bg-white text-orange-600 rounded-xl border-orange-600 p-2 inline border-2" onClick={handleRejectGroomingOrder}>Tolak Permintaan</button>
+						<button className="bg-orange-600 text-white rounded-xl border-orange-600 p-2 inline border-2" onClick={handleConfirmGroomingOrder}>Terima Permintaan</button>
+					</div>
+				);
+			} else if (order.status == 'completed') {
+				return (
 					<div className="grid grid-cols-2 gap-3">
 						<button className="bg-white text-orange-600 rounded-xl border-orange-600 p-2 inline border-2" onClick={handleBack}>Kembali</button>
 					</div>
 				);
-			} else if (order.status == 'completed') {
+			} else if (order.status == 'confirmed') {
+				return (
+					<div className="grid grid-cols-2 gap-3">
+						<button className="bg-white text-orange-600 rounded-xl border-orange-600 p-2 inline border-2" onClick={handleBack}>Kembali</button>
+						<button className="bg-orange-600 text-white rounded-xl border-orange-600 p-2 inline border-2" onClick={handleDeliverGroomingOrder}>Lakukan Grooming</button>
+					</div>
+				);
+			} else if (order.status == 'delivered') {
 				return (
 					<div className="grid grid-cols-2 gap-3">
 						<button className="bg-white text-orange-600 rounded-xl border-orange-600 p-2 inline border-2" onClick={handleBack}>Kembali</button>
@@ -215,7 +282,9 @@ function AcceptedPage() {
 		order,
 		customer,
 		groomer,
-		pet
+		pet,
+		setStatus,
+		refreshOrder
 	} = React.useContext(PageContext);
 
 	return (<>
@@ -236,7 +305,9 @@ function RejectedPage() {
 		order,
 		customer,
 		groomer,
-		pet
+		pet,
+		setStatus,
+		refreshOrder
 	} = React.useContext(PageContext);
 
 	return (<>
@@ -257,7 +328,9 @@ function CanceledPage() {
 		order,
 		customer,
 		groomer,
-		pet
+		pet,
+		setStatus,
+		refreshOrder
 	} = React.useContext(PageContext);
 
 	return (<>
@@ -278,7 +351,9 @@ function FailedPage() {
 		order,
 		customer,
 		groomer,
-		pet
+		pet,
+		setStatus,
+		refreshOrder
 	} = React.useContext(PageContext);
 
 	return (<>
@@ -293,8 +368,54 @@ function FailedPage() {
 	</>);
 }
 
+function ConfirmedPage() {
+	const {
+		service,
+		order,
+		customer,
+		groomer,
+		pet,
+		setStatus,
+		refreshOrder
+	} = React.useContext(PageContext);
+
+	return (<>
+	<div className="flex flex-col gap-1">
+		<ul className="p-4">
+			<img className="rounded-xl object-cover w-full h-48" src="/images/cover/register-cover.png" />
+		</ul>
+	</div>
+	<div className="p-4 grid grid-cols-1 col-span-3">
+	  <h1>Pesanan Grooming diterima, silahkan mengunjungi alamat pelanggan dan segera melakukan grooming pada jadwal yang telah ditentukan.</h1>
+	</div>
+	</>);
+}
+
+function DeliveredPage() {
+	const {
+		service,
+		order,
+		customer,
+		groomer,
+		pet,
+		setStatus,
+		refreshOrder
+	} = React.useContext(PageContext);
+
+	return (<>
+	<div className="flex flex-col gap-1">
+		<ul className="p-4">
+			<img className="rounded-xl object-cover w-full h-48" src="/images/cover/register-cover.png" />
+		</ul>
+	</div>
+	<div className="p-4 grid grid-cols-1 col-span-3">
+	  <h1>Grooming selesai dilakukan!</h1>
+	</div>
+	</>);
+}
+
 export default function HomePage() {
-  const [ status, setStatus ] = React.useState<'LOADING' | 'NOTFOUND' | 'SUCCESS' | 'ACCEPTED' | 'REJECTED' | 'CANCELED' | 'PAID' | 'COMPLETED' | 'FAILED'>('LOADING');
+  const [ status, setStatus ] = React.useState<'LOADING' | 'NOTFOUND' | 'SUCCESS' | 'ACCEPTED' | 'REJECTED' | 'DELIVERED' | 'CANCELED' | 'PAID' | 'COMPLETED' | 'FAILED'>('LOADING');
   const [ customer, setCustomer ] = React.useState<any>(null);
   const [ groomer, setGroomer ] = React.useState<any>(null);
   const [ service, setService ] = React.useState<any>(null);
@@ -434,6 +555,7 @@ export default function HomePage() {
 						|| status === 'SUCCESS' && <SuccessPage />
 						|| status === 'ACCEPTED' && <AcceptedPage />
 						|| status === 'REJECTED' && <RejectedPage />
+						|| status === 'DELIVERED' && <DeliveredPage />
 						|| status === 'CANCELED' && <CanceledPage />
 						|| status === 'FAILED' && <FailedPage />
 						}
