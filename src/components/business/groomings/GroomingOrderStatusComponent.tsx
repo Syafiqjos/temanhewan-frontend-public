@@ -9,7 +9,7 @@ const formatCurrency = (currency: number) => {
 	}).format(currency);
 };
 
-function GroomingOrderStatusComponent({ order }: { order: any }) {
+function GroomingOrderStatusComponent({ order, service }: { order: any, service?: any }) {
 	const [className, setClassName] = React.useState('');
 	const [status, setStatus] = React.useState('');
 	const [postfix, setPostfix] = React.useState('');
@@ -20,25 +20,43 @@ function GroomingOrderStatusComponent({ order }: { order: any }) {
 
 		if (order.status == "pending") {
 			_className += " text-yellow-600";
-			_status = 'Menunggu Konfirmasi';
+			_status = 'Menunggu Pembayaran';
 		} else if (order.status == "rejected") {
 			_className += " text-red-600";
 			_status = 'Ditolak';
 		} else if (order.status == "accepted") {
 			_className += " text-green-600";
 			_status = 'Menunggu Pembayaran';
-			setPostfix(` (${formatCurrency(order.fee as number)})`);
+			if (service) {
+				setPostfix(` (${formatCurrency(service.price as number)})`);
+			}
 		} else if (order.status == "cancelled") {
 			_className += " text-red-600";
 			_status = 'Dibatalkan';
 		} else if (order.status == "paid") {
 			_className += " text-teal-600";
-			_status = 'Dibayar dan Menunggu Konsultasi';
-			setPostfix(` (${formatCurrency(order.fee as number)})`);
+			_status = 'Dibayar dan Menunggu Konfirmasi';
+			if (service) {
+				setPostfix(` (${formatCurrency(service.price as number)})`);
+			}
 		} else if (order.status == "completed") {
 			_className += " text-green-600";
 			_status = 'Selesai';
-			setPostfix(` (${formatCurrency(order.fee as number)})`);
+			if (service) {
+				setPostfix(` (${formatCurrency(service.price as number)})`);
+			}
+		} else if (order.status == "confirmed") {
+			_className += " text-green-600";
+			_status = 'Menunggu Grooming';
+			if (service) {
+				setPostfix(` (${formatCurrency(service.price as number)})`);
+			}
+		} else if (order.status == "delivered") {
+			_className += " text-green-600";
+			_status = 'Menunggu Proses Grooming';
+			if (service) {
+				setPostfix(` (${formatCurrency(service.price as number)})`);
+			}
 		}
 
 		setStatus(_status);

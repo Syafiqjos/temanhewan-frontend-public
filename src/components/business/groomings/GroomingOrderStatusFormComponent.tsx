@@ -4,10 +4,10 @@ import ButtonLink from '@/components/links/ButtonLink';
 
 import GroomingOrderStatusComponent from '@/components/business/groomings/GroomingOrderStatusComponent';
 
-function GroomingOrderStatusFormComponent({ order }: { order: any }) {
+function GroomingOrderStatusFormComponent({ order, service }: { order: any, service?: any }) {
 	return <form className="border rounded-lg border-orange-600 p-8 mb-4">
 			<h1 className="text-lg mb-4">Status Pesanan Grooming</h1>
-			<GroomingOrderStatusComponent order={order} />
+			<GroomingOrderStatusComponent order={order} service={service} />
 		</form>;
 }
 
