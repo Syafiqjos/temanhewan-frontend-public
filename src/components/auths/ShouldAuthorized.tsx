@@ -24,9 +24,11 @@ export default function ShouldAuthorized({ roleSpecific, children, dontRedirect 
 				isMounted.current = false;
 				if (dontRedirect === undefined || dontRedirect == false) {
 					try {
+						/*
 						Router.push({
 							pathname: '/'
 						});
+						*/
 					} catch {
 						// skip catch
 					}
