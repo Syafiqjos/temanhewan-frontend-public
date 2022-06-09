@@ -131,14 +131,14 @@ function SuccessPage({ user, services, reviews }: { user: User, services: any, r
 		</div>
 */}
 
-	<div className='flex flex-col items-start justify-start gap-3 w-full mt-3'>
+	{reviews && <div className='flex flex-col items-start justify-start gap-3 w-full mt-3'>
 			<span className="font-semibold text-lg">Review Jasa Grooming</span>
 			{reviews.map((review: any) => {
 				return (
 					<ReviewFormComponent review={review} config={{showPublication: false, showTitle: false}} />
 				);
 			})}
-		</div>
+		</div>}
 
 																					</form>
 	</>);
