@@ -56,7 +56,7 @@ function InitialPage({ router, setMyForum, setErrorMessage, setStatus}: {router:
       setErrorMessage("Something went wrong" + res.message);
       setStatus("ERROR");
     }
-    // setTimeout(() => {router.push('/' + slug)}, 1000);
+    setTimeout(() => {router.push('/dashboard/my-question')}, 1000);
   }
 
   function handleSetTitle(e: any) {
@@ -74,7 +74,7 @@ function InitialPage({ router, setMyForum, setErrorMessage, setStatus}: {router:
   return (
     <>
 
-    <form className="py-4 grid grid-cols-1 gap-2" onSubmit={handleSubmit}>
+    <form className="py-4 grid grid-cols-1 gap-4" onSubmit={handleSubmit}>
       <div className="flex flex-col items-start w-full">
         <label htmlFor='forum_images'>Foto Pertanyaan</label>
         <input ref={forumImageInput} name="forum_images[]" type="file" accept="image/*" multiple />
@@ -103,7 +103,7 @@ function ErrorPage({ errorMessage }: { errorMessage: string }) {
 function SuccessPage({ myForum }: { myForum: Forum }) {
   return (
     <>
-      <h1 className="text-center">Pertanyaan berhasil ditambahkan</h1>
+      <h1 className="text-center pt-3">Pertanyaan berhasil ditambahkan</h1>
   
       <CardForum
         image = {myForum.forum_images ? myForum.forum_images[0] : '/images/image_post.png'}
@@ -120,23 +120,23 @@ function SuccessPage({ myForum }: { myForum: Forum }) {
 export default function AddQuestion() {
   const router = useRouter();
   const [status, setStatus] = React.useState<'INITIAL' | 'ERROR' | 'SUCCESS' >('INITIAL');
-  const [myForum, setMyForum] = React.useState<Forum>({ id : '', slug: '', title: '', subtitle: '', content: '', forum_images: '' });
+  const [myForum, setMyForum] = React.useState<Forum>({ id : '', slug: '', title: '', subtitle: '', content: '', forum_images: [], author : {}, updated_at: '' });
   const [ errorMessage, setErrorMessage ] = React.useState<string>('');
 
   return (
     <>
       <Seo title = "Tambah Pertanyaan" />
 
-      <main>
-        <ShouldAuthorized roleSpecific='customer'>
-          <Sidebar>
-            <div className='text-left p-4'>
-              <h1 className="text-xl font-semibold">Tambah Pertanyaan</h1>
-              {errorMessage !== '' && <ErrorPage errorMessage={errorMessage} /> || status === 'INITIAL' && <InitialPage router = {router} setMyForum={setMyForum} setErrorMessage={setErrorMessage} setStatus={setStatus} /> || status === "SUCCESS" && <SuccessPage myForum={myForum} />}
-            </div>
-          </Sidebar>
-        </ShouldAuthorized>
-      </main>
+      <Sidebar>
+        <main>
+          <ShouldAuthorized roleSpecific='customer'>
+              <div className='text-left p-4'>
+                <h1 className="text-xl font-semibold">Tambah Pertanyaan</h1>
+                {errorMessage !== '' && <ErrorPage errorMessage={errorMessage} /> || status === 'INITIAL' && <InitialPage router = {router} setMyForum={setMyForum} setErrorMessage={setErrorMessage} setStatus={setStatus} /> || status === "SUCCESS" && <SuccessPage myForum={myForum} />}
+              </div>
+          </ShouldAuthorized>
+        </main>
+      </Sidebar>
     </>
   )
 }

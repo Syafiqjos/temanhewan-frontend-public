@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router'
 import * as React from 'react';
 
+import ShouldAuthorized from '@/components/auths/ShouldAuthorized';
 import InputText from '@/components/forms/InputText';
 import Sidebar from '@/components/layout/Sidebar';
 import Seo from '@/components/Seo';
@@ -25,11 +26,11 @@ import Pet from '@/interfaces/Pet';
 function NotFoundPage() {
 	return (<>
 	<div className="flex flex-col gap-1">
-		<ul className="p-4">
-			<img className="rounded-xl object-cover w-full h-48" src="/images/cover/register-cover.png" />
+		<ul>
+			<img className="rounded-xl object-cover w-full h-auto" src="/images/cover/register-cover.png" />
 		</ul>
 	</div>
-	<div className="p-4 grid grid-cols-1">
+	<div className="grid grid-cols-1">
 	  <h1>Peliharaan tidak ditemukan</h1>
 	</div>
 	</>);
@@ -38,11 +39,11 @@ function NotFoundPage() {
 function LoadingPage() {
 	return (<>
 	<div className="flex flex-col gap-1">
-		<ul className="p-4">
-			<img className="rounded-xl object-cover w-full h-48" src="/images/cover/register-cover.png" />
+		<ul>
+			<img className="rounded-xl object-cover w-full h-auto" src="/images/cover/register-cover.png" />
 		</ul>
 	</div>
-	<div className="p-4 grid grid-cols-1">
+	<div className="grid grid-cols-1">
 	  <h1>Memuat..</h1>
 	</div>
 	</>);
@@ -103,19 +104,19 @@ function SuccessPage({ myPet }: { myPet: Pet }) {
 	}
 
 	return (<>
-	<div className="flex flex-col gap-1">
+	<div>
 		<ul className="p-4">
-			<img className="rounded-xl object-cover w-full h-48" src={myPet.imageUrl} />
+			<img className="rounded-xl object-cover w-full h-auto" src={myPet.imageUrl} />
 		</ul>
 	</div>
-	<div className="p-4 grid grid-cols-1">
+	<div className="grid grid-cols-1">
 	  <h1>{myPet.name}</h1>
 	  <p className="my-4">{myPet.description}</p>
 	  <InputText label="Jenis Peliharaan" type="text" name="petType" disabled value={getPetType(myPet.race)} />
 	  <InputText label="Jenis Kelamin" type="text" name="gender" disabled value={getGender(myPet.gender)} />
 	  <div className="grid grid-cols-2 gap-3">
-		<button className="bg-white text-orange-600 rounded-xl border-orange-600 p-2 inline border-2" onClick={handleDeletePet}>Hapus Peliharaan</button>
-		<button className="bg-orange-600 text-white rounded-xl border-orange-600 p-2 inline border-2" onClick={handleUpdatePet}>Update Peliharaan</button>
+		<button className="bg-white text-primary-500 rounded-xl border-primary-500 p-2 inline border-2" onClick={handleDeletePet}>Hapus Peliharaan</button>
+		<button className="bg-primary-500 text-white rounded-xl border-primary-500 p-2 inline border-2" onClick={handleUpdatePet}>Update Peliharaan</button>
 	  </div>
 	</div>
 	</>);
@@ -155,17 +156,19 @@ export default function HomePage() {
 
 			<Sidebar>
 				<main>
-					<section className='bg-white'>
-						<div className='layout grid grid-cols-1 mt-8 w-100'>
-				<h1 className="text-xl font-semibold mb-2">Peliharaan saya</h1>
-							<div className="px-4 grid grid-cols-2 gap-3">
-					{status === 'LOADING' && <LoadingPage />
-					|| status === 'NOTFOUND' && <NotFoundPage />
-					|| status === 'SUCCESS' && <SuccessPage myPet={myPet} />
-					}
+					<ShouldAuthorized roleSpecific='customer'>
+						<section className='bg-white'>
+							<div className='layout grid grid-cols-1 mt-8 w-100'>
+								<h1 className="text-xl font-semibold mb-2">Hewan Peliharaan saya</h1>
+								<div className="grid grid-cols-2 gap-3">
+									{status === 'LOADING' && <LoadingPage />
+									|| status === 'NOTFOUND' && <NotFoundPage />
+									|| status === 'SUCCESS' && <SuccessPage myPet={myPet} />
+									}
+								</div>
 							</div>
-				</div>
-					</section>
+						</section>
+					</ShouldAuthorized>
 				</main>
 			</Sidebar>
     </>

@@ -40,7 +40,7 @@ function InitialPage({ setEmail } : { setEmail: any }) {
               <h2 className="text-base font-normal">Sebuah email yang berisi cara mengatur ulang password akan dikirim ke email anda.</h2>
               <InputText label="Email" name="email" type="text" placeholder="Email anda" onChange={handleInput} />
               <div>
-                <span>Sudah ingat password? <UnstyledLink href="/login" className="text-orange-600">Klik disini</UnstyledLink></span>
+                <span>Sudah ingat password? <UnstyledLink href="/login" className="text-primary-500">Klik disini</UnstyledLink></span>
               </div>
               <InputButton text="Reset" />
             </form>);
@@ -54,7 +54,7 @@ function SuccessPage({ email }: { email: string }) {
                 Silahkan lakukan konfirmasi dengan cara klik link konfirmasi pada email yang berhasil dikirim.
               </p>
               <div>
-                <span><UnstyledLink href="/login" className="text-orange-600">Klik disini</UnstyledLink> untuk kembali login.</span>
+                <span><UnstyledLink href="/login" className="text-primary-500">Klik disini</UnstyledLink> untuk kembali login.</span>
               </div>
             </form>);
 }

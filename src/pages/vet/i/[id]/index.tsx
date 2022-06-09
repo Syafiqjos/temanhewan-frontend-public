@@ -105,8 +105,8 @@ function SuccessPage({ user, reviews }: { user: User, reviews: any }) {
 					  <InputText label="No. HP" name="phone" type="text" placeholder="No. HP anda" disabled value={user.phone} />
 					  <InputText label="Alamat" name="address" type="text" placeholder="Alamat anda" disabled value={user.address} />
 					<div className="grid grid-cols-2 gap-3">
-																																																																																												<button className="bg-white text-orange-600 rounded-xl border-orange-600 p-2 inline border-2" onClick={handleAskVet}>Bertanya</button>
-																																																																																												<button className="bg-orange-600 text-white rounded-xl border-orange-600 p-2 inline border-2" onClick={handleConsultVet}>Pesan Konsultasi</button>
+																																																																																												<button className="bg-white text-primary-500 rounded-xl border-primary-500 p-2 inline border-2" onClick={handleAskVet}>Bertanya</button>
+																																																																																												<button className="bg-primary-500 text-white rounded-xl border-primary-500 p-2 inline border-2" onClick={handleConsultVet}>Pesan Konsultasi</button>
 </div>
 
 {reviews && <div className='flex flex-col items-start justify-start gap-3 w-full mt-3'>

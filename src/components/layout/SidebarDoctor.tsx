@@ -3,9 +3,8 @@ import * as React from 'react';
 
 import UnstyledLink from '../links/UnstyledLink';
 
-const linksForum = [
-  { href: '/dashboard/my-question', label: 'Pertanyaan Saya' },
-  { href: '/dashboard/add-question', label: 'Tambah Pertanyaan' },
+const linksComment = [
+  { href: '/dashboard/my-comment', label: 'Komentar Saya' },
 ];
 
 const linksProfile = [
@@ -18,14 +17,13 @@ const linksConsultation = [
   { href: '/dashboard/consultation', label: 'Konsultasi Saya' },
 ];
 
-const linksPet = [
-  { href: '/dashboard/my-pet', label: 'Hewan Saya' },
-  { href: '/dashboard/add-pet', label: 'Tambah Hewan' },
-];
-
 const linksOther = [{ href: '/dashboard/logout', label: 'Logout' }];
 
-export default function Sidebar({ children }: { children: React.ReactNode }) {
+export default function SidebarDoctor({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const router = useRouter();
   const activeClassNames =
     'flex items-center rounded-lg p-2 text-base font-normal text-gray-900 hover:bg-gray-100 active:bg-primary-600 active:text-white';
@@ -78,22 +76,6 @@ export default function Sidebar({ children }: { children: React.ReactNode }) {
                 ))}
               </ul>
               <ul className='mt-4 space-y-2 border-t border-gray-200 pt-4 dark:border-gray-700'>
-                {linksPet.map((feature) => (
-                  <li key={feature.href}>
-                    <UnstyledLink
-                      href={feature.href}
-                      className={
-                        router.pathname === `${feature.href}`
-                          ? activeClassNames
-                          : classNames
-                      }
-                    >
-                      {feature.label}
-                    </UnstyledLink>
-                  </li>
-                ))}
-              </ul>
-              <ul className='mt-4 space-y-2 border-t border-gray-200 pt-4 dark:border-gray-700'>
                 {linksConsultation.map((feature) => (
                   <li key={feature.href}>
                     <UnstyledLink
@@ -110,7 +92,7 @@ export default function Sidebar({ children }: { children: React.ReactNode }) {
                 ))}
               </ul>
               <ul className='mt-4 space-y-2 border-t border-gray-200 pt-4 dark:border-gray-700'>
-                {linksForum.map((feature) => (
+                {linksComment.map((feature) => (
                   <li key={feature.href}>
                     <UnstyledLink
                       href={feature.href}
@@ -125,7 +107,7 @@ export default function Sidebar({ children }: { children: React.ReactNode }) {
                   </li>
                 ))}
               </ul>
-             
+
               <ul className='mt-4 space-y-2 border-t border-gray-200 pt-4 dark:border-gray-700'>
                 {linksOther.map((feature) => (
                   <li key={feature.href}>

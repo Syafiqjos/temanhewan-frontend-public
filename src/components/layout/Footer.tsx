@@ -2,6 +2,8 @@ import * as React from 'react';
 
 import UnstyledLink from '@/components/links/UnstyledLink';
 
+import ShouldAuthorized from '../auths/ShouldAuthorized';
+
 // const footer = [
 //   {
 //     name: "Layanan",
@@ -42,8 +44,9 @@ import UnstyledLink from '@/components/links/UnstyledLink';
 
 export default function Footer() {
   return (
-    <footer className='bg-gray-50'>
-      <div className='mx-auto max-w-screen-2xl px-4 py-14 lg:px-24'>
+    <footer className="bg-gray-50">
+      <div className="layout">
+      <div className='max-w-screen-2xl py-14'>
         <div className='grid lg:grid-cols-12'>
           <div className='md:col-span-12 lg:col-span-6'>
             <UnstyledLink
@@ -64,25 +67,27 @@ export default function Footer() {
             </div>
           </div>
 
-          <div className='md:col-span-4 lg:col-span-2'>
-            <div className='text-light-3 mb-4 text-xl font-bold'>Layanan</div>
-            <div className='mb-4'>
-              <a
-                href=''
-                className='text-md text-light-3 font-normal hover:text-primary-500'
-              >
-                Konsultasi
-              </a>
+          <ShouldAuthorized roleSpecific='customer'>
+            <div className='md:col-span-4 lg:col-span-2'>
+              <div className='text-light-3 mb-4 text-xl font-bold'>Layanan</div>
+              <div className='mb-4'>
+                <UnstyledLink
+                  href='/dashboard/consultation'
+                  className='text-md text-light-3 font-normal hover:text-primary-500'
+                >
+                  Konsultasi
+                </UnstyledLink>
+              </div>
+              <div className='mb-4'>
+                <UnstyledLink
+                  href='/dashboard/grooming'
+                  className='text-md text-light-3 font-normal hover:text-primary-500'
+                >
+                  Grooming
+                </UnstyledLink>
+              </div>
             </div>
-            <div className='mb-4'>
-              <a
-                href=''
-                className='text-md text-light-3 font-normal hover:text-primary-500'
-              >
-                Grooming
-              </a>
-            </div>
-          </div>
+          </ShouldAuthorized>
 
           <div className='md:col-span-4 lg:col-span-2'>
             <div className='text-light-3 mb-4 text-xl font-bold'>Lainnya</div>
@@ -118,6 +123,7 @@ export default function Footer() {
             </div>
           </div>
         </div>
+      </div>
       </div>
     </footer>
   );

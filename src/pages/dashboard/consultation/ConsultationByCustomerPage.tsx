@@ -1,23 +1,13 @@
 import * as React from 'react';
-import { useRouter } from 'next/router'
-
-import AuthAPI from '@/api/AuthAPI';
-import AuthService from '@/services/AuthService';
-import GetConsultationByCustomerAPI from '@/api/GetConsultationByCustomerAPI';
 
 import ShouldAuthorized from '@/components/auths/ShouldAuthorized';
-
-import InputText from '@/components/forms/InputText';
 import ConsultationComponent from '@/components/business/consultations/ConsultationComponent';
-
-import Layout from '@/components/layout/Layout';
-import ArrowLink from '@/components/links/ArrowLink';
-import ButtonLink from '@/components/links/ButtonLink';
-import UnderlineLink from '@/components/links/UnderlineLink';
-import UnstyledLink from '@/components/links/UnstyledLink';
+import Sidebar from '@/components/layout/Sidebar';
 import Seo from '@/components/Seo';
 
-import Link from 'next/link';
+import AuthAPI from '@/api/AuthAPI';
+import GetConsultationByCustomerAPI from '@/api/GetConsultationByCustomerAPI';
+import AuthService from '@/services/AuthService';
 
 /**
  * SVGR Support
@@ -26,7 +16,6 @@ import Link from 'next/link';
  * You can override the next-env if the type is important to you
  * @see https://stackoverflow.com/questions/68103844/how-to-override-next-js-svg-module-declaration
  */
-import Vercel from '~/svg/Vercel.svg';
 
 // !STARTERCONF -> Select !STARTERCONF and CMD + SHIFT + F
 // Before you begin editing, follow all comments with `STARTERCONF`,
@@ -98,52 +87,53 @@ export default function ConsultationByCustomerPage() {
 
   return (
     <>
-      {/* <Seo templateTitle='Home' /> */}
-      <Seo />
+      <Seo title="Consultation" />
 
-      <main>
-		<ShouldAuthorized roleSpecific="customer">
-			<section className='bg-white'>
-				<div className="p-4">
-					<h1 className="text-xl">Daftar Konsultasi</h1>
-					<div className="grid grid-cols-4 p-4">
-						<div className="col-span-1 p-2">
-							<div className="flex flex-col items-start w-full mb-2">
-								<label>Filter Status</label>
-								<select ref={filterRef} className="w-full" onChange={handleFilter}>
-									<option value="all">Semua</option>
-									<option value="pending">Menunggu Konfirmasi</option>
-									<option value="rejected">Ditolak</option>
-									<option value="accepted">Menunggu Pembayaran</option>
-									<option value="cancelled">Dibatalkan</option>
-									<option value="paid">Dibayar dan Menunggu Konsultasi</option>
-									<option value="completed">Selesai</option>
-								</select>
+			<Sidebar>
+				<main>
+					<ShouldAuthorized roleSpecific="customer">
+						<section className='bg-white'>
+							<div className="p-4">
+								<h1 className="text-xl">Daftar Konsultasi</h1>
+								<div className="grid grid-cols-4 p-4">
+									<div className="col-span-1 p-2">
+										<div className="flex flex-col items-start w-full mb-2">
+											<label>Filter Status</label>
+											<select ref={filterRef} className="w-full" onChange={handleFilter}>
+												<option value="all">Semua</option>
+												<option value="pending">Menunggu Konfirmasi</option>
+												<option value="rejected">Ditolak</option>
+												<option value="accepted">Menunggu Pembayaran</option>
+												<option value="cancelled">Dibatalkan</option>
+												<option value="paid">Dibayar dan Menunggu Konsultasi</option>
+												<option value="completed">Selesai</option>
+											</select>
+										</div>
+										<div className="flex flex-col items-start w-full mb-2">
+											<label>Sortir</label>
+											<select ref={sortRef} className="w-full" onChange={handleFilter}>
+												<option value="newest">Terbaru</option>
+												<option value="oldest">Terlama</option>
+												<option value="highest_fee">Termahal</option>
+												<option value="lowest_fee">Termurah</option>
+											</select>
+										</div>
+									</div>
+									<div className="col-span-3 p-4">
+										<ul className="pb-4">
+											{consultations.map((consultation: any) => {
+												return (
+													<ConsultationComponent consultation={consultation} key={`consultation-${consultation.id}`} />
+												);
+											})}
+										</ul>
+									</div>
+								</div>
 							</div>
-							<div className="flex flex-col items-start w-full mb-2">
-								<label>Sortir</label>
-								<select ref={sortRef} className="w-full" onChange={handleFilter}>
-									<option value="newest">Terbaru</option>
-									<option value="oldest">Terlama</option>
-									<option value="highest_fee">Termahal</option>
-									<option value="lowest_fee">Termurah</option>
-								</select>
-							</div>
-						</div>
-						<div className="col-span-3 p-4">
-							<ul className="pb-4">
-								{consultations.map((consultation: any) => {
-									return (
-										<ConsultationComponent consultation={consultation} key={`consultation-${consultation.id}`} />
-									);
-								})}
-							</ul>
-						</div>
-					</div>
-				</div>
-			</section>
-		</ShouldAuthorized>
-      </main>
+						</section>
+					</ShouldAuthorized>
+				</main>
+			</Sidebar>
     </>
   );
 }

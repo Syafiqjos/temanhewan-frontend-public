@@ -1,5 +1,7 @@
+import { useRouter } from 'next/router'
 import * as React from 'react';
 
+import ShouldAuthorized from '@/components/auths/ShouldAuthorized';
 import InputButton from '@/components/forms/InputButton';
 import InputText from '@/components/forms/InputText';
 import Sidebar from '@/components/layout/Sidebar';
@@ -12,6 +14,7 @@ import AuthService from '@/services/AuthService';
 
 export default function EditProfile({ onSubmit }: { onSubmit?: any }) {
 
+	const router = useRouter();
 	const profileImageInput = React.useRef(null);
 
 	const [profileImage, setProfileImage] = React.useState('');
@@ -93,6 +96,7 @@ export default function EditProfile({ onSubmit }: { onSubmit?: any }) {
 		const success = res.success;
 		if (success) {
 			console.log('update user success');
+			router.push('/dashboard/my-profile');
 		} else {
 			console.log('update user failed');
 		}
@@ -101,34 +105,39 @@ export default function EditProfile({ onSubmit }: { onSubmit?: any }) {
 		if (onSubmit !== undefined) {
 			onSubmit();
 		}
+
 	}
 
 	return <>
     <Seo title="Edit Profile" />
 
     <Sidebar>
-      <form className='flex flex-col items-start justify-start p-4 text-left gap-3' onSubmit={handleSubmit}>
-				<h1 className="text-xl font-semibold">Edit Profil</h1>
-				<img src={profileImage} alt = "profile image" className="h-40 w-40"/>
-				<div className="flex flex-col items-start w-full">
-					<label htmlFor="petType">Ubah foto profil</label>
-					<input ref={profileImageInput} name="profile_image" type="file" accept="image/*" />
-				</div>
-				<InputText label="Email" name="email" type="text" placeholder="Email anda" disabled value={email} />
-				<InputText label="Nama" name="name" type="text" placeholder="Nama anda" value={name} onChange={handleName} />
-				<InputText label="Tanggal lahir" name="birthdate" type="date" placeholder="Tanggal lahir anda" value={birthdate} onChange={handleBirthdate} />
-				<div className="flex flex-col items-start w-full">
-				<label htmlFor="gender">Jenis kelamin</label>
-				<select name="gender" id="gender" onChange={handleGender} className="border-0 rounded-l w-full p-4 bg-gray-100" value={gender}>
-					<option value="" disabled>Pilih jenis kelamin anda..</option>
-					<option value="m">Laki - laki</option>
-					<option value="f">Perempuan</option>
-				</select>
-				</div>
-				<InputText label="No. HP" name="phone" type="text" placeholder="No. HP anda" onChange={handlePhone} value={phone} />
-				<InputText label="Alamat" name="address" type="text" placeholder="Alamat anda" onChange={handleAddress} value={address} />
-				<InputButton text="Perbarui" />
-			</form>
+			<main>
+				<ShouldAuthorized>
+					<form className='flex flex-col items-start justify-start p-4 text-left gap-3' onSubmit={handleSubmit}>
+						<h1 className="text-xl font-semibold">Edit Profil</h1>
+						<img src={profileImage} alt = "profile image" className="h-40 w-40"/>
+						<div className="flex flex-col items-start w-full">
+							<label htmlFor="petType">Ubah foto profil</label>
+							<input ref={profileImageInput} name="profile_image" type="file" accept="image/*" />
+						</div>
+						<InputText label="Email" name="email" type="text" placeholder="Email anda" disabled value={email} />
+						<InputText label="Nama" name="name" type="text" placeholder="Nama anda" value={name} onChange={handleName} />
+						<InputText label="Tanggal lahir" name="birthdate" type="date" placeholder="Tanggal lahir anda" value={birthdate} onChange={handleBirthdate} />
+						<div className="flex flex-col items-start w-full">
+						<label htmlFor="gender">Jenis kelamin</label>
+						<select name="gender" id="gender" onChange={handleGender} className="border-0 rounded-l w-full p-4 bg-gray-100" value={gender}>
+							<option value="" disabled>Pilih jenis kelamin anda..</option>
+							<option value="m">Laki - laki</option>
+							<option value="f">Perempuan</option>
+						</select>
+						</div>
+						<InputText label="No. HP" name="phone" type="text" placeholder="No. HP anda" onChange={handlePhone} value={phone} />
+						<InputText label="Alamat" name="address" type="text" placeholder="Alamat anda" onChange={handleAddress} value={address} />
+						<InputButton text="Perbarui" />
+					</form>
+				</ShouldAuthorized>
+			</main>
     </Sidebar>
   </>
 

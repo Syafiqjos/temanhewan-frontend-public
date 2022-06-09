@@ -1,33 +1,24 @@
-import * as React from 'react';
 import { useRouter } from 'next/router'
-
-import AuthAPI from '@/api/AuthAPI';
-import AuthService from '@/services/AuthService';
-import GetConsultationAPI from '@/api/GetConsultationAPI';
-import GetConsultationReviewAPI from '@/api/GetConsultationReviewAPI';
-import CancelConsultationAPI from '@/api/CancelConsultationAPI';
-import PaidConsultationAPI from '@/api/PaidConsultationAPI';
-import CompleteConsultationAPI from '@/api/CompleteConsultationAPI';
-import CreateConsultationReviewAPI from '@/api/CreateConsultationReviewAPI';
-import GetPublicUserAPI from '@/api/GetPublicUserAPI';
+import * as React from 'react';
 
 import ShouldAuthorized from '@/components/auths/ShouldAuthorized';
-
-import InputText from '@/components/forms/InputText';
-import DoctorFormComponent from '@/components/business/consultations/DoctorFormComponent';
-import CustomerFormComponent from '@/components/business/consultations/CustomerFormComponent';
 import ConsultationFormComponent from '@/components/business/consultations/ConsultationFormComponent';
 import ConsultationStatusFormComponent from '@/components/business/consultations/ConsultationStatusFormComponent';
+import CustomerFormComponent from '@/components/business/consultations/CustomerFormComponent';
+import DoctorFormComponent from '@/components/business/consultations/DoctorFormComponent';
 import ReviewFormComponent from '@/components/business/consultations/ReviewFormComponent';
-
-import Layout from '@/components/layout/Layout';
-import ArrowLink from '@/components/links/ArrowLink';
-import ButtonLink from '@/components/links/ButtonLink';
-import UnderlineLink from '@/components/links/UnderlineLink';
-import UnstyledLink from '@/components/links/UnstyledLink';
+import Sidebar from '@/components/layout/Sidebar';
 import Seo from '@/components/Seo';
 
-import Link from 'next/link';
+import AuthAPI from '@/api/AuthAPI';
+import CancelConsultationAPI from '@/api/CancelConsultationAPI';
+import CompleteConsultationAPI from '@/api/CompleteConsultationAPI';
+import CreateConsultationReviewAPI from '@/api/CreateConsultationReviewAPI';
+import GetConsultationAPI from '@/api/GetConsultationAPI';
+import GetConsultationReviewAPI from '@/api/GetConsultationReviewAPI';
+import GetPublicUserAPI from '@/api/GetPublicUserAPI';
+import PaidConsultationAPI from '@/api/PaidConsultationAPI';
+import AuthService from '@/services/AuthService';
 
 /**
  * SVGR Support
@@ -36,7 +27,6 @@ import Link from 'next/link';
  * You can override the next-env if the type is important to you
  * @see https://stackoverflow.com/questions/68103844/how-to-override-next-js-svg-module-declaration
  */
-import Vercel from '~/svg/Vercel.svg';
 
 // !STARTERCONF -> Select !STARTERCONF and CMD + SHIFT + F
 // Before you begin editing, follow all comments with `STARTERCONF`,
@@ -198,47 +188,47 @@ function SuccessPage({ myUser, user, consultation, review, setStatus, refreshUse
 			if (consultation.is_reviewed) {
 				return (
 					<div className="grid grid-cols-2 gap-3">
-						<button className="bg-white text-orange-600 rounded-xl border-orange-600 p-2 inline border-2" onClick={handleBack}>Kembali</button>
+						<button className="bg-white text-primary-500 rounded-xl border-primary-500 p-2 inline border-2" onClick={handleBack}>Kembali</button>
 					</div>
 				);
 			}
 			else if (consultation.status == 'pending') {
 				return (
 					<div className="grid grid-cols-2 gap-3">
-						<button className="bg-white text-orange-600 rounded-xl border-orange-600 p-2 inline border-2" onClick={handleBack}>Kembali</button>
-						<button className="bg-orange-600 text-white rounded-xl border-orange-600 p-2 inline border-2" onClick={handleCancelConsultation}>Batalkan Konsultasi</button>
+						<button className="bg-white text-primary-500 rounded-xl border-primary-500 p-2 inline border-2" onClick={handleBack}>Kembali</button>
+						<button className="bg-primary-500 text-white rounded-xl border-primary-500 p-2 inline border-2" onClick={handleCancelConsultation}>Batalkan Konsultasi</button>
 					</div>
 				);
 			} else if (consultation.status == 'cancelled') {
 				return (
 					<div className="grid grid-cols-2 gap-3">
-						<button className="bg-white text-orange-600 rounded-xl border-orange-600 p-2 inline border-2" onClick={handleBack}>Kembali</button>
+						<button className="bg-white text-primary-500 rounded-xl border-primary-500 p-2 inline border-2" onClick={handleBack}>Kembali</button>
 					</div>
 				);
 			} else if (consultation.status == 'accepted') {
 				return (
 					<div className="grid grid-cols-3 gap-3">
-						<button className="bg-white text-orange-600 rounded-xl border-orange-600 p-2 inline border-2" onClick={handleBack}>Kembali</button>
-						<button className="bg-white text-orange-600 rounded-xl border-orange-600 p-2 inline border-2" onClick={handleCancelConsultation}>Batalkan Konsultasi</button>
-						<button className="bg-orange-600 text-white rounded-xl border-orange-600 p-2 inline border-2" onClick={handlePayConsultation}>Bayar Biaya Konsultasi</button>
+						<button className="bg-white text-primary-500 rounded-xl border-primary-500 p-2 inline border-2" onClick={handleBack}>Kembali</button>
+						<button className="bg-white text-primary-500 rounded-xl border-primary-500 p-2 inline border-2" onClick={handleCancelConsultation}>Batalkan Konsultasi</button>
+						<button className="bg-primary-500 text-white rounded-xl border-primary-500 p-2 inline border-2" onClick={handlePayConsultation}>Bayar Biaya Konsultasi</button>
 					</div>
 				);
 			} else if (consultation.status == 'paid') {
 				return (
 					<div className="grid grid-cols-2 gap-3">
-						<button className="bg-white text-orange-600 rounded-xl border-orange-600 p-2 inline border-2" onClick={handleBack}>Kembali</button>
-						<button className="bg-orange-600 text-white rounded-xl border-orange-600 p-2 inline border-2" onClick={handleCompleteConsultation}>Selesaikan Konsultasi</button>
+						<button className="bg-white text-primary-500 rounded-xl border-primary-500 p-2 inline border-2" onClick={handleBack}>Kembali</button>
+						<button className="bg-primary-500 text-white rounded-xl border-primary-500 p-2 inline border-2" onClick={handleCompleteConsultation}>Selesaikan Konsultasi</button>
 					</div>
 				);
 			} else if (consultation.status == 'completed') {
 				return (
 					<>
 						{(!isInputingReview && <div className="grid grid-cols-2 gap-3">
-							<button className="bg-white text-orange-600 rounded-xl border-orange-600 p-2 inline border-2" onClick={handleBack}>Kembali</button>
-							<button className="bg-orange-600 text-white rounded-xl border-orange-600 p-2 inline border-2" onClick={handleInputReviewConsultation}>Tambahkan Review Konsultasi</button>
+							<button className="bg-white text-primary-500 rounded-xl border-primary-500 p-2 inline border-2" onClick={handleBack}>Kembali</button>
+							<button className="bg-primary-500 text-white rounded-xl border-primary-500 p-2 inline border-2" onClick={handleInputReviewConsultation}>Tambahkan Review Konsultasi</button>
 						</div>)}
 						{(isInputingReview && <div className="grid grid-cols-3 gap-3">
-							<button className="bg-white text-orange-600 rounded-xl border-orange-600 p-2 inline border-2 row-span-3" onClick={handleCloseInputReviewConsultation}>Batal</button>
+							<button className="bg-white text-primary-500 rounded-xl border-primary-500 p-2 inline border-2 row-span-3" onClick={handleCloseInputReviewConsultation}>Batal</button>
 							<form className="w-full col-span-2">
 								<span className="font-semibold">Rating</span>
 								<ul className="grid grid-cols-5">
@@ -249,12 +239,12 @@ function SuccessPage({ myUser, user, consultation, review, setStatus, refreshUse
 									<li><input ref={el => ratingReviewRef.current[4] = (el as never)} className="p-1" type="radio" name="review_rating" value="5" /> 5 Stars</li>
 								</ul>
 							</form>
-							<textarea ref={inputReviewRef} className="bg-white text-orange-600 rounded-xl border-orange-600 p-4 inline border-2 col-span-2" placeholder="Review anda"></textarea>
+							<textarea ref={inputReviewRef} className="bg-white text-primary-500 rounded-xl border-primary-500 p-4 inline border-2 col-span-2" placeholder="Review anda"></textarea>
 							<form className="p-4">
 								<input className="mr-2" ref={privateReviewRef} id="review_public" name="review_public" type="checkbox" />
 								<label htmlFor="review_public">Review secara privasi?</label>
 							</form>
-							<button className="bg-orange-600 text-white rounded-xl border-orange-600 p-2 inline border-2 col-span-1" onClick={handleReviewConsultation}>Tambahkan Review Konsultasi</button>
+							<button className="bg-primary-500 text-white rounded-xl border-primary-500 p-2 inline border-2 col-span-1" onClick={handleReviewConsultation}>Tambahkan Review Konsultasi</button>
 						</div>)}
 					</>
 				);
@@ -416,30 +406,32 @@ export default function HomePage() {
   return (
     <>
       {/* <Seo templateTitle='Home' /> */}
-      <Seo />
-
-      <main>
-		<ShouldAuthorized roleSpecific="customer">
-			<section className='bg-white'>
-			  <div className='layout grid grid-cols-1 mt-8 w-100'>
-				<h1 className="text-xl font-semibold mb-2">Informasi Konsultasi</h1>
-				<div className="px-4 grid grid-cols-1 gap-3">
-					{status === 'LOADING' && <LoadingPage />
-					|| status === 'NOTFOUND' && <NotFoundPage />
-					|| status === 'SUCCESS' && <SuccessPage myUser={myUser} user={user} consultation={consultation} review={review} setStatus={setStatus} refreshUser={refreshUser} />
-					|| status === 'ACCEPTED' && <AcceptedPage myUser={myUser} user={user} consultation={consultation} />
-					|| status === 'REJECTED' && <RejectedPage myUser={myUser} user={user} consultation={consultation} />
-					|| status === 'CANCELED' && <CanceledPage myUser={myUser} user={user} consultation={consultation} />
-					|| status === 'PAID' && <PaidPage myUser={myUser} user={user} consultation={consultation} />
-					|| status === 'COMPLETED' && <CompletedPage myUser={myUser} user={user} consultation={consultation} />
-					|| status === 'REVIEWED' && <ReviewedPage myUser={myUser} user={user} consultation={consultation} />
-					|| status === 'FAILED' && <FailedPage />
-					}
-				</div>
-			  </div>
-			</section>
-		</ShouldAuthorized>
-      </main>
+      <Seo title = "Detail Consultation"/>
+			
+			<Sidebar>
+				<main>
+					<ShouldAuthorized roleSpecific="customer">
+						<section className='bg-white'>
+							<div className='layout grid grid-cols-1 mt-8 w-100'>
+							<h1 className="text-xl font-semibold mb-2">Informasi Konsultasi</h1>
+								<div className="px-4 grid grid-cols-1 gap-3">
+									{status === 'LOADING' && <LoadingPage />
+									|| status === 'NOTFOUND' && <NotFoundPage />
+									|| status === 'SUCCESS' && <SuccessPage myUser={myUser} user={user} consultation={consultation} review={review} setStatus={setStatus} refreshUser={refreshUser} />
+									|| status === 'ACCEPTED' && <AcceptedPage myUser={myUser} user={user} consultation={consultation} />
+									|| status === 'REJECTED' && <RejectedPage myUser={myUser} user={user} consultation={consultation} />
+									|| status === 'CANCELED' && <CanceledPage myUser={myUser} user={user} consultation={consultation} />
+									|| status === 'PAID' && <PaidPage myUser={myUser} user={user} consultation={consultation} />
+									|| status === 'COMPLETED' && <CompletedPage myUser={myUser} user={user} consultation={consultation} />
+									|| status === 'REVIEWED' && <ReviewedPage myUser={myUser} user={user} consultation={consultation} />
+									|| status === 'FAILED' && <FailedPage />
+									}
+								</div>
+							</div>
+						</section>
+					</ShouldAuthorized>
+				</main>
+			</Sidebar>
     </>
   );
 }
