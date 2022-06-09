@@ -4,44 +4,6 @@ import UnstyledLink from '@/components/links/UnstyledLink';
 
 import ShouldAuthorized from '../auths/ShouldAuthorized';
 
-// const footer = [
-//   {
-//     name: "Layanan",
-//     links: [
-//       {
-//         name: "Konsultasi",
-//         url: "/",
-//       },
-//       {
-//         name: "Grooming",
-//         url:"/",
-//       }
-//     ]
-//   },
-//   {
-//     name: "Lainnya",
-//     links: [
-//       {
-//         name: "Forum",
-//         url: "/",
-//       },
-//       {
-//         name:"FAQ",
-//         url:"/",
-//       }
-//     ]
-//   },
-//   {
-//     name: "Perusahaan Kami",
-//     links: [
-//       {
-//         name: "Tentang Kami",
-//         url: "/",
-//       }
-//     ]
-//   }
-// ]
-
 export default function Footer() {
   return (
     <footer className="bg-gray-50">
@@ -92,20 +54,20 @@ export default function Footer() {
           <div className='md:col-span-4 lg:col-span-2'>
             <div className='text-light-3 mb-4 text-xl font-bold'>Lainnya</div>
             <div className='mb-4'>
-              <a
-                href=''
+              <UnstyledLink
+                href='/forum'
                 className='text-md text-light-3 font-normal hover:text-primary-500'
               >
                 Forum
-              </a>
+              </UnstyledLink>
             </div>
             <div className='mb-4'>
-              <a
-                href=''
+              <UnstyledLink
+                href='/faq'
                 className='text-md text-light-3 font-normal hover:text-primary-500'
               >
                 FAQ
-              </a>
+              </UnstyledLink>
             </div>
           </div>
 
@@ -114,12 +76,12 @@ export default function Footer() {
               Perusahaan Kami
             </div>
             <div className='mb-4'>
-              <a
-                href=''
+              <UnstyledLink
+                href='/about'
                 className='text-md text-light-3 font-normal hover:text-primary-500'
               >
                 Tentang Kami
-              </a>
+              </UnstyledLink>
             </div>
           </div>
         </div>
